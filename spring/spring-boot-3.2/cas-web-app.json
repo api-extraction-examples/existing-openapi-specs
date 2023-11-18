@@ -1,0 +1,2139 @@
+{
+  "openapi" : "3.0.1",
+  "info" : {
+    "title" : "Apereo CAS Swagger API Documentation",
+    "description" : "Apereo CAS Swagger API Documentation",
+    "license" : {
+      "name" : "Apache 2.0",
+      "url" : "https://github.com/apereo/cas/blob/master/LICENSE"
+    },
+    "version" : "6.6.10 - N/A - 2023-07-20T19:30:14Z"
+  },
+  "externalDocs" : {
+    "description" : "Apereo CAS Documentation",
+    "url" : "https://apereo.github.com/cas"
+  },
+  "servers" : [ {
+    "url" : "https://casserver.herokuapp.com/cas",
+    "description" : "Generated server url"
+  } ],
+  "tags" : [ {
+    "name" : "Actuator",
+    "description" : "Monitor and interact",
+    "externalDocs" : {
+      "description" : "Spring Boot Actuator Web API Documentation",
+      "url" : "https://docs.spring.io/spring-boot/docs/current/actuator-api/html/"
+    }
+  } ],
+  "paths" : {
+    "/v1/users" : {
+      "post" : {
+        "tags" : [ "user-authentication-resource" ],
+        "operationId" : "authenticateRequest",
+        "requestBody" : {
+          "content" : {
+            "application/x-www-form-urlencoded" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/MultiValueMapStringString"
+              }
+            },
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/MultiValueMapStringString"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "application/x-www-form-urlencoded" : {
+                "schema" : {
+                  "type" : "string"
+                }
+              },
+              "application/json" : {
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/tickets" : {
+      "get" : {
+        "tags" : [ "ticket-granting-ticket-resource" ],
+        "operationId" : "rejectGetResponse",
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "*/*" : {
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post" : {
+        "tags" : [ "ticket-granting-ticket-resource" ],
+        "operationId" : "createTicketGrantingTicket",
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "application/x-www-form-urlencoded" : {
+                "schema" : {
+                  "type" : "string"
+                }
+              },
+              "application/json" : {
+                "schema" : {
+                  "type" : "string"
+                }
+              },
+              "text/html" : {
+                "schema" : {
+                  "type" : "string"
+                }
+              },
+              "text/plain" : {
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/tickets/{tgtId}" : {
+      "post" : {
+        "tags" : [ "service-ticket-resource" ],
+        "operationId" : "createServiceTicket",
+        "parameters" : [ {
+          "name" : "tgtId",
+          "in" : "path",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "application/x-www-form-urlencoded" : {
+                "schema" : {
+                  "type" : "string"
+                }
+              },
+              "application/json" : {
+                "schema" : {
+                  "type" : "string"
+                }
+              },
+              "text/html" : {
+                "schema" : {
+                  "type" : "string"
+                }
+              },
+              "text/plain" : {
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete" : {
+        "tags" : [ "ticket-granting-ticket-resource" ],
+        "operationId" : "deleteTicketGrantingTicket",
+        "parameters" : [ {
+          "name" : "tgtId",
+          "in" : "path",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/SingleLogoutRequestContext"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/actuator/serviceregistry" : {
+      "get" : {
+        "tags" : [ "Actuator" ],
+        "summary" : "Actuator web endpoint 'serviceregistry'",
+        "operationId" : "serviceregistry",
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "application/vnd.spring-boot.actuator.v3+json" : {
+                "schema" : {
+                  "type" : "object"
+                }
+              },
+              "application/vnd.spring-boot.actuator.v2+json" : {
+                "schema" : {
+                  "type" : "object"
+                }
+              },
+              "application/json" : {
+                "schema" : {
+                  "type" : "object"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post" : {
+        "tags" : [ "Actuator" ],
+        "summary" : "Actuator web endpoint 'serviceregistry'",
+        "operationId" : "serviceregistry_2",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "type" : "string"
+              }
+            }
+          }
+        },
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "application/vnd.spring-boot.actuator.v3+json" : {
+                "schema" : {
+                  "type" : "object"
+                }
+              },
+              "application/vnd.spring-boot.actuator.v2+json" : {
+                "schema" : {
+                  "type" : "object"
+                }
+              },
+              "application/json" : {
+                "schema" : {
+                  "type" : "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/actuator/refresh" : {
+      "post" : {
+        "tags" : [ "Actuator" ],
+        "summary" : "Actuator web endpoint 'refresh'",
+        "operationId" : "refresh",
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "application/vnd.spring-boot.actuator.v3+json" : {
+                "schema" : {
+                  "type" : "object"
+                }
+              },
+              "application/vnd.spring-boot.actuator.v2+json" : {
+                "schema" : {
+                  "type" : "object"
+                }
+              },
+              "application/json" : {
+                "schema" : {
+                  "type" : "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/actuator/loggingConfig/{loggerName}" : {
+      "post" : {
+        "tags" : [ "Actuator" ],
+        "summary" : "Actuator web endpoint 'loggingConfig-loggerName'",
+        "operationId" : "loggingConfig-loggerName",
+        "parameters" : [ {
+          "name" : "loggerName",
+          "in" : "path",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "type" : "boolean"
+              }
+            }
+          }
+        },
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "*/*" : {
+                "schema" : {
+                  "type" : "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/actuator/loggers/{name}" : {
+      "get" : {
+        "tags" : [ "Actuator" ],
+        "summary" : "Actuator web endpoint 'loggers-name'",
+        "operationId" : "loggers-name",
+        "parameters" : [ {
+          "name" : "name",
+          "in" : "path",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "application/vnd.spring-boot.actuator.v3+json" : {
+                "schema" : {
+                  "type" : "object"
+                }
+              },
+              "application/vnd.spring-boot.actuator.v2+json" : {
+                "schema" : {
+                  "type" : "object"
+                }
+              },
+              "application/json" : {
+                "schema" : {
+                  "type" : "object"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post" : {
+        "tags" : [ "Actuator" ],
+        "summary" : "Actuator web endpoint 'loggers-name'",
+        "operationId" : "loggers-name_2",
+        "parameters" : [ {
+          "name" : "name",
+          "in" : "path",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "type" : "string",
+                "enum" : [ "TRACE", "DEBUG", "INFO", "WARN", "ERROR", "FATAL", "OFF" ]
+              }
+            }
+          }
+        },
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "*/*" : {
+                "schema" : {
+                  "type" : "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/actuator/integrationgraph" : {
+      "get" : {
+        "tags" : [ "Actuator" ],
+        "summary" : "Actuator web endpoint 'integrationgraph'",
+        "operationId" : "integrationgraph",
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "application/vnd.spring-boot.actuator.v3+json" : {
+                "schema" : {
+                  "type" : "object"
+                }
+              },
+              "application/vnd.spring-boot.actuator.v2+json" : {
+                "schema" : {
+                  "type" : "object"
+                }
+              },
+              "application/json" : {
+                "schema" : {
+                  "type" : "object"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post" : {
+        "tags" : [ "Actuator" ],
+        "summary" : "Actuator web endpoint 'integrationgraph'",
+        "operationId" : "integrationgraph_2",
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "*/*" : {
+                "schema" : {
+                  "type" : "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/tickets/{id}" : {
+      "get" : {
+        "tags" : [ "ticket-status-resource" ],
+        "operationId" : "getTicketStatus",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "*/*" : {
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/actuator" : {
+      "get" : {
+        "tags" : [ "Actuator" ],
+        "summary" : "Actuator root web endpoint",
+        "operationId" : "links",
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "application/vnd.spring-boot.actuator.v3+json" : {
+                "schema" : {
+                  "type" : "object",
+                  "additionalProperties" : {
+                    "type" : "object",
+                    "additionalProperties" : {
+                      "$ref" : "#/components/schemas/Link"
+                    }
+                  }
+                }
+              },
+              "application/vnd.spring-boot.actuator.v2+json" : {
+                "schema" : {
+                  "type" : "object",
+                  "additionalProperties" : {
+                    "type" : "object",
+                    "additionalProperties" : {
+                      "$ref" : "#/components/schemas/Link"
+                    }
+                  }
+                }
+              },
+              "application/json" : {
+                "schema" : {
+                  "type" : "object",
+                  "additionalProperties" : {
+                    "type" : "object",
+                    "additionalProperties" : {
+                      "$ref" : "#/components/schemas/Link"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/actuator/throttles" : {
+      "get" : {
+        "tags" : [ "Actuator" ],
+        "summary" : "Actuator web endpoint 'throttles'",
+        "operationId" : "throttles",
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "application/vnd.spring-boot.actuator.v3+json" : {
+                "schema" : {
+                  "type" : "object"
+                }
+              },
+              "application/vnd.spring-boot.actuator.v2+json" : {
+                "schema" : {
+                  "type" : "object"
+                }
+              },
+              "application/json" : {
+                "schema" : {
+                  "type" : "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/actuator/threaddump" : {
+      "get" : {
+        "tags" : [ "Actuator" ],
+        "summary" : "Actuator web endpoint 'threaddump'",
+        "operationId" : "threaddump",
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "text/plain;charset=UTF-8" : {
+                "schema" : {
+                  "type" : "object"
+                }
+              },
+              "application/vnd.spring-boot.actuator.v3+json" : {
+                "schema" : {
+                  "type" : "object"
+                }
+              },
+              "application/vnd.spring-boot.actuator.v2+json" : {
+                "schema" : {
+                  "type" : "object"
+                }
+              },
+              "application/json" : {
+                "schema" : {
+                  "type" : "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/actuator/scheduledtasks" : {
+      "get" : {
+        "tags" : [ "Actuator" ],
+        "summary" : "Actuator web endpoint 'scheduledtasks'",
+        "operationId" : "scheduledtasks",
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "application/vnd.spring-boot.actuator.v3+json" : {
+                "schema" : {
+                  "type" : "object"
+                }
+              },
+              "application/vnd.spring-boot.actuator.v2+json" : {
+                "schema" : {
+                  "type" : "object"
+                }
+              },
+              "application/json" : {
+                "schema" : {
+                  "type" : "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/actuator/quartz" : {
+      "get" : {
+        "tags" : [ "Actuator" ],
+        "summary" : "Actuator web endpoint 'quartz'",
+        "operationId" : "quartz",
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "application/vnd.spring-boot.actuator.v3+json" : {
+                "schema" : {
+                  "type" : "object"
+                }
+              },
+              "application/vnd.spring-boot.actuator.v2+json" : {
+                "schema" : {
+                  "type" : "object"
+                }
+              },
+              "application/json" : {
+                "schema" : {
+                  "type" : "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/actuator/quartz/{jobsOrTriggers}" : {
+      "get" : {
+        "tags" : [ "Actuator" ],
+        "summary" : "Actuator web endpoint 'quartz-jobsOrTriggers'",
+        "operationId" : "quartz-jobsOrTriggers",
+        "parameters" : [ {
+          "name" : "jobsOrTriggers",
+          "in" : "path",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "application/vnd.spring-boot.actuator.v3+json" : {
+                "schema" : {
+                  "type" : "object"
+                }
+              },
+              "application/vnd.spring-boot.actuator.v2+json" : {
+                "schema" : {
+                  "type" : "object"
+                }
+              },
+              "application/json" : {
+                "schema" : {
+                  "type" : "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/actuator/quartz/{jobsOrTriggers}/{group}" : {
+      "get" : {
+        "tags" : [ "Actuator" ],
+        "summary" : "Actuator web endpoint 'quartz-jobsOrTriggers-group'",
+        "operationId" : "quartz-jobsOrTriggers-group",
+        "parameters" : [ {
+          "name" : "jobsOrTriggers",
+          "in" : "path",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "group",
+          "in" : "path",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "application/vnd.spring-boot.actuator.v3+json" : {
+                "schema" : {
+                  "type" : "object"
+                }
+              },
+              "application/vnd.spring-boot.actuator.v2+json" : {
+                "schema" : {
+                  "type" : "object"
+                }
+              },
+              "application/json" : {
+                "schema" : {
+                  "type" : "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/actuator/quartz/{jobsOrTriggers}/{group}/{name}" : {
+      "get" : {
+        "tags" : [ "Actuator" ],
+        "summary" : "Actuator web endpoint 'quartz-jobsOrTriggers-group-name'",
+        "operationId" : "quartz-jobsOrTriggers-group-name",
+        "parameters" : [ {
+          "name" : "jobsOrTriggers",
+          "in" : "path",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "group",
+          "in" : "path",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "name",
+          "in" : "path",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "application/vnd.spring-boot.actuator.v3+json" : {
+                "schema" : {
+                  "type" : "object"
+                }
+              },
+              "application/vnd.spring-boot.actuator.v2+json" : {
+                "schema" : {
+                  "type" : "object"
+                }
+              },
+              "application/json" : {
+                "schema" : {
+                  "type" : "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/actuator/metrics" : {
+      "get" : {
+        "tags" : [ "Actuator" ],
+        "summary" : "Actuator web endpoint 'metrics'",
+        "operationId" : "metrics",
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "application/vnd.spring-boot.actuator.v3+json" : {
+                "schema" : {
+                  "type" : "object"
+                }
+              },
+              "application/vnd.spring-boot.actuator.v2+json" : {
+                "schema" : {
+                  "type" : "object"
+                }
+              },
+              "application/json" : {
+                "schema" : {
+                  "type" : "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/actuator/metrics/{requiredMetricName}" : {
+      "get" : {
+        "tags" : [ "Actuator" ],
+        "summary" : "Actuator web endpoint 'metrics-requiredMetricName'",
+        "operationId" : "metrics-requiredMetricName",
+        "parameters" : [ {
+          "name" : "requiredMetricName",
+          "in" : "path",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "application/vnd.spring-boot.actuator.v3+json" : {
+                "schema" : {
+                  "type" : "object"
+                }
+              },
+              "application/vnd.spring-boot.actuator.v2+json" : {
+                "schema" : {
+                  "type" : "object"
+                }
+              },
+              "application/json" : {
+                "schema" : {
+                  "type" : "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/actuator/mappings" : {
+      "get" : {
+        "tags" : [ "Actuator" ],
+        "summary" : "Actuator web endpoint 'mappings'",
+        "operationId" : "mappings",
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "application/vnd.spring-boot.actuator.v3+json" : {
+                "schema" : {
+                  "type" : "object"
+                }
+              },
+              "application/vnd.spring-boot.actuator.v2+json" : {
+                "schema" : {
+                  "type" : "object"
+                }
+              },
+              "application/json" : {
+                "schema" : {
+                  "type" : "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/actuator/loggingConfig" : {
+      "get" : {
+        "tags" : [ "Actuator" ],
+        "summary" : "Actuator web endpoint 'loggingConfig'",
+        "operationId" : "loggingConfig",
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "application/vnd.spring-boot.actuator.v3+json" : {
+                "schema" : {
+                  "type" : "object"
+                }
+              },
+              "application/vnd.spring-boot.actuator.v2+json" : {
+                "schema" : {
+                  "type" : "object"
+                }
+              },
+              "application/json" : {
+                "schema" : {
+                  "type" : "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/actuator/loggers" : {
+      "get" : {
+        "tags" : [ "Actuator" ],
+        "summary" : "Actuator web endpoint 'loggers'",
+        "operationId" : "loggers",
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "application/vnd.spring-boot.actuator.v3+json" : {
+                "schema" : {
+                  "type" : "object"
+                }
+              },
+              "application/vnd.spring-boot.actuator.v2+json" : {
+                "schema" : {
+                  "type" : "object"
+                }
+              },
+              "application/json" : {
+                "schema" : {
+                  "type" : "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/actuator/info" : {
+      "get" : {
+        "tags" : [ "Actuator" ],
+        "summary" : "Actuator web endpoint 'info'",
+        "operationId" : "info",
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "application/vnd.spring-boot.actuator.v3+json" : {
+                "schema" : {
+                  "type" : "object"
+                }
+              },
+              "application/vnd.spring-boot.actuator.v2+json" : {
+                "schema" : {
+                  "type" : "object"
+                }
+              },
+              "application/json" : {
+                "schema" : {
+                  "type" : "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/actuator/heapdump" : {
+      "get" : {
+        "tags" : [ "Actuator" ],
+        "summary" : "Actuator web endpoint 'heapdump'",
+        "operationId" : "heapdump",
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "application/octet-stream" : {
+                "schema" : {
+                  "type" : "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/actuator/health" : {
+      "get" : {
+        "tags" : [ "Actuator" ],
+        "summary" : "Actuator web endpoint 'health'",
+        "operationId" : "health",
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "application/vnd.spring-boot.actuator.v3+json" : {
+                "schema" : {
+                  "type" : "object"
+                }
+              },
+              "application/vnd.spring-boot.actuator.v2+json" : {
+                "schema" : {
+                  "type" : "object"
+                }
+              },
+              "application/json" : {
+                "schema" : {
+                  "type" : "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/actuator/health/**" : {
+      "get" : {
+        "tags" : [ "Actuator" ],
+        "summary" : "Actuator web endpoint 'health-path'",
+        "operationId" : "health-path",
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "application/vnd.spring-boot.actuator.v3+json" : {
+                "schema" : {
+                  "type" : "object"
+                }
+              },
+              "application/vnd.spring-boot.actuator.v2+json" : {
+                "schema" : {
+                  "type" : "object"
+                }
+              },
+              "application/json" : {
+                "schema" : {
+                  "type" : "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/actuator/features" : {
+      "get" : {
+        "tags" : [ "Actuator" ],
+        "summary" : "Actuator web endpoint 'features'",
+        "operationId" : "features",
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "application/vnd.spring-boot.actuator.v3+json" : {
+                "schema" : {
+                  "type" : "object"
+                }
+              },
+              "application/vnd.spring-boot.actuator.v2+json" : {
+                "schema" : {
+                  "type" : "object"
+                }
+              },
+              "application/json" : {
+                "schema" : {
+                  "type" : "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/actuator/env" : {
+      "get" : {
+        "tags" : [ "Actuator" ],
+        "summary" : "Actuator web endpoint 'env'",
+        "operationId" : "env",
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "application/vnd.spring-boot.actuator.v3+json" : {
+                "schema" : {
+                  "type" : "object"
+                }
+              },
+              "application/vnd.spring-boot.actuator.v2+json" : {
+                "schema" : {
+                  "type" : "object"
+                }
+              },
+              "application/json" : {
+                "schema" : {
+                  "type" : "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/actuator/env/{toMatch}" : {
+      "get" : {
+        "tags" : [ "Actuator" ],
+        "summary" : "Actuator web endpoint 'env-toMatch'",
+        "operationId" : "env-toMatch",
+        "parameters" : [ {
+          "name" : "toMatch",
+          "in" : "path",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "application/vnd.spring-boot.actuator.v3+json" : {
+                "schema" : {
+                  "type" : "object"
+                }
+              },
+              "application/vnd.spring-boot.actuator.v2+json" : {
+                "schema" : {
+                  "type" : "object"
+                }
+              },
+              "application/json" : {
+                "schema" : {
+                  "type" : "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/actuator/configprops" : {
+      "get" : {
+        "tags" : [ "Actuator" ],
+        "summary" : "Actuator web endpoint 'configprops'",
+        "operationId" : "configprops",
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "application/vnd.spring-boot.actuator.v3+json" : {
+                "schema" : {
+                  "type" : "object"
+                }
+              },
+              "application/vnd.spring-boot.actuator.v2+json" : {
+                "schema" : {
+                  "type" : "object"
+                }
+              },
+              "application/json" : {
+                "schema" : {
+                  "type" : "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/actuator/configprops/{prefix}" : {
+      "get" : {
+        "tags" : [ "Actuator" ],
+        "summary" : "Actuator web endpoint 'configprops-prefix'",
+        "operationId" : "configprops-prefix",
+        "parameters" : [ {
+          "name" : "prefix",
+          "in" : "path",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "application/vnd.spring-boot.actuator.v3+json" : {
+                "schema" : {
+                  "type" : "object"
+                }
+              },
+              "application/vnd.spring-boot.actuator.v2+json" : {
+                "schema" : {
+                  "type" : "object"
+                }
+              },
+              "application/json" : {
+                "schema" : {
+                  "type" : "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/actuator/conditions" : {
+      "get" : {
+        "tags" : [ "Actuator" ],
+        "summary" : "Actuator web endpoint 'conditions'",
+        "operationId" : "conditions",
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "application/vnd.spring-boot.actuator.v3+json" : {
+                "schema" : {
+                  "type" : "object"
+                }
+              },
+              "application/vnd.spring-boot.actuator.v2+json" : {
+                "schema" : {
+                  "type" : "object"
+                }
+              },
+              "application/json" : {
+                "schema" : {
+                  "type" : "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/actuator/caches" : {
+      "get" : {
+        "tags" : [ "Actuator" ],
+        "summary" : "Actuator web endpoint 'caches'",
+        "operationId" : "caches",
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "application/vnd.spring-boot.actuator.v3+json" : {
+                "schema" : {
+                  "type" : "object"
+                }
+              },
+              "application/vnd.spring-boot.actuator.v2+json" : {
+                "schema" : {
+                  "type" : "object"
+                }
+              },
+              "application/json" : {
+                "schema" : {
+                  "type" : "object"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete" : {
+        "tags" : [ "Actuator" ],
+        "summary" : "Actuator web endpoint 'caches'",
+        "operationId" : "caches_2",
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "*/*" : {
+                "schema" : {
+                  "type" : "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/actuator/caches/{cache}" : {
+      "get" : {
+        "tags" : [ "Actuator" ],
+        "summary" : "Actuator web endpoint 'caches-cache'",
+        "operationId" : "caches-cache",
+        "parameters" : [ {
+          "name" : "cache",
+          "in" : "path",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "application/vnd.spring-boot.actuator.v3+json" : {
+                "schema" : {
+                  "type" : "object"
+                }
+              },
+              "application/vnd.spring-boot.actuator.v2+json" : {
+                "schema" : {
+                  "type" : "object"
+                }
+              },
+              "application/json" : {
+                "schema" : {
+                  "type" : "object"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete" : {
+        "tags" : [ "Actuator" ],
+        "summary" : "Actuator web endpoint 'caches-cache'",
+        "operationId" : "caches-cache_2",
+        "parameters" : [ {
+          "name" : "cache",
+          "in" : "path",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "application/vnd.spring-boot.actuator.v3+json" : {
+                "schema" : {
+                  "type" : "object"
+                }
+              },
+              "application/vnd.spring-boot.actuator.v2+json" : {
+                "schema" : {
+                  "type" : "object"
+                }
+              },
+              "application/json" : {
+                "schema" : {
+                  "type" : "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/actuator/beans" : {
+      "get" : {
+        "tags" : [ "Actuator" ],
+        "summary" : "Actuator web endpoint 'beans'",
+        "operationId" : "beans",
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "application/vnd.spring-boot.actuator.v3+json" : {
+                "schema" : {
+                  "type" : "object"
+                }
+              },
+              "application/vnd.spring-boot.actuator.v2+json" : {
+                "schema" : {
+                  "type" : "object"
+                }
+              },
+              "application/json" : {
+                "schema" : {
+                  "type" : "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/actuator/auditevents" : {
+      "get" : {
+        "tags" : [ "Actuator" ],
+        "summary" : "Actuator web endpoint 'auditevents'",
+        "operationId" : "auditevents",
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "application/vnd.spring-boot.actuator.v3+json" : {
+                "schema" : {
+                  "type" : "object"
+                }
+              },
+              "application/vnd.spring-boot.actuator.v2+json" : {
+                "schema" : {
+                  "type" : "object"
+                }
+              },
+              "application/json" : {
+                "schema" : {
+                  "type" : "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components" : {
+    "schemas" : {
+      "MultiValueMapStringString" : {
+        "type" : "object",
+        "properties" : {
+          "all" : {
+            "type" : "object",
+            "additionalProperties" : {
+              "type" : "string"
+            },
+            "writeOnly" : true
+          },
+          "empty" : {
+            "type" : "boolean"
+          }
+        },
+        "additionalProperties" : {
+          "type" : "array",
+          "items" : {
+            "type" : "string"
+          }
+        }
+      },
+      "Link" : {
+        "type" : "object",
+        "properties" : {
+          "href" : {
+            "type" : "string"
+          },
+          "templated" : {
+            "type" : "boolean"
+          }
+        }
+      },
+      "Authentication" : {
+        "type" : "object",
+        "properties" : {
+          "warnings" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/MessageDescriptor"
+            }
+          },
+          "credentials" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/CredentialMetaData"
+            }
+          },
+          "principal" : {
+            "$ref" : "#/components/schemas/Principal"
+          },
+          "successes" : {
+            "type" : "object",
+            "additionalProperties" : {
+              "$ref" : "#/components/schemas/AuthenticationHandlerExecutionResult"
+            }
+          },
+          "authenticationDate" : {
+            "type" : "string",
+            "format" : "date-time"
+          },
+          "failures" : {
+            "type" : "object",
+            "additionalProperties" : {
+              "type" : "object",
+              "properties" : {
+                "cause" : {
+                  "type" : "object",
+                  "properties" : {
+                    "stackTrace" : {
+                      "type" : "array",
+                      "items" : {
+                        "type" : "object",
+                        "properties" : {
+                          "classLoaderName" : {
+                            "type" : "string"
+                          },
+                          "moduleName" : {
+                            "type" : "string"
+                          },
+                          "moduleVersion" : {
+                            "type" : "string"
+                          },
+                          "methodName" : {
+                            "type" : "string"
+                          },
+                          "fileName" : {
+                            "type" : "string"
+                          },
+                          "lineNumber" : {
+                            "type" : "integer",
+                            "format" : "int32"
+                          },
+                          "className" : {
+                            "type" : "string"
+                          },
+                          "nativeMethod" : {
+                            "type" : "boolean"
+                          }
+                        }
+                      }
+                    },
+                    "message" : {
+                      "type" : "string"
+                    },
+                    "localizedMessage" : {
+                      "type" : "string"
+                    }
+                  }
+                },
+                "stackTrace" : {
+                  "type" : "array",
+                  "items" : {
+                    "type" : "object",
+                    "properties" : {
+                      "classLoaderName" : {
+                        "type" : "string"
+                      },
+                      "moduleName" : {
+                        "type" : "string"
+                      },
+                      "moduleVersion" : {
+                        "type" : "string"
+                      },
+                      "methodName" : {
+                        "type" : "string"
+                      },
+                      "fileName" : {
+                        "type" : "string"
+                      },
+                      "lineNumber" : {
+                        "type" : "integer",
+                        "format" : "int32"
+                      },
+                      "className" : {
+                        "type" : "string"
+                      },
+                      "nativeMethod" : {
+                        "type" : "boolean"
+                      }
+                    }
+                  }
+                },
+                "message" : {
+                  "type" : "string"
+                },
+                "localizedMessage" : {
+                  "type" : "string"
+                }
+              }
+            }
+          },
+          "attributes" : {
+            "type" : "object",
+            "additionalProperties" : {
+              "type" : "array",
+              "items" : {
+                "type" : "object"
+              }
+            }
+          }
+        }
+      },
+      "AuthenticationHandlerExecutionResult" : {
+        "type" : "object",
+        "properties" : {
+          "warnings" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/MessageDescriptor"
+            }
+          },
+          "handlerName" : {
+            "type" : "string"
+          },
+          "principal" : {
+            "$ref" : "#/components/schemas/Principal"
+          },
+          "credentialMetaData" : {
+            "$ref" : "#/components/schemas/CredentialMetaData"
+          }
+        }
+      },
+      "CredentialMetaData" : {
+        "type" : "object",
+        "properties" : {
+          "id" : {
+            "type" : "string"
+          }
+        }
+      },
+      "ExpirationPolicy" : {
+        "type" : "object",
+        "properties" : {
+          "timeToLive" : {
+            "type" : "integer",
+            "format" : "int64"
+          },
+          "timeToIdle" : {
+            "type" : "integer",
+            "format" : "int64"
+          },
+          "name" : {
+            "type" : "string"
+          }
+        }
+      },
+      "MessageDescriptor" : {
+        "type" : "object",
+        "properties" : {
+          "params" : {
+            "type" : "array",
+            "items" : {
+              "type" : "object"
+            }
+          },
+          "code" : {
+            "type" : "string"
+          },
+          "defaultMessage" : {
+            "type" : "string"
+          }
+        }
+      },
+      "Principal" : {
+        "type" : "object",
+        "properties" : {
+          "id" : {
+            "type" : "string"
+          },
+          "attributes" : {
+            "type" : "object",
+            "additionalProperties" : {
+              "type" : "array",
+              "items" : {
+                "type" : "object"
+              }
+            }
+          }
+        }
+      },
+      "RegisteredService" : {
+        "type" : "object",
+        "properties" : {
+          "description" : {
+            "type" : "string"
+          },
+          "accessStrategy" : {
+            "$ref" : "#/components/schemas/RegisteredServiceAccessStrategy"
+          },
+          "id" : {
+            "type" : "integer",
+            "format" : "int64"
+          },
+          "attributeReleasePolicy" : {
+            "$ref" : "#/components/schemas/RegisteredServiceAttributeReleasePolicy"
+          },
+          "responseType" : {
+            "type" : "string"
+          },
+          "expirationPolicy" : {
+            "$ref" : "#/components/schemas/RegisteredServiceExpirationPolicy"
+          },
+          "authenticationPolicy" : {
+            "$ref" : "#/components/schemas/RegisteredServiceAuthenticationPolicy"
+          },
+          "matchingStrategy" : {
+            "$ref" : "#/components/schemas/RegisteredServiceMatchingStrategy"
+          },
+          "evaluationOrder" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "usernameAttributeProvider" : {
+            "$ref" : "#/components/schemas/RegisteredServiceUsernameAttributeProvider"
+          },
+          "multifactorAuthenticationPolicy" : {
+            "$ref" : "#/components/schemas/RegisteredServiceMultifactorPolicy"
+          },
+          "ticketGrantingTicketExpirationPolicy" : {
+            "$ref" : "#/components/schemas/RegisteredServiceTicketGrantingTicketExpirationPolicy"
+          },
+          "requiredHandlers" : {
+            "uniqueItems" : true,
+            "type" : "array",
+            "deprecated" : true,
+            "items" : {
+              "type" : "string"
+            }
+          },
+          "environments" : {
+            "uniqueItems" : true,
+            "type" : "array",
+            "items" : {
+              "type" : "string"
+            }
+          },
+          "contacts" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/RegisteredServiceContact"
+            }
+          },
+          "serviceId" : {
+            "type" : "string"
+          },
+          "name" : {
+            "type" : "string"
+          },
+          "properties" : {
+            "type" : "object",
+            "additionalProperties" : {
+              "$ref" : "#/components/schemas/RegisteredServiceProperty"
+            }
+          },
+          "publicKey" : {
+            "$ref" : "#/components/schemas/RegisteredServicePublicKey"
+          }
+        }
+      },
+      "RegisteredServiceAccessStrategy" : {
+        "type" : "object",
+        "properties" : {
+          "unauthorizedRedirectUrl" : {
+            "type" : "string",
+            "format" : "uri"
+          },
+          "delegatedAuthenticationPolicy" : {
+            "$ref" : "#/components/schemas/RegisteredServiceDelegatedAuthenticationPolicy"
+          },
+          "requiredAttributes" : {
+            "type" : "object",
+            "additionalProperties" : {
+              "uniqueItems" : true,
+              "type" : "array",
+              "items" : {
+                "type" : "string"
+              }
+            }
+          },
+          "order" : {
+            "type" : "integer",
+            "format" : "int32"
+          }
+        }
+      },
+      "RegisteredServiceAttributeFilter" : {
+        "type" : "object",
+        "properties" : {
+          "order" : {
+            "type" : "integer",
+            "format" : "int32"
+          }
+        }
+      },
+      "RegisteredServiceAttributeReleasePolicy" : {
+        "type" : "object",
+        "properties" : {
+          "attributeFilter" : {
+            "$ref" : "#/components/schemas/RegisteredServiceAttributeFilter"
+          },
+          "authorizedToReleaseAuthenticationAttributes" : {
+            "type" : "boolean"
+          },
+          "authorizedToReleaseCredentialPassword" : {
+            "type" : "boolean"
+          },
+          "consentPolicy" : {
+            "$ref" : "#/components/schemas/RegisteredServiceConsentPolicy"
+          },
+          "order" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "principalAttributesRepository" : {
+            "$ref" : "#/components/schemas/RegisteredServicePrincipalAttributesRepository"
+          },
+          "authorizedToReleaseProxyGrantingTicket" : {
+            "type" : "boolean"
+          }
+        }
+      },
+      "RegisteredServiceAuthenticationPolicy" : {
+        "type" : "object",
+        "properties" : {
+          "criteria" : {
+            "$ref" : "#/components/schemas/RegisteredServiceAuthenticationPolicyCriteria"
+          },
+          "requiredAuthenticationHandlers" : {
+            "uniqueItems" : true,
+            "type" : "array",
+            "items" : {
+              "type" : "string"
+            }
+          },
+          "excludedAuthenticationHandlers" : {
+            "uniqueItems" : true,
+            "type" : "array",
+            "items" : {
+              "type" : "string"
+            }
+          }
+        }
+      },
+      "RegisteredServiceAuthenticationPolicyCriteria" : {
+        "type" : "object"
+      },
+      "RegisteredServiceConsentPolicy" : {
+        "type" : "object",
+        "properties" : {
+          "excludedServices" : {
+            "uniqueItems" : true,
+            "type" : "array",
+            "items" : {
+              "type" : "string"
+            }
+          },
+          "includeOnlyAttributes" : {
+            "uniqueItems" : true,
+            "type" : "array",
+            "items" : {
+              "type" : "string"
+            }
+          },
+          "status" : {
+            "type" : "string",
+            "enum" : [ "TRUE", "FALSE", "UNDEFINED" ]
+          },
+          "order" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "excludedAttributes" : {
+            "uniqueItems" : true,
+            "type" : "array",
+            "items" : {
+              "type" : "string"
+            }
+          }
+        }
+      },
+      "RegisteredServiceContact" : {
+        "type" : "object",
+        "properties" : {
+          "phone" : {
+            "type" : "string"
+          },
+          "department" : {
+            "type" : "string"
+          },
+          "email" : {
+            "type" : "string"
+          },
+          "name" : {
+            "type" : "string"
+          },
+          "type" : {
+            "type" : "string"
+          }
+        }
+      },
+      "RegisteredServiceDelegatedAuthenticationPolicy" : {
+        "type" : "object",
+        "properties" : {
+          "exclusive" : {
+            "type" : "boolean"
+          },
+          "allowedProviders" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string"
+            }
+          },
+          "selectionStrategy" : {
+            "type" : "string"
+          },
+          "permitUndefined" : {
+            "type" : "boolean"
+          }
+        }
+      },
+      "RegisteredServiceExpirationPolicy" : {
+        "type" : "object",
+        "properties" : {
+          "expirationDate" : {
+            "type" : "string"
+          },
+          "notifyWhenExpired" : {
+            "type" : "boolean"
+          },
+          "deleteWhenExpired" : {
+            "type" : "boolean"
+          },
+          "notifyWhenDeleted" : {
+            "type" : "boolean"
+          }
+        }
+      },
+      "RegisteredServiceMatchingStrategy" : {
+        "type" : "object"
+      },
+      "RegisteredServiceMultifactorPolicy" : {
+        "type" : "object",
+        "properties" : {
+          "script" : {
+            "type" : "string"
+          },
+          "bypassEnabled" : {
+            "type" : "boolean"
+          },
+          "multifactorAuthenticationProviders" : {
+            "uniqueItems" : true,
+            "type" : "array",
+            "items" : {
+              "type" : "string"
+            }
+          },
+          "principalAttributeNameTrigger" : {
+            "type" : "string"
+          },
+          "principalAttributeValueToMatch" : {
+            "type" : "string"
+          },
+          "bypassTrustedDeviceEnabled" : {
+            "type" : "boolean"
+          },
+          "bypassPrincipalAttributeName" : {
+            "type" : "string"
+          },
+          "bypassPrincipalAttributeValue" : {
+            "type" : "string"
+          },
+          "failureMode" : {
+            "type" : "string",
+            "enum" : [ "OPEN", "CLOSED", "PHANTOM", "NONE", "UNDEFINED" ]
+          },
+          "forceExecution" : {
+            "type" : "boolean"
+          }
+        }
+      },
+      "RegisteredServicePrincipalAttributesRepository" : {
+        "type" : "object",
+        "properties" : {
+          "attributeRepositoryIds" : {
+            "uniqueItems" : true,
+            "type" : "array",
+            "items" : {
+              "type" : "string"
+            }
+          }
+        }
+      },
+      "RegisteredServiceProperty" : {
+        "type" : "object",
+        "properties" : {
+          "values" : {
+            "uniqueItems" : true,
+            "type" : "array",
+            "items" : {
+              "type" : "string"
+            }
+          }
+        }
+      },
+      "RegisteredServicePublicKey" : {
+        "type" : "object",
+        "properties" : {
+          "algorithm" : {
+            "type" : "string"
+          },
+          "location" : {
+            "type" : "string"
+          }
+        }
+      },
+      "RegisteredServiceTicketGrantingTicketExpirationPolicy" : {
+        "type" : "object",
+        "properties" : {
+          "maxTimeToLiveInSeconds" : {
+            "type" : "integer",
+            "format" : "int64"
+          }
+        }
+      },
+      "RegisteredServiceUsernameAttributeProvider" : {
+        "type" : "object"
+      },
+      "Service" : {
+        "type" : "object",
+        "properties" : {
+          "attributes" : {
+            "type" : "object",
+            "additionalProperties" : {
+              "type" : "array",
+              "items" : {
+                "type" : "object"
+              }
+            }
+          },
+          "principal" : {
+            "type" : "string",
+            "writeOnly" : true
+          },
+          "id" : {
+            "type" : "string"
+          }
+        }
+      },
+      "SingleLogoutExecutionRequest" : {
+        "type" : "object",
+        "properties" : {
+          "ticketGrantingTicket" : {
+            "$ref" : "#/components/schemas/TicketGrantingTicket"
+          }
+        }
+      },
+      "SingleLogoutRequestContext" : {
+        "type" : "object",
+        "properties" : {
+          "status" : {
+            "type" : "string",
+            "enum" : [ "NOT_ATTEMPTED", "FAILURE", "SUCCESS" ]
+          },
+          "service" : {
+            "$ref" : "#/components/schemas/WebApplicationService"
+          },
+          "logoutUrl" : {
+            "type" : "string",
+            "format" : "url"
+          },
+          "registeredService" : {
+            "$ref" : "#/components/schemas/RegisteredService"
+          },
+          "ticketId" : {
+            "type" : "string"
+          },
+          "logoutType" : {
+            "type" : "string",
+            "enum" : [ "NONE", "BACK_CHANNEL", "FRONT_CHANNEL" ]
+          },
+          "executionRequest" : {
+            "$ref" : "#/components/schemas/SingleLogoutExecutionRequest"
+          },
+          "properties" : {
+            "type" : "object",
+            "additionalProperties" : {
+              "type" : "string"
+            }
+          }
+        }
+      },
+      "TicketGrantingTicket" : {
+        "type" : "object",
+        "properties" : {
+          "root" : {
+            "$ref" : "#/components/schemas/TicketGrantingTicket"
+          },
+          "proxyGrantingTickets" : {
+            "type" : "object",
+            "additionalProperties" : {
+              "$ref" : "#/components/schemas/Service"
+            }
+          },
+          "chainedAuthentications" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/Authentication"
+            }
+          },
+          "proxiedBy" : {
+            "$ref" : "#/components/schemas/Service"
+          },
+          "descendantTickets" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string"
+            }
+          },
+          "ticketGrantingTicket" : {
+            "$ref" : "#/components/schemas/TicketGrantingTicket"
+          },
+          "authentication" : {
+            "$ref" : "#/components/schemas/Authentication"
+          },
+          "creationTime" : {
+            "type" : "string",
+            "format" : "date-time"
+          },
+          "prefix" : {
+            "type" : "string"
+          },
+          "expirationPolicy" : {
+            "$ref" : "#/components/schemas/ExpirationPolicy"
+          },
+          "expired" : {
+            "type" : "boolean"
+          },
+          "countOfUses" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "lastTimeUsed" : {
+            "type" : "string",
+            "format" : "date-time"
+          },
+          "previousTimeUsed" : {
+            "type" : "string",
+            "format" : "date-time"
+          },
+          "id" : {
+            "type" : "string"
+          }
+        }
+      },
+      "WebApplicationService" : {
+        "type" : "object",
+        "properties" : {
+          "artifactId" : {
+            "type" : "string"
+          },
+          "format" : {
+            "type" : "string",
+            "enum" : [ "XML", "JSON" ]
+          },
+          "source" : {
+            "type" : "string"
+          },
+          "originalUrl" : {
+            "type" : "string"
+          },
+          "loggedOutAlready" : {
+            "type" : "boolean"
+          },
+          "attributes" : {
+            "type" : "object",
+            "additionalProperties" : {
+              "type" : "array",
+              "items" : {
+                "type" : "object"
+              }
+            }
+          },
+          "principal" : {
+            "type" : "string",
+            "writeOnly" : true
+          },
+          "id" : {
+            "type" : "string"
+          }
+        }
+      }
+    }
+  }
+}
