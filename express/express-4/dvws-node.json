@@ -5,11 +5,9 @@
       "description": "API Used for DVWS Application",
       "version": "0.1"
     },
-    "servers": [
-      {
-        "url": "http://dvws.local"
-      }
-    ],
+    "servers": [{
+      "url": "http://dvws.local"
+    }],
     "paths": {
       "/api/v2/notes/{ID}": {
         "put": {
@@ -41,11 +39,9 @@
               }
             }
           },
-          "servers": [
-            {
-              "url": "http://dvws.local"
-            }
-          ]
+          "servers": [{
+            "url": "http://dvws.local"
+          }]
         },
         "delete": {
           "description": "Auto generated using Swagger Inspector",
@@ -62,17 +58,13 @@
               }
             }
           },
-          "servers": [
-            {
-              "url": "http://dvws.local"
-            }
-          ]
-        },
-        "servers": [
-          {
+          "servers": [{
             "url": "http://dvws.local"
-          }
-        ]
+          }]
+        },
+        "servers": [{
+          "url": "http://dvws.local"
+        }]
       },
       "/api/v2/info": {
         "get": {
@@ -90,17 +82,13 @@
               }
             }
           },
-          "servers": [
-            {
-              "url": "http://dvws.local"
-            }
-          ]
-        },
-        "servers": [
-          {
+          "servers": [{
             "url": "http://dvws.local"
-          }
-        ]
+          }]
+        },
+        "servers": [{
+          "url": "http://dvws.local"
+        }]
       },
       "/api/v2/notes": {
         "post": {
@@ -132,17 +120,13 @@
               }
             }
           },
-          "servers": [
-            {
-              "url": "http://dvws.local"
-            }
-          ]
-        },
-        "servers": [
-          {
+          "servers": [{
             "url": "http://dvws.local"
-          }
-        ]
+          }]
+        },
+        "servers": [{
+          "url": "http://dvws.local"
+        }]
       },
       "/api/v1/info": {
         "get": {
@@ -152,17 +136,13 @@
               "description": "Auto generated using Swagger Inspector"
             }
           },
-          "servers": [
-            {
-              "url": "http://dvws.local"
-            }
-          ]
-        },
-        "servers": [
-          {
+          "servers": [{
             "url": "http://dvws.local"
-          }
-        ]
+          }]
+        },
+        "servers": [{
+          "url": "http://dvws.local"
+        }]
       },
       "/api/v2/login": {
         "post": {
@@ -194,17 +174,13 @@
               }
             }
           },
-          "servers": [
-            {
-              "url": "http://dvws.local"
-            }
-          ]
-        },
-        "servers": [
-          {
+          "servers": [{
             "url": "http://dvws.local"
-          }
-        ]
+          }]
+        },
+        "servers": [{
+          "url": "http://dvws.local"
+        }]
       },
       "/api/v2/users": {
         "post": {
@@ -236,11 +212,9 @@
               }
             }
           },
-          "servers": [
-            {
-              "url": "http://dvws.local"
-            }
-          ]
+          "servers": [{
+            "url": "http://dvws.local"
+          }]
         },
         "get": {
           "description": "Auto generated using Swagger Inspector",
@@ -257,17 +231,13 @@
               }
             }
           },
-          "servers": [
-            {
-              "url": "http://dvws.local"
-            }
-          ]
-        },
-        "servers": [
-          {
+          "servers": [{
             "url": "http://dvws.local"
-          }
-        ]
+          }]
+        },
+        "servers": [{
+          "url": "http://dvws.local"
+        }]
       },
       "/api/v2/users/checkadmin": {
         "get": {
@@ -285,17 +255,13 @@
               }
             }
           },
-          "servers": [
-            {
-              "url": "http://dvws.local"
-            }
-          ]
-        },
-        "servers": [
-          {
+          "servers": [{
             "url": "http://dvws.local"
-          }
-        ]
+          }]
+        },
+        "servers": [{
+          "url": "http://dvws.local"
+        }]
       },
       "/api/v2/notesearch": {
         "post": {
@@ -327,17 +293,13 @@
               }
             }
           },
-          "servers": [
-            {
-              "url": "http://dvws.local"
-            }
-          ]
-        },
-        "servers": [
-          {
+          "servers": [{
             "url": "http://dvws.local"
-          }
-        ]
+          }]
+        },
+        "servers": [{
+          "url": "http://dvws.local"
+        }]
       },
       "/api/v2/export": {
         "post": {
@@ -369,17 +331,13 @@
               }
             }
           },
-          "servers": [
-            {
-              "url": "http://dvws.local"
-            }
-          ]
-        },
-        "servers": [
-          {
+          "servers": [{
             "url": "http://dvws.local"
-          }
-        ]
+          }]
+        },
+        "servers": [{
+          "url": "http://dvws.local"
+        }]
       },
       "/api/v2/passphrase": {
         "post": {
@@ -411,17 +369,13 @@
               }
             }
           },
-          "servers": [
-            {
-              "url": "http://dvws.local"
-            }
-          ]
-        },
-        "servers": [
-          {
+          "servers": [{
             "url": "http://dvws.local"
-          }
-        ]
+          }]
+        },
+        "servers": [{
+          "url": "http://dvws.local"
+        }]
       },
       "/api/v2/passphrase/{username}": {
         "get": {
@@ -439,17 +393,13 @@
               }
             }
           },
-          "servers": [
-            {
-              "url": "http://dvws.local"
-            }
-          ]
-        },
-        "servers": [
-          {
+          "servers": [{
             "url": "http://dvws.local"
-          }
-        ]
+          }]
+        },
+        "servers": [{
+          "url": "http://dvws.local"
+        }]
       }
     },
     "components": {
