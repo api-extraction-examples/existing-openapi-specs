@@ -1,0 +1,511 @@
+openapi: 3.0.1
+info:
+  title: Api Documentation
+  description: Api Documentation
+  termsOfService: urn:tos
+  contact: {}
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0
+  version: "1.0"
+servers:
+- url: //localhost:8080/
+tags:
+- name: account-rest-controller
+  description: Account Rest Controller
+- name: basic-error-controller
+  description: Basic Error Controller
+- name: transaction-rest-controller
+  description: Transaction Rest Controller
+paths:
+  /api/v1/accounts:
+    put:
+      tags:
+      - account-rest-controller
+      summary: createAccount
+      operationId: createAccountUsingPUT
+      requestBody:
+        description: createAccountInput
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateAccountInput'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+        "201":
+          description: Created
+          content: {}
+        "401":
+          description: Unauthorized
+          content: {}
+        "403":
+          description: Forbidden
+          content: {}
+        "404":
+          description: Not Found
+          content: {}
+      x-codegen-request-body-name: createAccountInput
+    post:
+      tags:
+      - account-rest-controller
+      summary: checkAccountBalance
+      operationId: checkAccountBalanceUsingPOST
+      requestBody:
+        description: accountInput
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AccountInput'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+        "201":
+          description: Created
+          content: {}
+        "401":
+          description: Unauthorized
+          content: {}
+        "403":
+          description: Forbidden
+          content: {}
+        "404":
+          description: Not Found
+          content: {}
+      x-codegen-request-body-name: accountInput
+  /api/v1/deposit:
+    post:
+      tags:
+      - transaction-rest-controller
+      summary: deposit
+      operationId: depositUsingPOST
+      requestBody:
+        description: depositInput
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DepositInput'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+        "201":
+          description: Created
+          content: {}
+        "401":
+          description: Unauthorized
+          content: {}
+        "403":
+          description: Forbidden
+          content: {}
+        "404":
+          description: Not Found
+          content: {}
+      x-codegen-request-body-name: depositInput
+  /api/v1/transactions:
+    post:
+      tags:
+      - transaction-rest-controller
+      summary: makeTransfer
+      operationId: makeTransferUsingPOST
+      requestBody:
+        description: transactionInput
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TransactionInput'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+        "201":
+          description: Created
+          content: {}
+        "401":
+          description: Unauthorized
+          content: {}
+        "403":
+          description: Forbidden
+          content: {}
+        "404":
+          description: Not Found
+          content: {}
+      x-codegen-request-body-name: transactionInput
+  /api/v1/withdraw:
+    post:
+      tags:
+      - transaction-rest-controller
+      summary: withdraw
+      operationId: withdrawUsingPOST
+      requestBody:
+        description: withdrawInput
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WithdrawInput'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+        "201":
+          description: Created
+          content: {}
+        "401":
+          description: Unauthorized
+          content: {}
+        "403":
+          description: Forbidden
+          content: {}
+        "404":
+          description: Not Found
+          content: {}
+      x-codegen-request-body-name: withdrawInput
+  /error:
+    get:
+      tags:
+      - basic-error-controller
+      summary: errorHtml
+      operationId: errorHtmlUsingGET
+      responses:
+        "200":
+          description: OK
+          content:
+            text/html:
+              schema:
+                $ref: '#/components/schemas/ModelAndView'
+        "401":
+          description: Unauthorized
+          content: {}
+        "403":
+          description: Forbidden
+          content: {}
+        "404":
+          description: Not Found
+          content: {}
+    put:
+      tags:
+      - basic-error-controller
+      summary: errorHtml
+      operationId: errorHtmlUsingPUT
+      responses:
+        "200":
+          description: OK
+          content:
+            text/html:
+              schema:
+                $ref: '#/components/schemas/ModelAndView'
+        "201":
+          description: Created
+          content: {}
+        "401":
+          description: Unauthorized
+          content: {}
+        "403":
+          description: Forbidden
+          content: {}
+        "404":
+          description: Not Found
+          content: {}
+    post:
+      tags:
+      - basic-error-controller
+      summary: errorHtml
+      operationId: errorHtmlUsingPOST
+      responses:
+        "200":
+          description: OK
+          content:
+            text/html:
+              schema:
+                $ref: '#/components/schemas/ModelAndView'
+        "201":
+          description: Created
+          content: {}
+        "401":
+          description: Unauthorized
+          content: {}
+        "403":
+          description: Forbidden
+          content: {}
+        "404":
+          description: Not Found
+          content: {}
+    delete:
+      tags:
+      - basic-error-controller
+      summary: errorHtml
+      operationId: errorHtmlUsingDELETE
+      responses:
+        "200":
+          description: OK
+          content:
+            text/html:
+              schema:
+                $ref: '#/components/schemas/ModelAndView'
+        "204":
+          description: No Content
+          content: {}
+        "401":
+          description: Unauthorized
+          content: {}
+        "403":
+          description: Forbidden
+          content: {}
+    options:
+      tags:
+      - basic-error-controller
+      summary: errorHtml
+      operationId: errorHtmlUsingOPTIONS
+      responses:
+        "200":
+          description: OK
+          content:
+            text/html:
+              schema:
+                $ref: '#/components/schemas/ModelAndView'
+        "204":
+          description: No Content
+          content: {}
+        "401":
+          description: Unauthorized
+          content: {}
+        "403":
+          description: Forbidden
+          content: {}
+    head:
+      tags:
+      - basic-error-controller
+      summary: errorHtml
+      operationId: errorHtmlUsingHEAD
+      responses:
+        "200":
+          description: OK
+          content:
+            text/html:
+              schema:
+                $ref: '#/components/schemas/ModelAndView'
+        "204":
+          description: No Content
+          content: {}
+        "401":
+          description: Unauthorized
+          content: {}
+        "403":
+          description: Forbidden
+          content: {}
+    patch:
+      tags:
+      - basic-error-controller
+      summary: errorHtml
+      operationId: errorHtmlUsingPATCH
+      responses:
+        "200":
+          description: OK
+          content:
+            text/html:
+              schema:
+                $ref: '#/components/schemas/ModelAndView'
+        "204":
+          description: No Content
+          content: {}
+        "401":
+          description: Unauthorized
+          content: {}
+        "403":
+          description: Forbidden
+          content: {}
+components:
+  schemas:
+    AccountInput:
+      title: AccountInput
+      required:
+      - accountNumber
+      - sortCode
+      type: object
+      properties:
+        accountNumber:
+          type: string
+        sortCode:
+          type: string
+    CreateAccountInput:
+      title: CreateAccountInput
+      required:
+      - bankName
+      - ownerName
+      type: object
+      properties:
+        bankName:
+          type: string
+        ownerName:
+          type: string
+    DepositInput:
+      title: DepositInput
+      required:
+      - targetAccountNo
+      type: object
+      properties:
+        amount:
+          type: number
+          format: double
+        targetAccountNo:
+          type: string
+    ModelAndView:
+      title: ModelAndView
+      type: object
+      properties:
+        empty:
+          type: boolean
+        model:
+          type: object
+          properties: {}
+        modelMap:
+          type: object
+          additionalProperties:
+            type: object
+            properties: {}
+        reference:
+          type: boolean
+        status:
+          type: string
+          enum:
+          - ACCEPTED
+          - ALREADY_REPORTED
+          - BAD_GATEWAY
+          - BAD_REQUEST
+          - BANDWIDTH_LIMIT_EXCEEDED
+          - CHECKPOINT
+          - CONFLICT
+          - CONTINUE
+          - CREATED
+          - DESTINATION_LOCKED
+          - EXPECTATION_FAILED
+          - FAILED_DEPENDENCY
+          - FORBIDDEN
+          - FOUND
+          - GATEWAY_TIMEOUT
+          - GONE
+          - HTTP_VERSION_NOT_SUPPORTED
+          - IM_USED
+          - INSUFFICIENT_SPACE_ON_RESOURCE
+          - INSUFFICIENT_STORAGE
+          - INTERNAL_SERVER_ERROR
+          - I_AM_A_TEAPOT
+          - LENGTH_REQUIRED
+          - LOCKED
+          - LOOP_DETECTED
+          - METHOD_FAILURE
+          - METHOD_NOT_ALLOWED
+          - MOVED_PERMANENTLY
+          - MOVED_TEMPORARILY
+          - MULTIPLE_CHOICES
+          - MULTI_STATUS
+          - NETWORK_AUTHENTICATION_REQUIRED
+          - NON_AUTHORITATIVE_INFORMATION
+          - NOT_ACCEPTABLE
+          - NOT_EXTENDED
+          - NOT_FOUND
+          - NOT_IMPLEMENTED
+          - NOT_MODIFIED
+          - NO_CONTENT
+          - OK
+          - PARTIAL_CONTENT
+          - PAYLOAD_TOO_LARGE
+          - PAYMENT_REQUIRED
+          - PERMANENT_REDIRECT
+          - PRECONDITION_FAILED
+          - PRECONDITION_REQUIRED
+          - PROCESSING
+          - PROXY_AUTHENTICATION_REQUIRED
+          - REQUESTED_RANGE_NOT_SATISFIABLE
+          - REQUEST_ENTITY_TOO_LARGE
+          - REQUEST_HEADER_FIELDS_TOO_LARGE
+          - REQUEST_TIMEOUT
+          - REQUEST_URI_TOO_LONG
+          - RESET_CONTENT
+          - SEE_OTHER
+          - SERVICE_UNAVAILABLE
+          - SWITCHING_PROTOCOLS
+          - TEMPORARY_REDIRECT
+          - TOO_EARLY
+          - TOO_MANY_REQUESTS
+          - UNAUTHORIZED
+          - UNAVAILABLE_FOR_LEGAL_REASONS
+          - UNPROCESSABLE_ENTITY
+          - UNSUPPORTED_MEDIA_TYPE
+          - UPGRADE_REQUIRED
+          - URI_TOO_LONG
+          - USE_PROXY
+          - VARIANT_ALSO_NEGOTIATES
+        view:
+          $ref: '#/components/schemas/View'
+        viewName:
+          type: string
+    TransactionInput:
+      title: TransactionInput
+      type: object
+      properties:
+        amount:
+          minimum: 1
+          exclusiveMinimum: false
+          type: number
+          format: double
+        latitude:
+          maximum: 90
+          exclusiveMaximum: false
+          minimum: -90
+          exclusiveMinimum: false
+          type: number
+          format: double
+        longitude:
+          maximum: 180
+          exclusiveMaximum: false
+          minimum: -180
+          exclusiveMinimum: false
+          type: number
+          format: double
+        reference:
+          type: string
+        sourceAccount:
+          $ref: '#/components/schemas/AccountInput'
+        targetAccount:
+          $ref: '#/components/schemas/AccountInput'
+    View:
+      title: View
+      type: object
+      properties:
+        contentType:
+          type: string
+    WithdrawInput:
+      title: WithdrawInput
+      type: object
+      properties:
+        accountNumber:
+          type: string
+        amount:
+          type: number
+          format: double
+        sortCode:
+          type: string
+x-original-swagger-version: "2.0"
