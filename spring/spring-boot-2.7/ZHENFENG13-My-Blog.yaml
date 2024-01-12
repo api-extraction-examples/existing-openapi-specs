@@ -1,0 +1,775 @@
+openapi: 3.0.1
+info:
+  title: OpenAPI definition
+  version: v0
+servers:
+  - url: http://localhost:28083
+    description: Generated server url
+paths:
+  /blog/comment:
+    post:
+      tags:
+        - my-blog-controller
+      operationId: comment
+      parameters:
+        - name: blogId
+          in: query
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: verifyCode
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: commentator
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: email
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: websiteUrl
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: commentBody
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Result'
+  /admin/upload/file:
+    post:
+      tags:
+        - upload-controller
+      operationId: upload
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+                - file
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Result'
+  /admin/tags/save:
+    post:
+      tags:
+        - tag-controller
+      operationId: save
+      parameters:
+        - name: tagName
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Result'
+  /admin/tags/delete:
+    post:
+      tags:
+        - tag-controller
+      operationId: delete
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: integer
+                format: int32
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Result'
+  /admin/profile/password:
+    post:
+      tags:
+        - admin-controller
+      operationId: passwordUpdate
+      parameters:
+        - name: originalPassword
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: newPassword
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: string
+  /admin/profile/name:
+    post:
+      tags:
+        - admin-controller
+      operationId: nameUpdate
+      parameters:
+        - name: loginUserName
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: nickName
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: string
+  /admin/links/update:
+    post:
+      tags:
+        - link-controller
+      operationId: update
+      parameters:
+        - name: linkId
+          in: query
+          required: true
+          schema:
+            type: integer
+            format: int32
+        - name: linkType
+          in: query
+          required: true
+          schema:
+            type: integer
+            format: int32
+        - name: linkName
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: linkUrl
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: linkRank
+          in: query
+          required: true
+          schema:
+            type: integer
+            format: int32
+        - name: linkDescription
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Result'
+  /admin/links/save:
+    post:
+      tags:
+        - link-controller
+      operationId: save_1
+      parameters:
+        - name: linkType
+          in: query
+          required: true
+          schema:
+            type: integer
+            format: int32
+        - name: linkName
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: linkUrl
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: linkRank
+          in: query
+          required: true
+          schema:
+            type: integer
+            format: int32
+        - name: linkDescription
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Result'
+  /admin/links/delete:
+    post:
+      tags:
+        - link-controller
+      operationId: delete_1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: integer
+                format: int32
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Result'
+  /admin/configurations/website:
+    post:
+      tags:
+        - configuration-controller
+      operationId: website
+      parameters:
+        - name: websiteName
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: websiteDescription
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: websiteLogo
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: websiteIcon
+          in: query
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Result'
+  /admin/configurations/userInfo:
+    post:
+      tags:
+        - configuration-controller
+      operationId: userInfo
+      parameters:
+        - name: yourAvatar
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: yourName
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: yourEmail
+          in: query
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Result'
+  /admin/configurations/footer:
+    post:
+      tags:
+        - configuration-controller
+      operationId: footer
+      parameters:
+        - name: footerAbout
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: footerICP
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: footerCopyRight
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: footerPoweredBy
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: footerPoweredByURL
+          in: query
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Result'
+  /admin/comments/reply:
+    post:
+      tags:
+        - comment-controller
+      operationId: checkDone
+      parameters:
+        - name: commentId
+          in: query
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: replyBody
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Result'
+  /admin/comments/delete:
+    post:
+      tags:
+        - comment-controller
+      operationId: delete_2
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: integer
+                format: int32
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Result'
+  /admin/comments/checkDone:
+    post:
+      tags:
+        - comment-controller
+      operationId: checkDone_1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: integer
+                format: int32
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Result'
+  /admin/categories/update:
+    post:
+      tags:
+        - category-controller
+      operationId: update_1
+      parameters:
+        - name: categoryId
+          in: query
+          required: true
+          schema:
+            type: integer
+            format: int32
+        - name: categoryName
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: categoryIcon
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Result'
+  /admin/categories/save:
+    post:
+      tags:
+        - category-controller
+      operationId: save_2
+      parameters:
+        - name: categoryName
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: categoryIcon
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Result'
+  /admin/categories/delete:
+    post:
+      tags:
+        - category-controller
+      operationId: delete_3
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: integer
+                format: int32
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Result'
+  /admin/blogs/update:
+    post:
+      tags:
+        - blog-controller
+      operationId: update_2
+      parameters:
+        - name: blogId
+          in: query
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: blogTitle
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: blogSubUrl
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: blogCategoryId
+          in: query
+          required: true
+          schema:
+            type: integer
+            format: int32
+        - name: blogTags
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: blogContent
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: blogCoverImage
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: blogStatus
+          in: query
+          required: true
+          schema:
+            type: string
+            format: byte
+        - name: enableComment
+          in: query
+          required: true
+          schema:
+            type: string
+            format: byte
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Result'
+  /admin/blogs/save:
+    post:
+      tags:
+        - blog-controller
+      operationId: save_3
+      parameters:
+        - name: blogTitle
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: blogSubUrl
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: blogCategoryId
+          in: query
+          required: true
+          schema:
+            type: integer
+            format: int32
+        - name: blogTags
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: blogContent
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: blogCoverImage
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: blogStatus
+          in: query
+          required: true
+          schema:
+            type: string
+            format: byte
+        - name: enableComment
+          in: query
+          required: true
+          schema:
+            type: string
+            format: byte
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Result'
+  /admin/blogs/delete:
+    post:
+      tags:
+        - blog-controller
+      operationId: delete_4
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: integer
+                format: int32
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Result'
+  /admin/tags/list:
+    get:
+      tags:
+        - tag-controller
+      operationId: list
+      parameters:
+        - name: params
+          in: query
+          required: true
+          schema:
+            type: object
+            additionalProperties:
+              type: object
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Result'
+  /admin/links/list:
+    get:
+      tags:
+        - link-controller
+      operationId: list_1
+      parameters:
+        - name: params
+          in: query
+          required: true
+          schema:
+            type: object
+            additionalProperties:
+              type: object
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Result'
+  /admin/links/info/{id}:
+    get:
+      tags:
+        - link-controller
+      operationId: info
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int32
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Result'
+  /admin/comments/list:
+    get:
+      tags:
+        - comment-controller
+      operationId: list_2
+      parameters:
+        - name: params
+          in: query
+          required: true
+          schema:
+            type: object
+            additionalProperties:
+              type: object
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Result'
+  /admin/categories/list:
+    get:
+      tags:
+        - category-controller
+      operationId: list_3
+      parameters:
+        - name: params
+          in: query
+          required: true
+          schema:
+            type: object
+            additionalProperties:
+              type: object
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Result'
+  /admin/blogs/list:
+    get:
+      tags:
+        - blog-controller
+      operationId: list_4
+      parameters:
+        - name: params
+          in: query
+          required: true
+          schema:
+            type: object
+            additionalProperties:
+              type: object
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Result'
+components:
+  schemas:
+    Result:
+      type: object
+      properties:
+        resultCode:
+          type: integer
+          format: int32
+        message:
+          type: string
+        data:
+          type: object
