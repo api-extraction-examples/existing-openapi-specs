@@ -1,0 +1,1094 @@
+openapi: 3.0.1
+info:
+  title: OpenAPI definition
+  version: v0
+servers:
+  - url: http://localhost:28089
+    description: Generated server url
+paths:
+  /shop-cart:
+    put:
+      tags:
+        - shopping-cart-controller
+      operationId: updateNewBeeMallShoppingCartItem
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NewBeeMallShoppingCartItem'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Result'
+    post:
+      tags:
+        - shopping-cart-controller
+      operationId: saveNewBeeMallShoppingCartItem
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NewBeeMallShoppingCartItem'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Result'
+  /orders/{orderNo}/finish:
+    put:
+      tags:
+        - order-controller
+      operationId: finishOrder
+      parameters:
+        - name: orderNo
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Result'
+  /orders/{orderNo}/cancel:
+    put:
+      tags:
+        - order-controller
+      operationId: cancelOrder
+      parameters:
+        - name: orderNo
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Result'
+  /admin/goods/status/{sellStatus}:
+    put:
+      tags:
+        - new-bee-mall-goods-controller
+      operationId: delete
+      parameters:
+        - name: sellStatus
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int32
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: integer
+                format: int64
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Result'
+  /register:
+    post:
+      tags:
+        - personal-controller
+      operationId: register
+      parameters:
+        - name: loginName
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: verifyCode
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: password
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Result'
+  /personal/updateInfo:
+    post:
+      tags:
+        - personal-controller
+      operationId: updateInfo
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MallUser'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Result'
+  /login:
+    post:
+      tags:
+        - personal-controller
+      operationId: login
+      parameters:
+        - name: loginName
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: verifyCode
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: password
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Result'
+  /admin/users/lock/{lockStatus}:
+    post:
+      tags:
+        - new-bee-mall-user-controller
+      operationId: delete_1
+      parameters:
+        - name: lockStatus
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int32
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: integer
+                format: int32
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Result'
+  /admin/upload/files:
+    post:
+      tags:
+        - upload-controller
+      operationId: uploadV2
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Result'
+  /admin/upload/file:
+    post:
+      tags:
+        - upload-controller
+      operationId: upload
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+                - file
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Result'
+  /admin/profile/password:
+    post:
+      tags:
+        - admin-controller
+      operationId: passwordUpdate
+      parameters:
+        - name: originalPassword
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: newPassword
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: string
+  /admin/profile/name:
+    post:
+      tags:
+        - admin-controller
+      operationId: nameUpdate
+      parameters:
+        - name: loginUserName
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: nickName
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: string
+  /admin/orders/update:
+    post:
+      tags:
+        - new-bee-mall-order-controller
+      operationId: update
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NewBeeMallOrder'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Result'
+  /admin/orders/close:
+    post:
+      tags:
+        - new-bee-mall-order-controller
+      operationId: closeOrder
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: integer
+                format: int64
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Result'
+  /admin/orders/checkOut:
+    post:
+      tags:
+        - new-bee-mall-order-controller
+      operationId: checkOut
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: integer
+                format: int64
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Result'
+  /admin/orders/checkDone:
+    post:
+      tags:
+        - new-bee-mall-order-controller
+      operationId: checkDone
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: integer
+                format: int64
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Result'
+  /admin/indexConfigs/update:
+    post:
+      tags:
+        - new-bee-mall-goods-index-config-controller
+      operationId: update_1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/IndexConfig'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Result'
+  /admin/indexConfigs/save:
+    post:
+      tags:
+        - new-bee-mall-goods-index-config-controller
+      operationId: save
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/IndexConfig'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Result'
+  /admin/indexConfigs/delete:
+    post:
+      tags:
+        - new-bee-mall-goods-index-config-controller
+      operationId: delete_2
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: integer
+                format: int64
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Result'
+  /admin/goods/update:
+    post:
+      tags:
+        - new-bee-mall-goods-controller
+      operationId: update_2
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NewBeeMallGoods'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Result'
+  /admin/goods/save:
+    post:
+      tags:
+        - new-bee-mall-goods-controller
+      operationId: save_1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NewBeeMallGoods'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Result'
+  /admin/categories/update:
+    post:
+      tags:
+        - new-bee-mall-goods-category-controller
+      operationId: update_3
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GoodsCategory'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Result'
+  /admin/categories/save:
+    post:
+      tags:
+        - new-bee-mall-goods-category-controller
+      operationId: save_2
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GoodsCategory'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Result'
+  /admin/categories/delete:
+    post:
+      tags:
+        - new-bee-mall-goods-category-controller
+      operationId: delete_3
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: integer
+                format: int32
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Result'
+  /admin/carousels/update:
+    post:
+      tags:
+        - new-bee-mall-carousel-controller
+      operationId: update_4
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Carousel'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Result'
+  /admin/carousels/save:
+    post:
+      tags:
+        - new-bee-mall-carousel-controller
+      operationId: save_3
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Carousel'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Result'
+  /admin/carousels/delete:
+    post:
+      tags:
+        - new-bee-mall-carousel-controller
+      operationId: delete_4
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: integer
+                format: int32
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Result'
+  /paySuccess:
+    get:
+      tags:
+        - order-controller
+      operationId: paySuccess
+      parameters:
+        - name: orderNo
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: payType
+          in: query
+          required: true
+          schema:
+            type: integer
+            format: int32
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Result'
+  /admin/users/list:
+    get:
+      tags:
+        - new-bee-mall-user-controller
+      operationId: list
+      parameters:
+        - name: params
+          in: query
+          required: true
+          schema:
+            type: object
+            additionalProperties:
+              type: object
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Result'
+  /admin/orders/list:
+    get:
+      tags:
+        - new-bee-mall-order-controller
+      operationId: list_1
+      parameters:
+        - name: params
+          in: query
+          required: true
+          schema:
+            type: object
+            additionalProperties:
+              type: object
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Result'
+  /admin/order-items/{id}:
+    get:
+      tags:
+        - new-bee-mall-order-controller
+      operationId: info
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Result'
+  /admin/indexConfigs/list:
+    get:
+      tags:
+        - new-bee-mall-goods-index-config-controller
+      operationId: list_2
+      parameters:
+        - name: params
+          in: query
+          required: true
+          schema:
+            type: object
+            additionalProperties:
+              type: object
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Result'
+  /admin/indexConfigs/info/{id}:
+    get:
+      tags:
+        - new-bee-mall-goods-index-config-controller
+      operationId: info_1
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Result'
+  /admin/goods/list:
+    get:
+      tags:
+        - new-bee-mall-goods-controller
+      operationId: list_3
+      parameters:
+        - name: params
+          in: query
+          required: true
+          schema:
+            type: object
+            additionalProperties:
+              type: object
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Result'
+  /admin/goods/info/{id}:
+    get:
+      tags:
+        - new-bee-mall-goods-controller
+      operationId: info_2
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Result'
+  /admin/categories/list:
+    get:
+      tags:
+        - new-bee-mall-goods-category-controller
+      operationId: list_4
+      parameters:
+        - name: params
+          in: query
+          required: true
+          schema:
+            type: object
+            additionalProperties:
+              type: object
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Result'
+  /admin/categories/listForSelect:
+    get:
+      tags:
+        - new-bee-mall-goods-category-controller
+      operationId: listForSelect
+      parameters:
+        - name: categoryId
+          in: query
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Result'
+  /admin/categories/info/{id}:
+    get:
+      tags:
+        - new-bee-mall-goods-category-controller
+      operationId: info_3
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Result'
+  /admin/carousels/list:
+    get:
+      tags:
+        - new-bee-mall-carousel-controller
+      operationId: list_5
+      parameters:
+        - name: params
+          in: query
+          required: true
+          schema:
+            type: object
+            additionalProperties:
+              type: object
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Result'
+  /admin/carousels/info/{id}:
+    get:
+      tags:
+        - new-bee-mall-carousel-controller
+      operationId: info_4
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int32
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Result'
+  /shop-cart/{newBeeMallShoppingCartItemId}:
+    delete:
+      tags:
+        - shopping-cart-controller
+      operationId: updateNewBeeMallShoppingCartItem_1
+      parameters:
+        - name: newBeeMallShoppingCartItemId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Result'
+components:
+  schemas:
+    NewBeeMallShoppingCartItem:
+      type: object
+      properties:
+        cartItemId:
+          type: integer
+          format: int64
+        userId:
+          type: integer
+          format: int64
+        goodsId:
+          type: integer
+          format: int64
+        goodsCount:
+          type: integer
+          format: int32
+        isDeleted:
+          type: string
+          format: byte
+        createTime:
+          type: string
+          format: date-time
+        updateTime:
+          type: string
+          format: date-time
+    Result:
+      type: object
+      properties:
+        resultCode:
+          type: integer
+          format: int32
+        message:
+          type: string
+        data:
+          type: object
+    MallUser:
+      type: object
+      properties:
+        userId:
+          type: integer
+          format: int64
+        nickName:
+          type: string
+        loginName:
+          type: string
+        passwordMd5:
+          type: string
+        introduceSign:
+          type: string
+        address:
+          type: string
+        isDeleted:
+          type: string
+          format: byte
+        lockedFlag:
+          type: string
+          format: byte
+        createTime:
+          type: string
+          format: date-time
+    NewBeeMallOrder:
+      type: object
+      properties:
+        orderId:
+          type: integer
+          format: int64
+        orderNo:
+          type: string
+        userId:
+          type: integer
+          format: int64
+        totalPrice:
+          type: integer
+          format: int32
+        payStatus:
+          type: string
+          format: byte
+        payType:
+          type: string
+          format: byte
+        payTime:
+          type: string
+          format: date-time
+        orderStatus:
+          type: string
+          format: byte
+        extraInfo:
+          type: string
+        userAddress:
+          type: string
+        isDeleted:
+          type: string
+          format: byte
+        createTime:
+          type: string
+          format: date-time
+        updateTime:
+          type: string
+          format: date-time
+    IndexConfig:
+      type: object
+      properties:
+        configId:
+          type: integer
+          format: int64
+        configName:
+          type: string
+        configType:
+          type: string
+          format: byte
+        goodsId:
+          type: integer
+          format: int64
+        redirectUrl:
+          type: string
+        configRank:
+          type: integer
+          format: int32
+        isDeleted:
+          type: string
+          format: byte
+        createTime:
+          type: string
+          format: date-time
+        createUser:
+          type: integer
+          format: int32
+        updateTime:
+          type: string
+          format: date-time
+        updateUser:
+          type: integer
+          format: int32
+    NewBeeMallGoods:
+      type: object
+      properties:
+        goodsId:
+          type: integer
+          format: int64
+        goodsName:
+          type: string
+        goodsIntro:
+          type: string
+        goodsCategoryId:
+          type: integer
+          format: int64
+        goodsCoverImg:
+          type: string
+        goodsCarousel:
+          type: string
+        originalPrice:
+          type: integer
+          format: int32
+        sellingPrice:
+          type: integer
+          format: int32
+        stockNum:
+          type: integer
+          format: int32
+        tag:
+          type: string
+        goodsSellStatus:
+          type: string
+          format: byte
+        createUser:
+          type: integer
+          format: int32
+        createTime:
+          type: string
+          format: date-time
+        updateUser:
+          type: integer
+          format: int32
+        updateTime:
+          type: string
+          format: date-time
+        goodsDetailContent:
+          type: string
+    GoodsCategory:
+      type: object
+      properties:
+        categoryId:
+          type: integer
+          format: int64
+        categoryLevel:
+          type: string
+          format: byte
+        parentId:
+          type: integer
+          format: int64
+        categoryName:
+          type: string
+        categoryRank:
+          type: integer
+          format: int32
+        isDeleted:
+          type: string
+          format: byte
+        createTime:
+          type: string
+          format: date-time
+        createUser:
+          type: integer
+          format: int32
+        updateTime:
+          type: string
+          format: date-time
+        updateUser:
+          type: integer
+          format: int32
+    Carousel:
+      type: object
+      properties:
+        carouselId:
+          type: integer
+          format: int32
+        carouselUrl:
+          type: string
+        redirectUrl:
+          type: string
+        carouselRank:
+          type: integer
+          format: int32
+        isDeleted:
+          type: string
+          format: byte
+        createTime:
+          type: string
+          format: date-time
+        createUser:
+          type: integer
+          format: int32
+        updateTime:
+          type: string
+          format: date-time
+        updateUser:
+          type: integer
+          format: int32
