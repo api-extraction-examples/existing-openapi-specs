@@ -1,0 +1,7233 @@
+openapi: 3.0.1
+info:
+  title: OpenAPI definition
+  version: v0
+servers:
+  - url: http://localhost:8848/nacos
+    description: Generated server url
+paths:
+  /v2/ns/service:
+    get:
+      tags:
+        - service-controller-v-2
+      operationId: detail
+      parameters:
+        - name: namespaceId
+          in: query
+          required: false
+          schema:
+            type: string
+            default: public
+        - name: serviceName
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: groupName
+          in: query
+          required: false
+          schema:
+            type: string
+            default: DEFAULT_GROUP
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResultServiceDetailInfo'
+        '400':
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResultString'
+        '403':
+          description: Forbidden
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResultString'
+        '500':
+          description: Internal Server Error
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResultString'
+    put:
+      tags:
+        - service-controller-v-2
+      operationId: update
+      parameters:
+        - name: serviceForm
+          in: query
+          required: true
+          schema:
+            $ref: '#/components/schemas/ServiceForm'
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResultString'
+        '400':
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResultString'
+        '403':
+          description: Forbidden
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResultString'
+        '500':
+          description: Internal Server Error
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResultString'
+    post:
+      tags:
+        - service-controller-v-2
+      operationId: create
+      parameters:
+        - name: serviceForm
+          in: query
+          required: true
+          schema:
+            $ref: '#/components/schemas/ServiceForm'
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResultString'
+        '400':
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResultString'
+        '403':
+          description: Forbidden
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResultString'
+        '500':
+          description: Internal Server Error
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResultString'
+    delete:
+      tags:
+        - service-controller-v-2
+      operationId: remove
+      parameters:
+        - name: namespaceId
+          in: query
+          required: false
+          schema:
+            type: string
+            default: public
+        - name: serviceName
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: groupName
+          in: query
+          required: false
+          schema:
+            type: string
+            default: DEFAULT_GROUP
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResultString'
+        '400':
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResultString'
+        '403':
+          description: Forbidden
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResultString'
+        '500':
+          description: Internal Server Error
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResultString'
+  /v2/ns/ops/switches:
+    get:
+      tags:
+        - operator-controller-v-2
+      operationId: switches
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResultSwitchDomain'
+        '400':
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResultString'
+        '403':
+          description: Forbidden
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResultString'
+        '500':
+          description: Internal Server Error
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResultString'
+    put:
+      tags:
+        - operator-controller-v-2
+      operationId: updateSwitch
+      parameters:
+        - name: updateSwitchForm
+          in: query
+          required: true
+          schema:
+            $ref: '#/components/schemas/UpdateSwitchForm'
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResultString'
+        '400':
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResultString'
+        '403':
+          description: Forbidden
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResultString'
+        '500':
+          description: Internal Server Error
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResultString'
+  /v2/ns/operator/switches:
+    get:
+      tags:
+        - operator-controller-v-2
+      operationId: switches_1
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResultSwitchDomain'
+        '400':
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResultString'
+        '403':
+          description: Forbidden
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResultString'
+        '500':
+          description: Internal Server Error
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResultString'
+    put:
+      tags:
+        - operator-controller-v-2
+      operationId: updateSwitch_1
+      parameters:
+        - name: updateSwitchForm
+          in: query
+          required: true
+          schema:
+            $ref: '#/components/schemas/UpdateSwitchForm'
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResultString'
+        '400':
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResultString'
+        '403':
+          description: Forbidden
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResultString'
+        '500':
+          description: Internal Server Error
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResultString'
+  /v2/ns/instance:
+    get:
+      tags:
+        - instance-controller-v-2
+      operationId: detail_1
+      parameters:
+        - name: namespaceId
+          in: query
+          required: false
+          schema:
+            type: string
+            default: public
+        - name: groupName
+          in: query
+          required: false
+          schema:
+            type: string
+            default: DEFAULT_GROUP
+        - name: serviceName
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: clusterName
+          in: query
+          required: false
+          schema:
+            type: string
+            default: DEFAULT
+        - name: ip
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: port
+          in: query
+          required: true
+          schema:
+            type: integer
+            format: int32
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResultInstanceDetailInfoVo'
+        '400':
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResultString'
+        '403':
+          description: Forbidden
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResultString'
+        '500':
+          description: Internal Server Error
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResultString'
+    put:
+      tags:
+        - instance-controller-v-2
+      operationId: update_1
+      parameters:
+        - name: instanceForm
+          in: query
+          required: true
+          schema:
+            $ref: '#/components/schemas/InstanceForm'
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResultString'
+        '400':
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResultString'
+        '403':
+          description: Forbidden
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResultString'
+        '500':
+          description: Internal Server Error
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResultString'
+    post:
+      tags:
+        - instance-controller-v-2
+      operationId: register
+      parameters:
+        - name: instanceForm
+          in: query
+          required: true
+          schema:
+            $ref: '#/components/schemas/InstanceForm'
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResultString'
+        '400':
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResultString'
+        '403':
+          description: Forbidden
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResultString'
+        '500':
+          description: Internal Server Error
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResultString'
+    delete:
+      tags:
+        - instance-controller-v-2
+      operationId: deregister
+      parameters:
+        - name: instanceForm
+          in: query
+          required: true
+          schema:
+            $ref: '#/components/schemas/InstanceForm'
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResultString'
+        '400':
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResultString'
+        '403':
+          description: Forbidden
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResultString'
+        '500':
+          description: Internal Server Error
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResultString'
+    patch:
+      tags:
+        - instance-controller-v-2
+      operationId: patch
+      parameters:
+        - name: namespaceId
+          in: query
+          required: false
+          schema:
+            type: string
+            default: public
+        - name: serviceName
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: ip
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: cluster
+          in: query
+          required: false
+          schema:
+            type: string
+            default: DEFAULT
+        - name: port
+          in: query
+          required: true
+          schema:
+            type: integer
+            format: int32
+        - name: weight
+          in: query
+          required: true
+          schema:
+            type: number
+            format: double
+        - name: enabled
+          in: query
+          required: true
+          schema:
+            type: boolean
+        - name: metadata
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: string
+        '400':
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResultString'
+        '403':
+          description: Forbidden
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResultString'
+        '500':
+          description: Internal Server Error
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResultString'
+  /v2/ns/instance/metadata/batch:
+    put:
+      tags:
+        - instance-controller-v-2
+      operationId: batchUpdateInstanceMetadata
+      parameters:
+        - name: form
+          in: query
+          required: true
+          schema:
+            $ref: '#/components/schemas/InstanceMetadataBatchOperationForm'
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResultInstanceMetadataBatchOperationVo'
+        '400':
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResultString'
+        '403':
+          description: Forbidden
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResultString'
+        '500':
+          description: Internal Server Error
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResultString'
+    delete:
+      tags:
+        - instance-controller-v-2
+      operationId: batchDeleteInstanceMetadata
+      parameters:
+        - name: form
+          in: query
+          required: true
+          schema:
+            $ref: '#/components/schemas/InstanceMetadataBatchOperationForm'
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResultInstanceMetadataBatchOperationVo'
+        '400':
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResultString'
+        '403':
+          description: Forbidden
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResultString'
+        '500':
+          description: Internal Server Error
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResultString'
+  /v2/ns/instance/beat:
+    put:
+      tags:
+        - instance-controller-v-2
+      operationId: beat
+      parameters:
+        - name: namespaceId
+          in: query
+          required: false
+          schema:
+            type: string
+            default: public
+        - name: serviceName
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: ip
+          in: query
+          required: false
+          schema:
+            type: string
+            default: ''
+        - name: clusterName
+          in: query
+          required: false
+          schema:
+            type: string
+            default: DEFAULT
+        - name: port
+          in: query
+          required: false
+          schema:
+            type: integer
+            format: int32
+            default: 0
+        - name: beat
+          in: query
+          required: false
+          schema:
+            type: string
+            default: ''
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+        '400':
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResultString'
+        '403':
+          description: Forbidden
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResultString'
+        '500':
+          description: Internal Server Error
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResultString'
+  /v2/ns/health/instance:
+    put:
+      tags:
+        - health-controller-v-2
+      operationId: update_2
+      parameters:
+        - name: updateHealthForm
+          in: query
+          required: true
+          schema:
+            $ref: '#/components/schemas/UpdateHealthForm'
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResultString'
+        '400':
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResultString'
+        '403':
+          description: Forbidden
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResultString'
+        '500':
+          description: Internal Server Error
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResultString'
+  /v2/ns/health:
+    put:
+      tags:
+        - health-controller-v-2
+      operationId: update_3
+      parameters:
+        - name: updateHealthForm
+          in: query
+          required: true
+          schema:
+            $ref: '#/components/schemas/UpdateHealthForm'
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResultString'
+        '400':
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResultString'
+        '403':
+          description: Forbidden
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResultString'
+        '500':
+          description: Internal Server Error
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResultString'
+  /v2/core/ops/log:
+    put:
+      tags:
+        - core-ops-v-2-controller
+      operationId: updateLog
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LogUpdateRequest'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/RestResultVoid'
+  /v2/core/cluster/node/list:
+    get:
+      tags:
+        - nacos-cluster-controller-v-2
+      operationId: listNodes
+      parameters:
+        - name: address
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: state
+          in: query
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResultCollectionMember'
+        '400':
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResultString'
+        '403':
+          description: Forbidden
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResultString'
+        '500':
+          description: Internal Server Error
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResultString'
+    put:
+      tags:
+        - nacos-cluster-controller-v-2
+      operationId: updateNodes
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/Member'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResultBoolean'
+        '400':
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResultString'
+        '403':
+          description: Forbidden
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResultString'
+        '500':
+          description: Internal Server Error
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResultString'
+  /v2/core/cluster/lookup:
+    put:
+      tags:
+        - nacos-cluster-controller-v-2
+      operationId: updateLookup
+      parameters:
+        - name: request
+          in: query
+          required: true
+          schema:
+            $ref: '#/components/schemas/LookupUpdateRequest'
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResultBoolean'
+        '400':
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResultString'
+        '403':
+          description: Forbidden
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResultString'
+        '500':
+          description: Internal Server Error
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResultString'
+  /v2/console/namespace:
+    get:
+      tags:
+        - namespace-controller-v-2
+      operationId: getNamespace
+      parameters:
+        - name: namespaceId
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResultNamespace'
+        '400':
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResultString'
+        '403':
+          description: Forbidden
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResultString'
+        '500':
+          description: Internal Server Error
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResultString'
+    put:
+      tags:
+        - namespace-controller-v-2
+      operationId: editNamespace
+      parameters:
+        - name: namespaceForm
+          in: query
+          required: true
+          schema:
+            $ref: '#/components/schemas/NamespaceForm'
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResultBoolean'
+        '400':
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResultString'
+        '403':
+          description: Forbidden
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResultString'
+        '500':
+          description: Internal Server Error
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResultString'
+    post:
+      tags:
+        - namespace-controller-v-2
+      operationId: createNamespace
+      parameters:
+        - name: namespaceForm
+          in: query
+          required: true
+          schema:
+            $ref: '#/components/schemas/NamespaceForm'
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResultBoolean'
+        '400':
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResultString'
+        '403':
+          description: Forbidden
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResultString'
+        '500':
+          description: Internal Server Error
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResultString'
+    delete:
+      tags:
+        - namespace-controller-v-2
+      operationId: deleteNamespace
+      parameters:
+        - name: namespaceId
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResultBoolean'
+        '400':
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResultString'
+        '403':
+          description: Forbidden
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResultString'
+        '500':
+          description: Internal Server Error
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResultString'
+  /v1/ns/service:
+    get:
+      tags:
+        - service-controller
+      operationId: detail_2
+      parameters:
+        - name: namespaceId
+          in: query
+          required: false
+          schema:
+            type: string
+            default: public
+        - name: serviceName
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+    put:
+      tags:
+        - service-controller
+      operationId: update_4
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: string
+    post:
+      tags:
+        - service-controller
+      operationId: create_1
+      parameters:
+        - name: namespaceId
+          in: query
+          required: false
+          schema:
+            type: string
+            default: public
+        - name: serviceName
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: protectThreshold
+          in: query
+          required: false
+          schema:
+            type: number
+            format: float
+            default: 0
+        - name: metadata
+          in: query
+          required: false
+          schema:
+            type: string
+            default: ''
+        - name: selector
+          in: query
+          required: false
+          schema:
+            type: string
+            default: ''
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: string
+    delete:
+      tags:
+        - service-controller
+      operationId: remove_1
+      parameters:
+        - name: namespaceId
+          in: query
+          required: false
+          schema:
+            type: string
+            default: public
+        - name: serviceName
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: string
+  /v1/ns/operator/switches:
+    get:
+      tags:
+        - operator-controller
+      operationId: switches_2
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/SwitchDomain'
+    put:
+      tags:
+        - operator-controller
+      operationId: updateSwitch_2
+      parameters:
+        - name: debug
+          in: query
+          required: false
+          schema:
+            type: boolean
+        - name: entry
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: value
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: string
+  /v1/ns/ops/switches:
+    get:
+      tags:
+        - operator-controller
+      operationId: switches_3
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/SwitchDomain'
+    put:
+      tags:
+        - operator-controller
+      operationId: updateSwitch_3
+      parameters:
+        - name: debug
+          in: query
+          required: false
+          schema:
+            type: boolean
+        - name: entry
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: value
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: string
+  /v1/ns/operator/log:
+    put:
+      tags:
+        - operator-controller
+      operationId: setLogLevel
+      parameters:
+        - name: logName
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: logLevel
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: string
+  /v1/ns/ops/log:
+    put:
+      tags:
+        - operator-controller
+      operationId: setLogLevel_1
+      parameters:
+        - name: logName
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: logLevel
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: string
+  /v1/ns/instance:
+    get:
+      tags:
+        - instance-controller
+      operationId: detail_3
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+    put:
+      tags:
+        - instance-controller
+      operationId: update_5
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: string
+    post:
+      tags:
+        - instance-controller
+      operationId: register_1
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: string
+    delete:
+      tags:
+        - instance-controller
+      operationId: deregister_1
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: string
+    patch:
+      tags:
+        - instance-controller
+      operationId: patch_1
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: string
+  /v1/ns/instance/metadata/batch:
+    put:
+      tags:
+        - instance-controller
+      operationId: batchUpdateInstanceMetadata_1
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+    delete:
+      tags:
+        - instance-controller
+      operationId: batchDeleteInstanceMetadata_1
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+  /v1/ns/instance/beat:
+    put:
+      tags:
+        - instance-controller
+      operationId: beat_1
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+  /v1/ns/health:
+    put:
+      tags:
+        - health-controller
+      operationId: update_6
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: string
+  /v1/ns/health/instance:
+    put:
+      tags:
+        - health-controller
+      operationId: update_7
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: string
+  /v1/ns/cluster:
+    put:
+      tags:
+        - cluster-controller
+      operationId: update_8
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: string
+  /v1/cs/ops/log:
+    put:
+      tags:
+        - config-ops-controller
+      operationId: setLogLevel_2
+      parameters:
+        - name: logName
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: logLevel
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: string
+  /v1/core/ops/log:
+    put:
+      tags:
+        - core-ops-controller
+      operationId: setLogLevel_3
+      parameters:
+        - name: logName
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: logLevel
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: string
+  /v1/console/namespaces:
+    get:
+      tags:
+        - namespace-controller
+      operationId: getNamespaces_1_1
+      parameters:
+        - name: namespaceId
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: customNamespaceId
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/Namespace'
+                  - $ref: '#/components/schemas/RestResultListNamespace'
+                  - type: boolean
+    put:
+      tags:
+        - namespace-controller
+      operationId: editNamespace_1
+      parameters:
+        - name: namespace
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: namespaceShowName
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: namespaceDesc
+          in: query
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: boolean
+    post:
+      tags:
+        - namespace-controller
+      operationId: createNamespace_1
+      parameters:
+        - name: customNamespaceId
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: namespaceName
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: namespaceDesc
+          in: query
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: boolean
+    delete:
+      tags:
+        - namespace-controller
+      operationId: deleteNamespace_1
+      parameters:
+        - name: namespaceId
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: boolean
+  /v1/auth/password:
+    put:
+      tags:
+        - user-controller
+      operationId: updatePassword
+      parameters:
+        - name: oldPassword
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: newPassword
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/RestResultString'
+      deprecated: true
+  /v1/auth/users/password:
+    put:
+      tags:
+        - user-controller
+      operationId: updatePassword_1
+      parameters:
+        - name: oldPassword
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: newPassword
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/RestResultString'
+      deprecated: true
+  /v1/auth:
+    get:
+      tags:
+        - user-controller
+      operationId: fuzzySearchUser_2
+      parameters:
+        - name: pageNo
+          in: query
+          required: true
+          schema:
+            type: integer
+            format: int32
+        - name: pageSize
+          in: query
+          required: true
+          schema:
+            type: integer
+            format: int32
+        - name: username
+          in: query
+          required: false
+          schema:
+            type: string
+            default: ''
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/PageUser'
+    put:
+      tags:
+        - user-controller
+      operationId: updateUser
+      parameters:
+        - name: username
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: newPassword
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+    post:
+      tags:
+        - user-controller
+      operationId: createUser
+      parameters:
+        - name: username
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: password
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+    delete:
+      tags:
+        - user-controller
+      operationId: deleteUser
+      parameters:
+        - name: username
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+  /v1/auth/users:
+    get:
+      tags:
+        - user-controller
+      operationId: fuzzySearchUser_1_1
+      parameters:
+        - name: pageNo
+          in: query
+          required: true
+          schema:
+            type: integer
+            format: int32
+        - name: pageSize
+          in: query
+          required: true
+          schema:
+            type: integer
+            format: int32
+        - name: username
+          in: query
+          required: false
+          schema:
+            type: string
+            default: ''
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/PageUser'
+    put:
+      tags:
+        - user-controller
+      operationId: updateUser_1
+      parameters:
+        - name: username
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: newPassword
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+    post:
+      tags:
+        - user-controller
+      operationId: createUser_1
+      parameters:
+        - name: username
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: password
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+    delete:
+      tags:
+        - user-controller
+      operationId: deleteUser_1
+      parameters:
+        - name: username
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+  /v2/cs/config:
+    get:
+      tags:
+        - config-controller-v-2
+      operationId: getConfig
+      parameters:
+        - name: dataId
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: group
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: namespaceId
+          in: query
+          required: false
+          schema:
+            type: string
+            default: ''
+        - name: tag
+          in: query
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+        '400':
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResultString'
+        '403':
+          description: Forbidden
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResultString'
+        '500':
+          description: Internal Server Error
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResultString'
+    post:
+      tags:
+        - config-controller-v-2
+      operationId: publishConfig
+      parameters:
+        - name: configForm
+          in: query
+          required: true
+          schema:
+            $ref: '#/components/schemas/ConfigForm'
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResultBoolean'
+        '400':
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResultString'
+        '403':
+          description: Forbidden
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResultString'
+        '500':
+          description: Internal Server Error
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResultString'
+    delete:
+      tags:
+        - config-controller-v-2
+      operationId: deleteConfig
+      parameters:
+        - name: dataId
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: group
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: namespaceId
+          in: query
+          required: false
+          schema:
+            type: string
+            default: ''
+        - name: tag
+          in: query
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResultBoolean'
+        '400':
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResultString'
+        '403':
+          description: Forbidden
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResultString'
+        '500':
+          description: Internal Server Error
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResultString'
+  /v2/core/ops/raft:
+    post:
+      tags:
+        - core-ops-v-2-controller
+      operationId: raftOps
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties:
+                type: string
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/RestResultString'
+  /v1/cs/ops/localCache:
+    post:
+      tags:
+        - config-ops-controller
+      operationId: updateLocalCacheFromStore
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: string
+  /v1/cs/ops/data/removal:
+    post:
+      tags:
+        - config-ops-controller
+      operationId: importDerby
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+                - file
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/RestResultString'
+  /v1/cs/configs:
+    get:
+      tags:
+        - config-controller
+      operationId: getConfig_1_1_1_1_1_1_1
+      parameters:
+        - name: dataId
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: group
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: tenant
+          in: query
+          required: false
+          schema:
+            type: string
+            default: ''
+        - name: tag
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: appName
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: config_tags
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: pageNo
+          in: query
+          required: true
+          schema:
+            type: integer
+            format: int32
+        - name: pageSize
+          in: query
+          required: true
+          schema:
+            type: integer
+            format: int32
+        - name: ids
+          in: query
+          required: false
+          schema:
+            type: array
+            items:
+              type: integer
+              format: int64
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/PageConfigInfo'
+                  - $ref: '#/components/schemas/ConfigAllInfo'
+                  - type: array
+                    items:
+                      type: string
+                      format: byte
+                  - $ref: '#/components/schemas/RestResultConfigInfo4Beta'
+    post:
+      tags:
+        - config-controller
+      operationId: publishConfig_1_1_1
+      parameters:
+        - name: dataId
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: group
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: tenant
+          in: query
+          required: false
+          schema:
+            type: string
+            default: ''
+        - name: content
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: tag
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: appName
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: src_user
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: config_tags
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: desc
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: use
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: effect
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: type
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: schema
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: encryptedDataKey
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: namespace
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: policy
+          in: query
+          required: false
+          schema:
+            type: string
+            default: ABORT
+            enum:
+              - ABORT
+              - SKIP
+              - OVERWRITE
+        - name: file
+          in: query
+          required: true
+          schema:
+            type: string
+            format: binary
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/SameNamespaceCloneConfigBean'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/RestResultMapStringObject'
+                  - type: boolean
+    delete:
+      tags:
+        - config-controller
+      operationId: deleteConfig_1_1_1
+      parameters:
+        - name: dataId
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: group
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: tenant
+          in: query
+          required: false
+          schema:
+            type: string
+            default: ''
+        - name: tag
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: ids
+          in: query
+          required: true
+          schema:
+            type: array
+            items:
+              type: integer
+              format: int64
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/RestResultBoolean'
+                  - type: boolean
+  /v1/cs/configs/listener:
+    get:
+      tags:
+        - config-controller
+      operationId: getListeners
+      parameters:
+        - name: dataId
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: group
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: tenant
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: sampleTime
+          in: query
+          required: false
+          schema:
+            type: integer
+            format: int32
+            default: 1
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/GroupkeyListenserStatus'
+    post:
+      tags:
+        - config-controller
+      operationId: listener
+      responses:
+        '200':
+          description: OK
+  /v1/cs/capacity:
+    get:
+      tags:
+        - capacity-controller
+      operationId: getCapacity
+      parameters:
+        - name: group
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: tenant
+          in: query
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/RestResultCapacity'
+    post:
+      tags:
+        - capacity-controller
+      operationId: updateCapacity
+      parameters:
+        - name: group
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: tenant
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: quota
+          in: query
+          required: false
+          schema:
+            type: integer
+            format: int32
+        - name: maxSize
+          in: query
+          required: false
+          schema:
+            type: integer
+            format: int32
+        - name: maxAggrCount
+          in: query
+          required: false
+          schema:
+            type: integer
+            format: int32
+        - name: maxAggrSize
+          in: query
+          required: false
+          schema:
+            type: integer
+            format: int32
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/RestResultBoolean'
+  /v1/core/ops/raft:
+    post:
+      tags:
+        - core-ops-controller
+      operationId: raftOps_1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties:
+                type: string
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/RestResultString'
+  /v1/core/cluster/switch/lookup:
+    post:
+      tags:
+        - nacos-cluster-controller
+      operationId: switchLookup
+      parameters:
+        - name: type
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/RestResultString'
+  /v1/core/cluster/server/leave:
+    post:
+      tags:
+        - nacos-cluster-controller
+      operationId: leave
+      parameters:
+        - name: notifyOtherMembers
+          in: query
+          required: false
+          schema:
+            type: boolean
+            default: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: string
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/RestResultString'
+  /v1/core/cluster/report:
+    post:
+      tags:
+        - nacos-cluster-controller
+      operationId: report
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Member'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/RestResultString'
+      deprecated: true
+  /v1/auth/login:
+    post:
+      tags:
+        - user-controller
+      operationId: login
+      parameters:
+        - name: username
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: password
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+  /v1/auth/users/login:
+    post:
+      tags:
+        - user-controller
+      operationId: login_1
+      parameters:
+        - name: username
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: password
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+  /v1/auth/roles:
+    get:
+      tags:
+        - role-controller
+      operationId: fuzzySearchRole_1
+      parameters:
+        - name: pageNo
+          in: query
+          required: true
+          schema:
+            type: integer
+            format: int32
+        - name: pageSize
+          in: query
+          required: true
+          schema:
+            type: integer
+            format: int32
+        - name: username
+          in: query
+          required: false
+          schema:
+            type: string
+            default: ''
+        - name: role
+          in: query
+          required: false
+          schema:
+            type: string
+            default: ''
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                oneOf:
+                  - type: object
+                  - $ref: '#/components/schemas/PageRoleInfo'
+    post:
+      tags:
+        - role-controller
+      operationId: addRole
+      parameters:
+        - name: role
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: username
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+    delete:
+      tags:
+        - role-controller
+      operationId: deleteRole
+      parameters:
+        - name: role
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: username
+          in: query
+          required: false
+          schema:
+            type: string
+            default: ''
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+  /v1/auth/permissions:
+    get:
+      tags:
+        - permission-controller
+      operationId: fuzzySearchPermission_1
+      parameters:
+        - name: pageNo
+          in: query
+          required: true
+          schema:
+            type: integer
+            format: int32
+        - name: pageSize
+          in: query
+          required: true
+          schema:
+            type: integer
+            format: int32
+        - name: role
+          in: query
+          required: false
+          schema:
+            type: string
+            default: ''
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                oneOf:
+                  - type: object
+                  - $ref: '#/components/schemas/PagePermissionInfo'
+    post:
+      tags:
+        - permission-controller
+      operationId: addPermission
+      parameters:
+        - name: role
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: resource
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: action
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+    delete:
+      tags:
+        - permission-controller
+      operationId: deletePermission
+      parameters:
+        - name: role
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: resource
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: action
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+  /v2/ns/service/list:
+    get:
+      tags:
+        - service-controller-v-2
+      operationId: list
+      parameters:
+        - name: namespaceId
+          in: query
+          required: false
+          schema:
+            type: string
+            default: public
+        - name: groupName
+          in: query
+          required: false
+          schema:
+            type: string
+            default: DEFAULT_GROUP
+        - name: selector
+          in: query
+          required: false
+          schema:
+            type: string
+            default: ''
+        - name: pageNo
+          in: query
+          required: false
+          schema:
+            type: integer
+            format: int32
+            default: 1
+        - name: pageSize
+          in: query
+          required: false
+          schema:
+            type: integer
+            format: int32
+            default: 20
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResultServiceNameView'
+        '400':
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResultString'
+        '403':
+          description: Forbidden
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResultString'
+        '500':
+          description: Internal Server Error
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResultString'
+  /v2/ns/operator/metrics:
+    get:
+      tags:
+        - operator-controller-v-2
+      operationId: metrics
+      parameters:
+        - name: onlyStatus
+          in: query
+          required: false
+          schema:
+            type: boolean
+            default: true
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResultMetricsInfoVo'
+        '400':
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResultString'
+        '403':
+          description: Forbidden
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResultString'
+        '500':
+          description: Internal Server Error
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResultString'
+  /v2/ns/ops/metrics:
+    get:
+      tags:
+        - operator-controller-v-2
+      operationId: metrics_1
+      parameters:
+        - name: onlyStatus
+          in: query
+          required: false
+          schema:
+            type: boolean
+            default: true
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResultMetricsInfoVo'
+        '400':
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResultString'
+        '403':
+          description: Forbidden
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResultString'
+        '500':
+          description: Internal Server Error
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResultString'
+  /v2/ns/instance/list:
+    get:
+      tags:
+        - instance-controller-v-2
+      operationId: list_1
+      parameters:
+        - name: namespaceId
+          in: query
+          required: false
+          schema:
+            type: string
+            default: public
+        - name: groupName
+          in: query
+          required: false
+          schema:
+            type: string
+            default: DEFAULT_GROUP
+        - name: serviceName
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: clusterName
+          in: query
+          required: false
+          schema:
+            type: string
+            default: ''
+        - name: ip
+          in: query
+          required: false
+          schema:
+            type: string
+            default: ''
+        - name: port
+          in: query
+          required: false
+          schema:
+            type: integer
+            format: int32
+            default: 0
+        - name: healthyOnly
+          in: query
+          required: false
+          schema:
+            type: boolean
+            default: false
+        - name: app
+          in: query
+          required: false
+          schema:
+            type: string
+            default: ''
+        - name: User-Agent
+          in: header
+          required: false
+          schema:
+            type: string
+        - name: Client-Version
+          in: header
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResultServiceInfo'
+        '400':
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResultString'
+        '403':
+          description: Forbidden
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResultString'
+        '500':
+          description: Internal Server Error
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResultString'
+  /v2/ns/client:
+    get:
+      tags:
+        - client-info-controller-v-2
+      operationId: getClientDetail
+      parameters:
+        - name: clientId
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResultObjectNode'
+        '400':
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResultString'
+        '403':
+          description: Forbidden
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResultString'
+        '500':
+          description: Internal Server Error
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResultString'
+  /v2/ns/client/subscribe/list:
+    get:
+      tags:
+        - client-info-controller-v-2
+      operationId: getSubscribeServiceList
+      parameters:
+        - name: clientId
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResultListObjectNode'
+        '400':
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResultString'
+        '403':
+          description: Forbidden
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResultString'
+        '500':
+          description: Internal Server Error
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResultString'
+  /v2/ns/client/service/subscriber/list:
+    get:
+      tags:
+        - client-info-controller-v-2
+      operationId: getSubscribeClientList
+      parameters:
+        - name: namespaceId
+          in: query
+          required: false
+          schema:
+            type: string
+            default: public
+        - name: groupName
+          in: query
+          required: false
+          schema:
+            type: string
+            default: DEFAULT_GROUP
+        - name: ephemeral
+          in: query
+          required: false
+          schema:
+            type: boolean
+            default: true
+        - name: serviceName
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: ip
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: port
+          in: query
+          required: false
+          schema:
+            type: integer
+            format: int32
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResultListObjectNode'
+        '400':
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResultString'
+        '403':
+          description: Forbidden
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResultString'
+        '500':
+          description: Internal Server Error
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResultString'
+  /v2/ns/client/service/publisher/list:
+    get:
+      tags:
+        - client-info-controller-v-2
+      operationId: getPublishedClientList
+      parameters:
+        - name: namespaceId
+          in: query
+          required: false
+          schema:
+            type: string
+            default: public
+        - name: groupName
+          in: query
+          required: false
+          schema:
+            type: string
+            default: DEFAULT_GROUP
+        - name: ephemeral
+          in: query
+          required: false
+          schema:
+            type: boolean
+            default: true
+        - name: serviceName
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: ip
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: port
+          in: query
+          required: false
+          schema:
+            type: integer
+            format: int32
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResultListObjectNode'
+        '400':
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResultString'
+        '403':
+          description: Forbidden
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResultString'
+        '500':
+          description: Internal Server Error
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResultString'
+  /v2/ns/client/publish/list:
+    get:
+      tags:
+        - client-info-controller-v-2
+      operationId: getPublishedServiceList
+      parameters:
+        - name: clientId
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResultListObjectNode'
+        '400':
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResultString'
+        '403':
+          description: Forbidden
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResultString'
+        '500':
+          description: Internal Server Error
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResultString'
+  /v2/ns/client/list:
+    get:
+      tags:
+        - client-info-controller-v-2
+      operationId: getClientList
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResultListString'
+        '400':
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResultString'
+        '403':
+          description: Forbidden
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResultString'
+        '500':
+          description: Internal Server Error
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResultString'
+  /v2/cs/history:
+    get:
+      tags:
+        - history-controller-v-2
+      operationId: getConfigHistoryInfo
+      parameters:
+        - name: dataId
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: group
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: namespaceId
+          in: query
+          required: false
+          schema:
+            type: string
+            default: ''
+        - name: nid
+          in: query
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResultConfigHistoryInfo'
+        '400':
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResultString'
+        '403':
+          description: Forbidden
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResultString'
+        '500':
+          description: Internal Server Error
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResultString'
+  /v2/cs/history/previous:
+    get:
+      tags:
+        - history-controller-v-2
+      operationId: getPreviousConfigHistoryInfo
+      parameters:
+        - name: dataId
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: group
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: namespaceId
+          in: query
+          required: false
+          schema:
+            type: string
+            default: ''
+        - name: id
+          in: query
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResultConfigHistoryInfo'
+        '400':
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResultString'
+        '403':
+          description: Forbidden
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResultString'
+        '500':
+          description: Internal Server Error
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResultString'
+  /v2/cs/history/list:
+    get:
+      tags:
+        - history-controller-v-2
+      operationId: listConfigHistory
+      parameters:
+        - name: dataId
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: group
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: namespaceId
+          in: query
+          required: false
+          schema:
+            type: string
+            default: ''
+        - name: pageNo
+          in: query
+          required: false
+          schema:
+            type: integer
+            format: int32
+            default: 1
+        - name: pageSize
+          in: query
+          required: false
+          schema:
+            type: integer
+            format: int32
+            default: 100
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResultPageConfigHistoryInfo'
+        '400':
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResultString'
+        '403':
+          description: Forbidden
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResultString'
+        '500':
+          description: Internal Server Error
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResultString'
+  /v2/cs/history/configs:
+    get:
+      tags:
+        - history-controller-v-2
+      operationId: getConfigsByTenant
+      parameters:
+        - name: namespaceId
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResultListConfigInfoWrapper'
+        '400':
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResultString'
+        '403':
+          description: Forbidden
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResultString'
+        '500':
+          description: Internal Server Error
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResultString'
+  /v2/cs/config/searchDetail:
+    get:
+      tags:
+        - config-controller-v-2
+      operationId: searchConfigByDetails
+      parameters:
+        - name: dataId
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: group
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: appName
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: tenant
+          in: query
+          required: false
+          schema:
+            type: string
+            default: ''
+        - name: config_tags
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: config_detail
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: search
+          in: query
+          required: false
+          schema:
+            type: string
+            default: blur
+        - name: pageNo
+          in: query
+          required: true
+          schema:
+            type: integer
+            format: int32
+        - name: pageSize
+          in: query
+          required: true
+          schema:
+            type: integer
+            format: int32
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/PageConfigInfo'
+        '400':
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResultString'
+        '403':
+          description: Forbidden
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResultString'
+        '500':
+          description: Internal Server Error
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResultString'
+  /v2/core/ops/ids:
+    get:
+      tags:
+        - core-ops-v-2-controller
+      operationId: ids
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/RestResultListIdGeneratorVO'
+  /v2/core/loader/smartReloadCluster:
+    get:
+      tags:
+        - server-loader-controller
+      operationId: smartReload
+      parameters:
+        - name: loaderFactor
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: force
+          in: query
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: string
+  /v2/core/loader/reloadCurrent:
+    get:
+      tags:
+        - server-loader-controller
+      operationId: reloadCount
+      parameters:
+        - name: count
+          in: query
+          required: true
+          schema:
+            type: integer
+            format: int32
+        - name: redirectAddress
+          in: query
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: string
+  /v2/core/loader/reloadClient:
+    get:
+      tags:
+        - server-loader-controller
+      operationId: reloadSingle
+      parameters:
+        - name: connectionId
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: redirectAddress
+          in: query
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: string
+  /v2/core/loader/current:
+    get:
+      tags:
+        - server-loader-controller
+      operationId: currentClients
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+                additionalProperties:
+                  $ref: '#/components/schemas/Connection'
+  /v2/core/loader/cluster:
+    get:
+      tags:
+        - server-loader-controller
+      operationId: loaderMetrics
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+                additionalProperties:
+                  type: object
+  /v2/core/cluster/node/self:
+    get:
+      tags:
+        - nacos-cluster-controller-v-2
+      operationId: self
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResultMember'
+        '400':
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResultString'
+        '403':
+          description: Forbidden
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResultString'
+        '500':
+          description: Internal Server Error
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResultString'
+  /v2/core/cluster/node/self/health:
+    get:
+      tags:
+        - nacos-cluster-controller-v-2
+      operationId: selfHealth
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResultString'
+        '400':
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResultString'
+        '403':
+          description: Forbidden
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResultString'
+        '500':
+          description: Internal Server Error
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResultString'
+  /v2/console/namespace/list:
+    get:
+      tags:
+        - namespace-controller-v-2
+      operationId: getNamespaceList
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResultListNamespace'
+        '400':
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResultString'
+        '403':
+          description: Forbidden
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResultString'
+        '500':
+          description: Internal Server Error
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResultString'
+  /v2/console/health/readiness:
+    get:
+      tags:
+        - health-controller-v-2
+      operationId: readiness
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResultString'
+  /v2/console/health/liveness:
+    get:
+      tags:
+        - health-controller-v-2
+      operationId: liveness
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResultString'
+  /v1/ns/service/subscribers:
+    get:
+      tags:
+        - service-controller
+      operationId: subscribers
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+  /v1/ns/service/selector/types:
+    get:
+      tags:
+        - service-controller
+      operationId: listSelectorTypes
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/RestResultListString'
+  /v1/ns/service/list:
+    get:
+      tags:
+        - service-controller
+      operationId: list_2
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+  /v1/ns/ops/metrics:
+    get:
+      tags:
+        - operator-controller
+      operationId: metrics_2
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+  /v1/ns/operator/metrics:
+    get:
+      tags:
+        - operator-controller
+      operationId: metrics_3
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+  /v1/ns/ops/distro/client:
+    get:
+      tags:
+        - operator-controller
+      operationId: getResponsibleServer4Client
+      parameters:
+        - name: ip
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: port
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+  /v1/ns/operator/distro/client:
+    get:
+      tags:
+        - operator-controller
+      operationId: getResponsibleServer4Client_1
+      parameters:
+        - name: ip
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: port
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+  /v1/ns/instance/list:
+    get:
+      tags:
+        - instance-controller
+      operationId: list_3
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+  /v1/ns/health/checkers:
+    get:
+      tags:
+        - health-controller
+      operationId: checkers
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: string
+  /v1/ns/catalog/services:
+    get:
+      tags:
+        - catalog-controller
+      operationId: listDetail
+      parameters:
+        - name: withInstances
+          in: query
+          required: false
+          schema:
+            type: boolean
+        - name: namespaceId
+          in: query
+          required: false
+          schema:
+            type: string
+            default: public
+        - name: pageNo
+          in: query
+          required: false
+          schema:
+            type: integer
+            format: int32
+        - name: pageSize
+          in: query
+          required: false
+          schema:
+            type: integer
+            format: int32
+        - name: serviceNameParam
+          in: query
+          required: false
+          schema:
+            type: string
+            default: ''
+        - name: groupNameParam
+          in: query
+          required: false
+          schema:
+            type: string
+            default: ''
+        - name: instance
+          in: query
+          required: false
+          schema:
+            type: string
+            default: ''
+        - name: hasIpCount
+          in: query
+          required: false
+          schema:
+            type: boolean
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+  /v1/ns/catalog/service:
+    get:
+      tags:
+        - catalog-controller
+      operationId: serviceDetail
+      parameters:
+        - name: namespaceId
+          in: query
+          required: false
+          schema:
+            type: string
+            default: public
+        - name: serviceName
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+  /v1/cs/ops/derby:
+    get:
+      tags:
+        - config-ops-controller
+      operationId: derbyOps
+      parameters:
+        - name: sql
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/RestResultObject'
+  /v1/cs/metrics/current:
+    get:
+      tags:
+        - client-metrics-controller
+      operationId: getClientMetrics
+      parameters:
+        - name: ip
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: dataId
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: group
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: tenant
+          in: query
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+                additionalProperties:
+                  type: object
+  /v1/cs/metrics/cluster:
+    get:
+      tags:
+        - client-metrics-controller
+      operationId: metric
+      parameters:
+        - name: ip
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: dataId
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: group
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: tenant
+          in: query
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: string
+  /v1/cs/listener:
+    get:
+      tags:
+        - listener-controller
+      operationId: getAllSubClientConfigByIp
+      parameters:
+        - name: ip
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: all
+          in: query
+          required: false
+          schema:
+            type: boolean
+        - name: tenant
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: sampleTime
+          in: query
+          required: false
+          schema:
+            type: integer
+            format: int32
+            default: 1
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/GroupkeyListenserStatus'
+  /v1/cs/history:
+    get:
+      tags:
+        - history-controller
+      operationId: getConfigHistoryInfo_1_1
+      parameters:
+        - name: dataId
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: group
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: tenant
+          in: query
+          required: false
+          schema:
+            type: string
+            default: ''
+        - name: nid
+          in: query
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: appName
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: pageNo
+          in: query
+          required: false
+          schema:
+            type: integer
+            format: int32
+        - name: pageSize
+          in: query
+          required: false
+          schema:
+            type: integer
+            format: int32
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/PageConfigHistoryInfo'
+                  - $ref: '#/components/schemas/ConfigHistoryInfo'
+  /v1/cs/history/previous:
+    get:
+      tags:
+        - history-controller
+      operationId: getPreviousConfigHistoryInfo_1
+      parameters:
+        - name: dataId
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: group
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: tenant
+          in: query
+          required: false
+          schema:
+            type: string
+            default: ''
+        - name: id
+          in: query
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ConfigHistoryInfo'
+  /v1/cs/history/configs:
+    get:
+      tags:
+        - history-controller
+      operationId: getDataIds
+      parameters:
+        - name: tenant
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ConfigInfoWrapper'
+  /v1/cs/health:
+    get:
+      tags:
+        - health-controller
+      operationId: getHealth
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: string
+  /v1/cs/configs/catalog:
+    get:
+      tags:
+        - config-controller
+      operationId: getConfigAdvanceInfo
+      parameters:
+        - name: dataId
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: group
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: tenant
+          in: query
+          required: false
+          schema:
+            type: string
+            default: ''
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/RestResultConfigAdvanceInfo'
+  /v1/cs/communication/watcherConfigs:
+    get:
+      tags:
+        - communication-controller
+      operationId: getSubClientConfigByIp
+      parameters:
+        - name: ip
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/SampleResult'
+  /v1/cs/communication/configWatchers:
+    get:
+      tags:
+        - communication-controller
+      operationId: getSubClientConfig
+      parameters:
+        - name: dataId
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: group
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: tenant
+          in: query
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/SampleResult'
+  /v1/core/ops/idInfo:
+    get:
+      tags:
+        - core-ops-controller
+      operationId: idInfo
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/RestResultMapStringMapObjectObject'
+  /v1/core/cluster/simple/nodes:
+    get:
+      tags:
+        - nacos-cluster-controller
+      operationId: listSimpleNodes
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/RestResultCollectionString'
+  /v1/core/cluster/self:
+    get:
+      tags:
+        - nacos-cluster-controller
+      operationId: self_1
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/RestResultMember'
+  /v1/core/cluster/nodes:
+    get:
+      tags:
+        - nacos-cluster-controller
+      operationId: listNodes_1
+      parameters:
+        - name: keyword
+          in: query
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/RestResultCollectionMember'
+  /v1/core/cluster/health:
+    get:
+      tags:
+        - nacos-cluster-controller
+      operationId: getHealth_1
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/RestResultString'
+  /v1/console/server/state:
+    get:
+      tags:
+        - server-state-controller
+      operationId: serverState
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+                additionalProperties:
+                  type: string
+  /v1/console/server/guide:
+    get:
+      tags:
+        - server-state-controller
+      operationId: getConsoleUiGuide
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/RestResultString'
+  /v1/console/server/announcement:
+    get:
+      tags:
+        - server-state-controller
+      operationId: getAnnouncement
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/RestResultString'
+  /v1/console/health/readiness:
+    get:
+      tags:
+        - health-controller
+      operationId: readiness_1
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: string
+  /v1/console/health/liveness:
+    get:
+      tags:
+        - health-controller
+      operationId: liveness_1
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: string
+  /v1/cmdb/ops/label:
+    get:
+      tags:
+        - operation-controller
+      operationId: queryLabel
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: string
+  /v1/auth/search:
+    get:
+      tags:
+        - user-controller
+      operationId: searchUsersLikeUsername
+      parameters:
+        - name: username
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  type: string
+  /v1/auth/users/search:
+    get:
+      tags:
+        - user-controller
+      operationId: searchUsersLikeUsername_1
+      parameters:
+        - name: username
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  type: string
+  /v1/auth/roles/search:
+    get:
+      tags:
+        - role-controller
+      operationId: searchRoles
+      parameters:
+        - name: role
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  type: string
+  /v2/core/cluster/nodes:
+    delete:
+      tags:
+        - nacos-cluster-controller-v-2
+      operationId: deleteNodes
+      parameters:
+        - name: addresses
+          in: query
+          required: true
+          schema:
+            type: array
+            items:
+              type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/RestResultVoid'
+        '400':
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResultString'
+        '403':
+          description: Forbidden
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResultString'
+        '500':
+          description: Internal Server Error
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResultString'
+  /v2/ns/instance/statuses/{key}:
+    get:
+      tags:
+        - instance-controller-v-2
+      operationId: listWithHealthStatus
+      parameters:
+        - name: key
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+        '400':
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResultString'
+        '403':
+          description: Forbidden
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResultString'
+        '500':
+          description: Internal Server Error
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResultString'
+    put:
+      tags:
+        - instance-controller-v-2
+      operationId: listWithHealthStatus_3
+      parameters:
+        - name: key
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+        '400':
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResultString'
+        '403':
+          description: Forbidden
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResultString'
+        '500':
+          description: Internal Server Error
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResultString'
+    post:
+      tags:
+        - instance-controller-v-2
+      operationId: listWithHealthStatus_2
+      parameters:
+        - name: key
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+        '400':
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResultString'
+        '403':
+          description: Forbidden
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResultString'
+        '500':
+          description: Internal Server Error
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResultString'
+    delete:
+      tags:
+        - instance-controller-v-2
+      operationId: listWithHealthStatus_5
+      parameters:
+        - name: key
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+        '400':
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResultString'
+        '403':
+          description: Forbidden
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResultString'
+        '500':
+          description: Internal Server Error
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResultString'
+    options:
+      tags:
+        - instance-controller-v-2
+      operationId: listWithHealthStatus_6
+      parameters:
+        - name: key
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+        '400':
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResultString'
+        '403':
+          description: Forbidden
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResultString'
+        '500':
+          description: Internal Server Error
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResultString'
+    head:
+      tags:
+        - instance-controller-v-2
+      operationId: listWithHealthStatus_1
+      parameters:
+        - name: key
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+        '400':
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResultString'
+        '403':
+          description: Forbidden
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResultString'
+        '500':
+          description: Internal Server Error
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResultString'
+    patch:
+      tags:
+        - instance-controller-v-2
+      operationId: listWithHealthStatus_4
+      parameters:
+        - name: key
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+        '400':
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResultString'
+        '403':
+          description: Forbidden
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResultString'
+        '500':
+          description: Internal Server Error
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResultString'
+  /v2/ns/catalog/instances:
+    get:
+      tags:
+        - catalog-controller-v-2
+      operationId: instanceList
+      parameters:
+        - name: namespaceId
+          in: query
+          required: false
+          schema:
+            type: string
+            default: public
+        - name: serviceName
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: healthyOnly
+          in: query
+          required: false
+          schema:
+            type: boolean
+        - name: enabledOnly
+          in: query
+          required: false
+          schema:
+            type: boolean
+        - name: pageNo
+          in: query
+          required: true
+          schema:
+            type: integer
+            format: int32
+        - name: pageSize
+          in: query
+          required: true
+          schema:
+            type: integer
+            format: int32
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResultObjectNode'
+    put:
+      tags:
+        - catalog-controller-v-2
+      operationId: instanceList_3
+      parameters:
+        - name: namespaceId
+          in: query
+          required: false
+          schema:
+            type: string
+            default: public
+        - name: serviceName
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: healthyOnly
+          in: query
+          required: false
+          schema:
+            type: boolean
+        - name: enabledOnly
+          in: query
+          required: false
+          schema:
+            type: boolean
+        - name: pageNo
+          in: query
+          required: true
+          schema:
+            type: integer
+            format: int32
+        - name: pageSize
+          in: query
+          required: true
+          schema:
+            type: integer
+            format: int32
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResultObjectNode'
+    post:
+      tags:
+        - catalog-controller-v-2
+      operationId: instanceList_2
+      parameters:
+        - name: namespaceId
+          in: query
+          required: false
+          schema:
+            type: string
+            default: public
+        - name: serviceName
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: healthyOnly
+          in: query
+          required: false
+          schema:
+            type: boolean
+        - name: enabledOnly
+          in: query
+          required: false
+          schema:
+            type: boolean
+        - name: pageNo
+          in: query
+          required: true
+          schema:
+            type: integer
+            format: int32
+        - name: pageSize
+          in: query
+          required: true
+          schema:
+            type: integer
+            format: int32
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResultObjectNode'
+    delete:
+      tags:
+        - catalog-controller-v-2
+      operationId: instanceList_5
+      parameters:
+        - name: namespaceId
+          in: query
+          required: false
+          schema:
+            type: string
+            default: public
+        - name: serviceName
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: healthyOnly
+          in: query
+          required: false
+          schema:
+            type: boolean
+        - name: enabledOnly
+          in: query
+          required: false
+          schema:
+            type: boolean
+        - name: pageNo
+          in: query
+          required: true
+          schema:
+            type: integer
+            format: int32
+        - name: pageSize
+          in: query
+          required: true
+          schema:
+            type: integer
+            format: int32
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResultObjectNode'
+    options:
+      tags:
+        - catalog-controller-v-2
+      operationId: instanceList_6
+      parameters:
+        - name: namespaceId
+          in: query
+          required: false
+          schema:
+            type: string
+            default: public
+        - name: serviceName
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: healthyOnly
+          in: query
+          required: false
+          schema:
+            type: boolean
+        - name: enabledOnly
+          in: query
+          required: false
+          schema:
+            type: boolean
+        - name: pageNo
+          in: query
+          required: true
+          schema:
+            type: integer
+            format: int32
+        - name: pageSize
+          in: query
+          required: true
+          schema:
+            type: integer
+            format: int32
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResultObjectNode'
+    head:
+      tags:
+        - catalog-controller-v-2
+      operationId: instanceList_1
+      parameters:
+        - name: namespaceId
+          in: query
+          required: false
+          schema:
+            type: string
+            default: public
+        - name: serviceName
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: healthyOnly
+          in: query
+          required: false
+          schema:
+            type: boolean
+        - name: enabledOnly
+          in: query
+          required: false
+          schema:
+            type: boolean
+        - name: pageNo
+          in: query
+          required: true
+          schema:
+            type: integer
+            format: int32
+        - name: pageSize
+          in: query
+          required: true
+          schema:
+            type: integer
+            format: int32
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResultObjectNode'
+    patch:
+      tags:
+        - catalog-controller-v-2
+      operationId: instanceList_4
+      parameters:
+        - name: namespaceId
+          in: query
+          required: false
+          schema:
+            type: string
+            default: public
+        - name: serviceName
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: healthyOnly
+          in: query
+          required: false
+          schema:
+            type: boolean
+        - name: enabledOnly
+          in: query
+          required: false
+          schema:
+            type: boolean
+        - name: pageNo
+          in: query
+          required: true
+          schema:
+            type: integer
+            format: int32
+        - name: pageSize
+          in: query
+          required: true
+          schema:
+            type: integer
+            format: int32
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResultObjectNode'
+  /v1/ns/service/names:
+    get:
+      tags:
+        - service-controller
+      operationId: searchService
+      parameters:
+        - name: namespaceId
+          in: query
+          required: false
+          schema:
+            type: string
+            default: ''
+        - name: expr
+          in: query
+          required: false
+          schema:
+            type: string
+            default: ''
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+    put:
+      tags:
+        - service-controller
+      operationId: searchService_3
+      parameters:
+        - name: namespaceId
+          in: query
+          required: false
+          schema:
+            type: string
+            default: ''
+        - name: expr
+          in: query
+          required: false
+          schema:
+            type: string
+            default: ''
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+    post:
+      tags:
+        - service-controller
+      operationId: searchService_2
+      parameters:
+        - name: namespaceId
+          in: query
+          required: false
+          schema:
+            type: string
+            default: ''
+        - name: expr
+          in: query
+          required: false
+          schema:
+            type: string
+            default: ''
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+    delete:
+      tags:
+        - service-controller
+      operationId: searchService_5
+      parameters:
+        - name: namespaceId
+          in: query
+          required: false
+          schema:
+            type: string
+            default: ''
+        - name: expr
+          in: query
+          required: false
+          schema:
+            type: string
+            default: ''
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+    options:
+      tags:
+        - service-controller
+      operationId: searchService_6
+      parameters:
+        - name: namespaceId
+          in: query
+          required: false
+          schema:
+            type: string
+            default: ''
+        - name: expr
+          in: query
+          required: false
+          schema:
+            type: string
+            default: ''
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+    head:
+      tags:
+        - service-controller
+      operationId: searchService_1
+      parameters:
+        - name: namespaceId
+          in: query
+          required: false
+          schema:
+            type: string
+            default: ''
+        - name: expr
+          in: query
+          required: false
+          schema:
+            type: string
+            default: ''
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+    patch:
+      tags:
+        - service-controller
+      operationId: searchService_4
+      parameters:
+        - name: namespaceId
+          in: query
+          required: false
+          schema:
+            type: string
+            default: ''
+        - name: expr
+          in: query
+          required: false
+          schema:
+            type: string
+            default: ''
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+  /v1/ns/operator/push/state:
+    get:
+      tags:
+        - operator-controller
+      operationId: pushState
+      parameters:
+        - name: detail
+          in: query
+          required: false
+          schema:
+            type: boolean
+        - name: reset
+          in: query
+          required: false
+          schema:
+            type: boolean
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+    put:
+      tags:
+        - operator-controller
+      operationId: pushState_3
+      parameters:
+        - name: detail
+          in: query
+          required: false
+          schema:
+            type: boolean
+        - name: reset
+          in: query
+          required: false
+          schema:
+            type: boolean
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+    post:
+      tags:
+        - operator-controller
+      operationId: pushState_2
+      parameters:
+        - name: detail
+          in: query
+          required: false
+          schema:
+            type: boolean
+        - name: reset
+          in: query
+          required: false
+          schema:
+            type: boolean
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+    delete:
+      tags:
+        - operator-controller
+      operationId: pushState_5
+      parameters:
+        - name: detail
+          in: query
+          required: false
+          schema:
+            type: boolean
+        - name: reset
+          in: query
+          required: false
+          schema:
+            type: boolean
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+    options:
+      tags:
+        - operator-controller
+      operationId: pushState_6
+      parameters:
+        - name: detail
+          in: query
+          required: false
+          schema:
+            type: boolean
+        - name: reset
+          in: query
+          required: false
+          schema:
+            type: boolean
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+    head:
+      tags:
+        - operator-controller
+      operationId: pushState_1
+      parameters:
+        - name: detail
+          in: query
+          required: false
+          schema:
+            type: boolean
+        - name: reset
+          in: query
+          required: false
+          schema:
+            type: boolean
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+    patch:
+      tags:
+        - operator-controller
+      operationId: pushState_4
+      parameters:
+        - name: detail
+          in: query
+          required: false
+          schema:
+            type: boolean
+        - name: reset
+          in: query
+          required: false
+          schema:
+            type: boolean
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+  /v1/ns/ops/push/state:
+    get:
+      tags:
+        - operator-controller
+      operationId: pushState_7
+      parameters:
+        - name: detail
+          in: query
+          required: false
+          schema:
+            type: boolean
+        - name: reset
+          in: query
+          required: false
+          schema:
+            type: boolean
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+    put:
+      tags:
+        - operator-controller
+      operationId: pushState_10
+      parameters:
+        - name: detail
+          in: query
+          required: false
+          schema:
+            type: boolean
+        - name: reset
+          in: query
+          required: false
+          schema:
+            type: boolean
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+    post:
+      tags:
+        - operator-controller
+      operationId: pushState_9
+      parameters:
+        - name: detail
+          in: query
+          required: false
+          schema:
+            type: boolean
+        - name: reset
+          in: query
+          required: false
+          schema:
+            type: boolean
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+    delete:
+      tags:
+        - operator-controller
+      operationId: pushState_12
+      parameters:
+        - name: detail
+          in: query
+          required: false
+          schema:
+            type: boolean
+        - name: reset
+          in: query
+          required: false
+          schema:
+            type: boolean
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+    options:
+      tags:
+        - operator-controller
+      operationId: pushState_13
+      parameters:
+        - name: detail
+          in: query
+          required: false
+          schema:
+            type: boolean
+        - name: reset
+          in: query
+          required: false
+          schema:
+            type: boolean
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+    head:
+      tags:
+        - operator-controller
+      operationId: pushState_8
+      parameters:
+        - name: detail
+          in: query
+          required: false
+          schema:
+            type: boolean
+        - name: reset
+          in: query
+          required: false
+          schema:
+            type: boolean
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+    patch:
+      tags:
+        - operator-controller
+      operationId: pushState_11
+      parameters:
+        - name: detail
+          in: query
+          required: false
+          schema:
+            type: boolean
+        - name: reset
+          in: query
+          required: false
+          schema:
+            type: boolean
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+  /v1/ns/instance/statuses:
+    get:
+      tags:
+        - instance-controller
+      operationId: listWithHealthStatus_7
+      parameters:
+        - name: key
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+    put:
+      tags:
+        - instance-controller
+      operationId: listWithHealthStatus_10
+      parameters:
+        - name: key
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+    post:
+      tags:
+        - instance-controller
+      operationId: listWithHealthStatus_9
+      parameters:
+        - name: key
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+    delete:
+      tags:
+        - instance-controller
+      operationId: listWithHealthStatus_12
+      parameters:
+        - name: key
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+    options:
+      tags:
+        - instance-controller
+      operationId: listWithHealthStatus_13
+      parameters:
+        - name: key
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+    head:
+      tags:
+        - instance-controller
+      operationId: listWithHealthStatus_8
+      parameters:
+        - name: key
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+    patch:
+      tags:
+        - instance-controller
+      operationId: listWithHealthStatus_11
+      parameters:
+        - name: key
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+  /v1/ns/health/server:
+    get:
+      tags:
+        - health-controller
+      operationId: server
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: string
+    put:
+      tags:
+        - health-controller
+      operationId: server_3
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: string
+    post:
+      tags:
+        - health-controller
+      operationId: server_2
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: string
+    delete:
+      tags:
+        - health-controller
+      operationId: server_5
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: string
+    options:
+      tags:
+        - health-controller
+      operationId: server_6
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: string
+    head:
+      tags:
+        - health-controller
+      operationId: server_1
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: string
+    patch:
+      tags:
+        - health-controller
+      operationId: server_4
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: string
+  /v1/ns/catalog/instances:
+    get:
+      tags:
+        - catalog-controller
+      operationId: instanceList_7
+      parameters:
+        - name: namespaceId
+          in: query
+          required: false
+          schema:
+            type: string
+            default: public
+        - name: serviceName
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: clusterName
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: pageNo
+          in: query
+          required: true
+          schema:
+            type: integer
+            format: int32
+        - name: pageSize
+          in: query
+          required: true
+          schema:
+            type: integer
+            format: int32
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+    put:
+      tags:
+        - catalog-controller
+      operationId: instanceList_10
+      parameters:
+        - name: namespaceId
+          in: query
+          required: false
+          schema:
+            type: string
+            default: public
+        - name: serviceName
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: clusterName
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: pageNo
+          in: query
+          required: true
+          schema:
+            type: integer
+            format: int32
+        - name: pageSize
+          in: query
+          required: true
+          schema:
+            type: integer
+            format: int32
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+    post:
+      tags:
+        - catalog-controller
+      operationId: instanceList_9
+      parameters:
+        - name: namespaceId
+          in: query
+          required: false
+          schema:
+            type: string
+            default: public
+        - name: serviceName
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: clusterName
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: pageNo
+          in: query
+          required: true
+          schema:
+            type: integer
+            format: int32
+        - name: pageSize
+          in: query
+          required: true
+          schema:
+            type: integer
+            format: int32
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+    delete:
+      tags:
+        - catalog-controller
+      operationId: instanceList_12
+      parameters:
+        - name: namespaceId
+          in: query
+          required: false
+          schema:
+            type: string
+            default: public
+        - name: serviceName
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: clusterName
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: pageNo
+          in: query
+          required: true
+          schema:
+            type: integer
+            format: int32
+        - name: pageSize
+          in: query
+          required: true
+          schema:
+            type: integer
+            format: int32
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+    options:
+      tags:
+        - catalog-controller
+      operationId: instanceList_13
+      parameters:
+        - name: namespaceId
+          in: query
+          required: false
+          schema:
+            type: string
+            default: public
+        - name: serviceName
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: clusterName
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: pageNo
+          in: query
+          required: true
+          schema:
+            type: integer
+            format: int32
+        - name: pageSize
+          in: query
+          required: true
+          schema:
+            type: integer
+            format: int32
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+    head:
+      tags:
+        - catalog-controller
+      operationId: instanceList_8
+      parameters:
+        - name: namespaceId
+          in: query
+          required: false
+          schema:
+            type: string
+            default: public
+        - name: serviceName
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: clusterName
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: pageNo
+          in: query
+          required: true
+          schema:
+            type: integer
+            format: int32
+        - name: pageSize
+          in: query
+          required: true
+          schema:
+            type: integer
+            format: int32
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+    patch:
+      tags:
+        - catalog-controller
+      operationId: instanceList_11
+      parameters:
+        - name: namespaceId
+          in: query
+          required: false
+          schema:
+            type: string
+            default: public
+        - name: serviceName
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: clusterName
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: pageNo
+          in: query
+          required: true
+          schema:
+            type: integer
+            format: int32
+        - name: pageSize
+          in: query
+          required: true
+          schema:
+            type: integer
+            format: int32
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+components:
+  schemas:
+    ResultString:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+        data:
+          type: string
+    ServiceForm:
+      type: object
+      properties:
+        namespaceId:
+          type: string
+        serviceName:
+          type: string
+        groupName:
+          type: string
+        ephemeral:
+          type: boolean
+        protectThreshold:
+          type: number
+          format: float
+        metadata:
+          type: string
+        selector:
+          type: string
+    UpdateSwitchForm:
+      type: object
+      properties:
+        debug:
+          type: boolean
+        entry:
+          type: string
+        value:
+          type: string
+    InstanceForm:
+      type: object
+      properties:
+        namespaceId:
+          type: string
+        groupName:
+          type: string
+        serviceName:
+          type: string
+        ip:
+          type: string
+        clusterName:
+          type: string
+        port:
+          type: integer
+          format: int32
+        healthy:
+          type: boolean
+        weight:
+          type: number
+          format: double
+        enabled:
+          type: boolean
+        metadata:
+          type: string
+        ephemeral:
+          type: boolean
+    InstanceMetadataBatchOperationForm:
+      type: object
+      properties:
+        namespaceId:
+          type: string
+        groupName:
+          type: string
+        serviceName:
+          type: string
+        consistencyType:
+          type: string
+        instances:
+          type: string
+        metadata:
+          type: string
+    InstanceMetadataBatchOperationVo:
+      type: object
+      properties:
+        updated:
+          type: array
+          items:
+            type: string
+    ResultInstanceMetadataBatchOperationVo:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+        data:
+          $ref: '#/components/schemas/InstanceMetadataBatchOperationVo'
+    UpdateHealthForm:
+      type: object
+      properties:
+        healthy:
+          type: boolean
+        groupName:
+          type: string
+        serviceName:
+          type: string
+        namespaceId:
+          type: string
+        clusterName:
+          type: string
+        ip:
+          type: string
+        port:
+          type: integer
+          format: int32
+    LogUpdateRequest:
+      type: object
+      properties:
+        logName:
+          type: string
+        logLevel:
+          type: string
+    RestResultVoid:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+        data:
+          type: object
+    Member:
+      type: object
+      properties:
+        ip:
+          type: string
+        port:
+          type: integer
+          format: int32
+        state:
+          type: string
+          enum:
+            - STARTING
+            - UP
+            - SUSPICIOUS
+            - DOWN
+            - ISOLATION
+        extendInfo:
+          type: object
+          additionalProperties:
+            type: object
+        address:
+          type: string
+        failAccessCnt:
+          type: integer
+          format: int32
+        abilities:
+          $ref: '#/components/schemas/ServerAbilities'
+        grpcReportEnabled:
+          type: boolean
+    ServerAbilities:
+      type: object
+      properties:
+        remoteAbility:
+          $ref: '#/components/schemas/ServerRemoteAbility'
+        configAbility:
+          $ref: '#/components/schemas/ServerConfigAbility'
+        namingAbility:
+          $ref: '#/components/schemas/ServerNamingAbility'
+    ServerConfigAbility:
+      type: object
+      properties:
+        supportRemoteMetrics:
+          type: boolean
+    ServerNamingAbility:
+      type: object
+      properties:
+        supportJraft:
+          type: boolean
+    ServerRemoteAbility:
+      type: object
+      properties:
+        supportRemoteConnection:
+          type: boolean
+        grpcReportEnabled:
+          type: boolean
+    ResultBoolean:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+        data:
+          type: boolean
+    LookupUpdateRequest:
+      type: object
+      properties:
+        type:
+          type: string
+    NamespaceForm:
+      type: object
+      properties:
+        namespaceId:
+          type: string
+        namespaceName:
+          type: string
+        namespaceDesc:
+          type: string
+    RestResultString:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+        data:
+          type: string
+    ConfigForm:
+      type: object
+      properties:
+        dataId:
+          type: string
+        group:
+          type: string
+        namespaceId:
+          type: string
+        content:
+          type: string
+        tag:
+          type: string
+        appName:
+          type: string
+        srcUser:
+          type: string
+        configTags:
+          type: string
+        desc:
+          type: string
+        use:
+          type: string
+        effect:
+          type: string
+        type:
+          type: string
+        schema:
+          type: string
+    RestResultMapStringObject:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+        data:
+          type: object
+          additionalProperties:
+            type: object
+    SameNamespaceCloneConfigBean:
+      type: object
+      properties:
+        cfgId:
+          type: integer
+          format: int64
+        dataId:
+          type: string
+        group:
+          type: string
+    RestResultBoolean:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+        data:
+          type: boolean
+    AbstractHealthChecker:
+      required:
+        - type
+      type: object
+      properties:
+        type:
+          type: string
+      discriminator:
+        propertyName: type
+    ClusterInfo:
+      type: object
+      properties:
+        clusterName:
+          type: string
+        healthChecker:
+          oneOf:
+            - $ref: '#/components/schemas/Http'
+            - $ref: '#/components/schemas/Mysql'
+            - $ref: '#/components/schemas/None'
+            - $ref: '#/components/schemas/Tcp'
+        metadata:
+          type: object
+          additionalProperties:
+            type: string
+        hosts:
+          type: array
+          items:
+            $ref: '#/components/schemas/IpAddressInfo'
+    Http:
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/AbstractHealthChecker'
+        - type: object
+          properties:
+            path:
+              type: string
+            headers:
+              type: string
+            expectedResponseCode:
+              type: integer
+              format: int32
+    IpAddressInfo:
+      type: object
+      properties:
+        valid:
+          type: boolean
+        metadata:
+          type: object
+          additionalProperties:
+            type: string
+        port:
+          type: integer
+          format: int32
+        ip:
+          type: string
+        weight:
+          type: number
+          format: double
+        enabled:
+          type: boolean
+    Mysql:
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/AbstractHealthChecker'
+        - type: object
+          properties:
+            user:
+              type: string
+            pwd:
+              type: string
+            cmd:
+              type: string
+    None:
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/AbstractHealthChecker'
+    ResultServiceDetailInfo:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+        data:
+          $ref: '#/components/schemas/ServiceDetailInfo'
+    Selector:
+      type: object
+      properties:
+        type:
+          type: string
+        contextType:
+          type: string
+      discriminator:
+        propertyName: type
+    ServiceDetailInfo:
+      type: object
+      properties:
+        namespace:
+          type: string
+        serviceName:
+          type: string
+        groupName:
+          type: string
+        clusterMap:
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/ClusterInfo'
+        metadata:
+          type: object
+          additionalProperties:
+            type: string
+        protectThreshold:
+          type: number
+          format: float
+        selector:
+          $ref: '#/components/schemas/Selector'
+        ephemeral:
+          type: boolean
+    Tcp:
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/AbstractHealthChecker'
+    ResultServiceNameView:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+        data:
+          $ref: '#/components/schemas/ServiceNameView'
+    ServiceNameView:
+      type: object
+      properties:
+        count:
+          type: integer
+          format: int32
+        services:
+          type: array
+          items:
+            type: string
+    HttpHealthParams:
+      type: object
+      properties:
+        max:
+          type: integer
+          format: int32
+        min:
+          type: integer
+          format: int32
+        factor:
+          type: number
+          format: float
+    MysqlHealthParams:
+      type: object
+      properties:
+        max:
+          type: integer
+          format: int32
+        min:
+          type: integer
+          format: int32
+        factor:
+          type: number
+          format: float
+    ResultSwitchDomain:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+        data:
+          $ref: '#/components/schemas/SwitchDomain'
+    SwitchDomain:
+      type: object
+      properties:
+        masters:
+          type: array
+          items:
+            type: string
+        adWeightMap:
+          type: object
+          additionalProperties:
+            type: integer
+            format: int32
+        defaultPushCacheMillis:
+          type: integer
+          format: int64
+        clientBeatInterval:
+          type: integer
+          format: int64
+        defaultCacheMillis:
+          type: integer
+          format: int64
+        distroThreshold:
+          type: number
+          format: float
+        healthCheckEnabled:
+          type: boolean
+        autoChangeHealthCheckEnabled:
+          type: boolean
+        distroEnabled:
+          type: boolean
+        enableStandalone:
+          type: boolean
+        pushEnabled:
+          type: boolean
+        checkTimes:
+          type: integer
+          format: int32
+        httpHealthParams:
+          $ref: '#/components/schemas/HttpHealthParams'
+        tcpHealthParams:
+          $ref: '#/components/schemas/TcpHealthParams'
+        mysqlHealthParams:
+          $ref: '#/components/schemas/MysqlHealthParams'
+        incrementalList:
+          type: array
+          items:
+            type: string
+        serverStatusSynchronizationPeriodMillis:
+          type: integer
+          format: int64
+        serviceStatusSynchronizationPeriodMillis:
+          type: integer
+          format: int64
+        disableAddIP:
+          type: boolean
+        sendBeatOnly:
+          type: boolean
+        lightBeatEnabled:
+          type: boolean
+        limitedUrlMap:
+          type: object
+          additionalProperties:
+            type: integer
+            format: int32
+        distroServerExpiredMillis:
+          type: integer
+          format: int64
+        pushGoVersion:
+          type: string
+        pushJavaVersion:
+          type: string
+        pushPythonVersion:
+          type: string
+        pushCVersion:
+          type: string
+        pushCSharpVersion:
+          type: string
+        enableAuthentication:
+          type: boolean
+        overriddenServerStatus:
+          type: string
+        defaultInstanceEphemeral:
+          type: boolean
+        healthCheckWhiteList:
+          uniqueItems: true
+          type: array
+          items:
+            type: string
+        name:
+          type: string
+        checksum:
+          type: string
+    TcpHealthParams:
+      type: object
+      properties:
+        max:
+          type: integer
+          format: int32
+        min:
+          type: integer
+          format: int32
+        factor:
+          type: number
+          format: float
+    MetricsInfoVo:
+      type: object
+      properties:
+        status:
+          type: string
+        serviceCount:
+          type: integer
+          format: int32
+        instanceCount:
+          type: integer
+          format: int32
+        subscribeCount:
+          type: integer
+          format: int32
+        clientCount:
+          type: integer
+          format: int32
+        connectionBasedClientCount:
+          type: integer
+          format: int32
+        ephemeralIpPortClientCount:
+          type: integer
+          format: int32
+        persistentIpPortClientCount:
+          type: integer
+          format: int32
+        responsibleClientCount:
+          type: integer
+          format: int32
+        cpu:
+          type: number
+          format: float
+        load:
+          type: number
+          format: float
+        mem:
+          type: number
+          format: float
+    ResultMetricsInfoVo:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+        data:
+          $ref: '#/components/schemas/MetricsInfoVo'
+    InstanceDetailInfoVo:
+      type: object
+      properties:
+        serviceName:
+          type: string
+        ip:
+          type: string
+        port:
+          type: integer
+          format: int32
+        clusterName:
+          type: string
+        weight:
+          type: number
+          format: double
+        healthy:
+          type: boolean
+        instanceId:
+          type: string
+        metadata:
+          type: object
+          additionalProperties:
+            type: string
+    ResultInstanceDetailInfoVo:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+        data:
+          $ref: '#/components/schemas/InstanceDetailInfoVo'
+    Instance:
+      type: object
+      properties:
+        instanceId:
+          type: string
+        ip:
+          type: string
+        port:
+          type: integer
+          format: int32
+        weight:
+          type: number
+          format: double
+        healthy:
+          type: boolean
+        enabled:
+          type: boolean
+        ephemeral:
+          type: boolean
+        clusterName:
+          type: string
+        serviceName:
+          type: string
+        metadata:
+          type: object
+          additionalProperties:
+            type: string
+        instanceHeartBeatInterval:
+          type: integer
+          format: int64
+        instanceHeartBeatTimeOut:
+          type: integer
+          format: int64
+        ipDeleteTimeout:
+          type: integer
+          format: int64
+        instanceIdGenerator:
+          type: string
+    ResultServiceInfo:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+        data:
+          $ref: '#/components/schemas/ServiceInfo'
+    ServiceInfo:
+      type: object
+      properties:
+        name:
+          type: string
+        groupName:
+          type: string
+        clusters:
+          type: string
+        cacheMillis:
+          type: integer
+          format: int64
+        hosts:
+          type: array
+          items:
+            $ref: '#/components/schemas/Instance'
+        lastRefTime:
+          type: integer
+          format: int64
+        checksum:
+          type: string
+        allIPs:
+          type: boolean
+        reachProtectionThreshold:
+          type: boolean
+        valid:
+          type: boolean
+    ResultObjectNode:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+        data:
+          type: object
+    ResultListObjectNode:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+        data:
+          type: array
+          items:
+            type: object
+    ResultListString:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+        data:
+          type: array
+          items:
+            type: string
+    ConfigHistoryInfo:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        lastId:
+          type: integer
+          format: int64
+        dataId:
+          type: string
+        group:
+          type: string
+        tenant:
+          type: string
+        appName:
+          type: string
+        md5:
+          type: string
+        content:
+          type: string
+        srcIp:
+          type: string
+        srcUser:
+          type: string
+        opType:
+          type: string
+        createdTime:
+          type: string
+          format: date-time
+        lastModifiedTime:
+          type: string
+          format: date-time
+        encryptedDataKey:
+          type: string
+    ResultConfigHistoryInfo:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+        data:
+          $ref: '#/components/schemas/ConfigHistoryInfo'
+    PageConfigHistoryInfo:
+      type: object
+      properties:
+        totalCount:
+          type: integer
+          format: int32
+        pageNumber:
+          type: integer
+          format: int32
+        pagesAvailable:
+          type: integer
+          format: int32
+        pageItems:
+          type: array
+          items:
+            $ref: '#/components/schemas/ConfigHistoryInfo'
+    ResultPageConfigHistoryInfo:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+        data:
+          $ref: '#/components/schemas/PageConfigHistoryInfo'
+    ConfigInfoWrapper:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        dataId:
+          type: string
+        group:
+          type: string
+        content:
+          type: string
+        md5:
+          type: string
+        encryptedDataKey:
+          type: string
+        tenant:
+          type: string
+        appName:
+          type: string
+        type:
+          type: string
+        lastModified:
+          type: integer
+          format: int64
+    ResultListConfigInfoWrapper:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/ConfigInfoWrapper'
+    ConfigInfo:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        dataId:
+          type: string
+        group:
+          type: string
+        content:
+          type: string
+        md5:
+          type: string
+        encryptedDataKey:
+          type: string
+        tenant:
+          type: string
+        appName:
+          type: string
+        type:
+          type: string
+    PageConfigInfo:
+      type: object
+      properties:
+        totalCount:
+          type: integer
+          format: int32
+        pageNumber:
+          type: integer
+          format: int32
+        pagesAvailable:
+          type: integer
+          format: int32
+        pageItems:
+          type: array
+          items:
+            $ref: '#/components/schemas/ConfigInfo'
+    IdGeneratorVO:
+      type: object
+      properties:
+        resource:
+          type: string
+        info:
+          $ref: '#/components/schemas/IdInfo'
+    IdInfo:
+      type: object
+      properties:
+        currentId:
+          type: integer
+          format: int64
+        workerId:
+          type: integer
+          format: int64
+    RestResultListIdGeneratorVO:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/IdGeneratorVO'
+    Connection:
+      type: object
+      properties:
+        traced:
+          type: boolean
+        abilityTable:
+          type: object
+          additionalProperties:
+            type: boolean
+        metaInfo:
+          $ref: '#/components/schemas/ConnectionMeta'
+        labels:
+          type: object
+          additionalProperties:
+            type: string
+        connected:
+          type: boolean
+    ConnectionMeta:
+      type: object
+      properties:
+        connectType:
+          type: string
+        clientIp:
+          type: string
+        localPort:
+          type: integer
+          format: int32
+        version:
+          type: string
+        connectionId:
+          type: string
+        createTime:
+          type: string
+          format: date-time
+        lastActiveTime:
+          type: integer
+          format: int64
+        appName:
+          type: string
+        tenant:
+          type: string
+        labels:
+          type: object
+          additionalProperties:
+            type: string
+        tag:
+          type: string
+        clusterSource:
+          type: boolean
+        sdkSource:
+          type: boolean
+    ResultMember:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+        data:
+          $ref: '#/components/schemas/Member'
+    ResultCollectionMember:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Member'
+    Namespace:
+      type: object
+      properties:
+        namespace:
+          type: string
+        namespaceShowName:
+          type: string
+        namespaceDesc:
+          type: string
+        quota:
+          type: integer
+          format: int32
+        configCount:
+          type: integer
+          format: int32
+        type:
+          type: integer
+          format: int32
+    ResultNamespace:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+        data:
+          $ref: '#/components/schemas/Namespace'
+    ResultListNamespace:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Namespace'
+    RestResultListString:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+        data:
+          type: array
+          items:
+            type: string
+    RestResultObject:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+        data:
+          type: object
+    GroupkeyListenserStatus:
+      type: object
+      properties:
+        collectStatus:
+          type: integer
+          format: int32
+        lisentersGroupkeyStatus:
+          type: object
+          additionalProperties:
+            type: string
+    ConfigAllInfo:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        dataId:
+          type: string
+        group:
+          type: string
+        content:
+          type: string
+        md5:
+          type: string
+        encryptedDataKey:
+          type: string
+        tenant:
+          type: string
+        appName:
+          type: string
+        type:
+          type: string
+        createTime:
+          type: integer
+          format: int64
+        modifyTime:
+          type: integer
+          format: int64
+        createUser:
+          type: string
+        createIp:
+          type: string
+        desc:
+          type: string
+        use:
+          type: string
+        effect:
+          type: string
+        schema:
+          type: string
+        configTags:
+          type: string
+    ConfigInfo4Beta:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        dataId:
+          type: string
+        group:
+          type: string
+        content:
+          type: string
+        md5:
+          type: string
+        encryptedDataKey:
+          type: string
+        tenant:
+          type: string
+        appName:
+          type: string
+        type:
+          type: string
+        betaIps:
+          type: string
+    RestResultConfigInfo4Beta:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+        data:
+          $ref: '#/components/schemas/ConfigInfo4Beta'
+    ConfigAdvanceInfo:
+      type: object
+      properties:
+        createTime:
+          type: integer
+          format: int64
+        modifyTime:
+          type: integer
+          format: int64
+        createUser:
+          type: string
+        createIp:
+          type: string
+        desc:
+          type: string
+        use:
+          type: string
+        effect:
+          type: string
+        type:
+          type: string
+        schema:
+          type: string
+        configTags:
+          type: string
+    RestResultConfigAdvanceInfo:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+        data:
+          $ref: '#/components/schemas/ConfigAdvanceInfo'
+    SampleResult:
+      type: object
+      properties:
+        lisentersGroupkeyStatus:
+          type: object
+          additionalProperties:
+            type: string
+    Capacity:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        quota:
+          type: integer
+          format: int32
+        usage:
+          type: integer
+          format: int32
+        maxSize:
+          type: integer
+          format: int32
+        maxAggrCount:
+          type: integer
+          format: int32
+        maxAggrSize:
+          type: integer
+          format: int32
+        gmtCreate:
+          type: string
+          format: date-time
+        gmtModified:
+          type: string
+          format: date-time
+    RestResultCapacity:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+        data:
+          $ref: '#/components/schemas/Capacity'
+    RestResultMapStringMapObjectObject:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+        data:
+          type: object
+          additionalProperties:
+            type: object
+            additionalProperties:
+              type: object
+    RestResultCollectionString:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+        data:
+          type: array
+          items:
+            type: string
+    RestResultMember:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+        data:
+          $ref: '#/components/schemas/Member'
+    RestResultCollectionMember:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Member'
+    RestResultListNamespace:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Namespace'
+    PageUser:
+      type: object
+      properties:
+        totalCount:
+          type: integer
+          format: int32
+        pageNumber:
+          type: integer
+          format: int32
+        pagesAvailable:
+          type: integer
+          format: int32
+        pageItems:
+          type: array
+          items:
+            $ref: '#/components/schemas/User'
+    User:
+      type: object
+      properties:
+        username:
+          type: string
+        password:
+          type: string
+    PageRoleInfo:
+      type: object
+      properties:
+        totalCount:
+          type: integer
+          format: int32
+        pageNumber:
+          type: integer
+          format: int32
+        pagesAvailable:
+          type: integer
+          format: int32
+        pageItems:
+          type: array
+          items:
+            $ref: '#/components/schemas/RoleInfo'
+    RoleInfo:
+      type: object
+      properties:
+        role:
+          type: string
+        username:
+          type: string
+    PagePermissionInfo:
+      type: object
+      properties:
+        totalCount:
+          type: integer
+          format: int32
+        pageNumber:
+          type: integer
+          format: int32
+        pagesAvailable:
+          type: integer
+          format: int32
+        pageItems:
+          type: array
+          items:
+            $ref: '#/components/schemas/PermissionInfo'
+    PermissionInfo:
+      type: object
+      properties:
+        role:
+          type: string
+        resource:
+          type: string
+        action:
+          type: string
