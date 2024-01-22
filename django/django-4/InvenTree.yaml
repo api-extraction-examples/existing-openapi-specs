@@ -1,11 +1,12 @@
 openapi: 3.0.3
 info:
   title: InvenTree API
-  version: 162
+  version: "1.6.2"
   description: API for InvenTree - the intuitive open source inventory management
     system
   license:
-    MIT: https://github.com/inventree/InvenTree/blob/master/LICENSE
+    name: MIT
+    url: https://github.com/inventree/InvenTree/blob/master/LICENSE
 paths:
   /api/action/:
     post:
@@ -30784,5 +30785,5 @@ components:
       name: Authorization
       description: Token-based authentication with required prefix "Token"
 externalDocs:
-  docs: https://docs.inventree.org
-  web: https://inventree.org
+  description : docs
+  url : https://docs.inventree.org
