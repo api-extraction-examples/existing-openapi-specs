@@ -1,0 +1,2236 @@
+{
+    "openapi": "3.0.1",
+    "info": {
+      "title": "Wasabi Wallet API",
+      "description": "Privacy focused Bitcoin Web API.",
+      "license": {
+        "name": "Use under MIT.",
+        "url": "https://github.com/zkSNACKs/WalletWasabi/blob/master/LICENSE.md"
+      },
+      "version": "v4"
+    },
+    "paths": {
+      "/api/v4/btc/Batch/synchronize": {
+        "get": {
+          "tags": [
+            "Batch"
+          ],
+          "parameters": [
+            {
+              "name": "bestKnownBlockHash",
+              "in": "query",
+              "required": true,
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Success"
+            }
+          }
+        }
+      },
+      "/api/v4/btc/Blockchain/all-fees": {
+        "get": {
+          "tags": [
+            "Blockchain"
+          ],
+          "summary": "Get all fees.",
+          "parameters": [
+            {
+              "name": "estimateSmartFeeMode",
+              "in": "query",
+              "description": "Bitcoin Core's estimatesmartfee mode: ECONOMICAL/CONSERVATIVE.",
+              "required": true,
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "A dictionary of fee targets and estimations."
+            },
+            "400": {
+              "description": "Invalid estimation mode is provided, possible values: ECONOMICAL/CONSERVATIVE.",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ProblemDetails"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/api/v4/btc/Blockchain/mempool-hashes": {
+        "get": {
+          "tags": [
+            "Blockchain"
+          ],
+          "summary": "Gets mempool hashes.",
+          "parameters": [
+            {
+              "name": "compactness",
+              "in": "query",
+              "description": "Can strip the last x characters from the hashes.",
+              "schema": {
+                "type": "integer",
+                "format": "int32",
+                "default": 64
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "A collection of transaction hashes."
+            },
+            "400": {
+              "description": "Invalid model state.",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ProblemDetails"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/api/v4/btc/Blockchain/transaction-hexes": {
+        "get": {
+          "tags": [
+            "Blockchain"
+          ],
+          "summary": "Attempts to get transactions.",
+          "parameters": [
+            {
+              "name": "transactionIds",
+              "in": "query",
+              "description": "The transactions the client is interested in.",
+              "required": true,
+              "schema": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Returns the list of transactions hexes. The list can be empty."
+            },
+            "400": {
+              "description": "Something went wrong.",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ProblemDetails"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/api/v4/btc/Blockchain/broadcast": {
+        "post": {
+          "tags": [
+            "Blockchain"
+          ],
+          "summary": "Attempts to broadcast a transaction.",
+          "description": "Sample request:\r\n            \r\n    POST /broadcast\r\n    \"01000000014b6b6fced23fa0d772f83fd849ce2f4e8fa51ea49cc12710ebcdc722d74c87f5000000006a47304402206bf1118e381342d0387e47807c83d2c1e919e2e3792f2673579a9ce87a380db002207e471504f96d7830dc9cbb7442332d747a25dcfd5d1530feea92b8a302aa57f4012102a40230b345856cc18ca1d745e7ea52319a012753b050e24d7be64ca0b978fb3effffffff0235662803000000001976a9146adfacaab3dc7c51b3300c4256b184f95cc48f4288acd0dd0600000000001976a91411ff558b1790b8d57cb25b9c07094591cfd2051c88ac00000000\"",
+          "requestBody": {
+            "description": "The hex string of the raw transaction.",
+            "content": {
+              "application/json-patch+json": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "application/*+json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "required": true
+          },
+          "responses": {
+            "200": {
+              "description": "If broadcast is successful."
+            },
+            "400": {
+              "description": "If broadcast fails.",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ProblemDetails"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/api/v4/btc/Blockchain/filters": {
+        "get": {
+          "tags": [
+            "Blockchain"
+          ],
+          "summary": "Gets block filters from the provided block hash.",
+          "description": "Filter examples:\r\n            \r\n    Main: 0000000000000000001c8018d9cb3b742ef25114f27563e3fc4a1902167f9893\r\n    TestNet: 00000000000f0d5edcaeba823db17f366be49a80d91d15b77747c2e017b8c20a\r\n    RegTest: 0f9188f13cb7b2c71f2a335e3a4fc328bf5beb436012afca590b1a11466e2206",
+          "parameters": [
+            {
+              "name": "bestKnownBlockHash",
+              "in": "query",
+              "description": "The best block hash the client knows its filter.",
+              "required": true,
+              "schema": {
+                "type": "string"
+              }
+            },
+            {
+              "name": "count",
+              "in": "query",
+              "description": "The number of filters to return.",
+              "required": true,
+              "schema": {
+                "type": "integer",
+                "format": "int32"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "The best height and an array of block hash : element count : filter pairs."
+            },
+            "204": {
+              "description": "When the provided hash is the tip."
+            },
+            "400": {
+              "description": "The provided hash was malformed or the count value is out of range",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ProblemDetails"
+                  }
+                }
+              }
+            },
+            "404": {
+              "description": "If the hash is not found. This happens at blockchain reorg.",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ProblemDetails"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/api/v4/btc/Blockchain/status": {
+        "get": {
+          "tags": [
+            "Blockchain"
+          ],
+          "responses": {
+            "200": {
+              "description": "Success",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/StatusResponse"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/api/v3/btc/Blockchain/all-fees": {
+        "get": {
+          "tags": [
+            "Legacy"
+          ],
+          "parameters": [
+            {
+              "name": "estimateSmartFeeMode",
+              "in": "query",
+              "required": true,
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Success"
+            }
+          }
+        }
+      },
+      "/api/v3/btc/Offchain/exchange-rates": {
+        "get": {
+          "tags": [
+            "Legacy"
+          ],
+          "responses": {
+            "200": {
+              "description": "Success"
+            }
+          }
+        }
+      },
+      "/api/v4/btc/Offchain/exchange-rates": {
+        "get": {
+          "tags": [
+            "Offchain"
+          ],
+          "summary": "Gets exchange rates for one Bitcoin.",
+          "responses": {
+            "200": {
+              "description": "Returns an array of exchange rates."
+            },
+            "404": {
+              "description": "Exchange rates are not available.",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ProblemDetails"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/api/Software/versions": {
+        "get": {
+          "tags": [
+            "Software"
+          ],
+          "summary": "Gets the latest versions of the client and backend.",
+          "responses": {
+            "200": {
+              "description": "ClientVersion, BackendMajorVersion.",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/VersionsResponse"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/WabiSabi/status": {
+        "post": {
+          "tags": [
+            "WabiSabi"
+          ],
+          "requestBody": {
+            "content": {
+              "application/json-patch+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RoundStateRequest"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RoundStateRequest"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RoundStateRequest"
+                }
+              },
+              "application/*+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RoundStateRequest"
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "Success",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/RoundStateResponse"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/WabiSabi/connection-confirmation": {
+        "post": {
+          "tags": [
+            "WabiSabi"
+          ],
+          "requestBody": {
+            "content": {
+              "application/json-patch+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ConnectionConfirmationRequest"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ConnectionConfirmationRequest"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ConnectionConfirmationRequest"
+                }
+              },
+              "application/*+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ConnectionConfirmationRequest"
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "Success",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ConnectionConfirmationResponse"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/WabiSabi/input-registration": {
+        "post": {
+          "tags": [
+            "WabiSabi"
+          ],
+          "requestBody": {
+            "content": {
+              "application/json-patch+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InputRegistrationRequest"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InputRegistrationRequest"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InputRegistrationRequest"
+                }
+              },
+              "application/*+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InputRegistrationRequest"
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "Success",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/InputRegistrationResponse"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/WabiSabi/output-registration": {
+        "post": {
+          "tags": [
+            "WabiSabi"
+          ],
+          "requestBody": {
+            "content": {
+              "application/json-patch+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OutputRegistrationRequest"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OutputRegistrationRequest"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OutputRegistrationRequest"
+                }
+              },
+              "application/*+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OutputRegistrationRequest"
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "Success"
+            }
+          }
+        }
+      },
+      "/WabiSabi/credential-issuance": {
+        "post": {
+          "tags": [
+            "WabiSabi"
+          ],
+          "requestBody": {
+            "content": {
+              "application/json-patch+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReissueCredentialRequest"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReissueCredentialRequest"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReissueCredentialRequest"
+                }
+              },
+              "application/*+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReissueCredentialRequest"
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "Success",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ReissueCredentialResponse"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/WabiSabi/input-unregistration": {
+        "post": {
+          "tags": [
+            "WabiSabi"
+          ],
+          "requestBody": {
+            "content": {
+              "application/json-patch+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InputsRemovalRequest"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InputsRemovalRequest"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InputsRemovalRequest"
+                }
+              },
+              "application/*+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InputsRemovalRequest"
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "Success"
+            }
+          }
+        }
+      },
+      "/WabiSabi/transaction-signature": {
+        "post": {
+          "tags": [
+            "WabiSabi"
+          ],
+          "requestBody": {
+            "content": {
+              "application/json-patch+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TransactionSignaturesRequest"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TransactionSignaturesRequest"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TransactionSignaturesRequest"
+                }
+              },
+              "application/*+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TransactionSignaturesRequest"
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "Success"
+            }
+          }
+        }
+      },
+      "/WabiSabi/ready-to-sign": {
+        "post": {
+          "tags": [
+            "WabiSabi"
+          ],
+          "requestBody": {
+            "content": {
+              "application/json-patch+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReadyToSignRequestRequest"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReadyToSignRequestRequest"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReadyToSignRequestRequest"
+                }
+              },
+              "application/*+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReadyToSignRequestRequest"
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "Success"
+            }
+          }
+        }
+      },
+      "/WabiSabi/human-monitor": {
+        "get": {
+          "tags": [
+            "WabiSabi"
+          ],
+          "summary": "Information about the current Rounds designed for the human eyes.",
+          "responses": {
+            "200": {
+              "description": "Success",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/HumanMonitorResponse"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/WabiSabi/unconfirmed-coinjoins": {
+        "get": {
+          "tags": [
+            "WabiSabi"
+          ],
+          "summary": "Gets the list of unconfirmed coinjoin transaction Ids.",
+          "responses": {
+            "200": {
+              "description": "An array of transaction Ids"
+            }
+          }
+        }
+      },
+      "/api/v4/Wasabi/legaldocuments": {
+        "get": {
+          "tags": [
+            "Wasabi"
+          ],
+          "summary": "Gets the latest legal documents.",
+          "parameters": [
+            {
+              "name": "id",
+              "in": "query",
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Returns the legal documents.",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "string",
+                    "format": "byte"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "components": {
+      "schemas": {
+        "AddressFamily": {
+          "enum": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16,
+            17,
+            18,
+            19,
+            21,
+            22,
+            23,
+            24,
+            25,
+            26,
+            28,
+            29,
+            65536,
+            65537,
+            -1
+          ],
+          "type": "integer",
+          "format": "int32"
+        },
+        "AffiliateInformation": {
+          "type": "object",
+          "properties": {
+            "runningAffiliateServers": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "affiliateData": {
+              "type": "object",
+              "additionalProperties": {
+                "type": "object",
+                "additionalProperties": {
+                  "type": "string",
+                  "format": "byte"
+                }
+              },
+              "nullable": true
+            }
+          },
+          "additionalProperties": false
+        },
+        "BIP9DeploymentsArray": {
+          "type": "object",
+          "additionalProperties": false
+        },
+        "Bip322Signature": {
+          "type": "object",
+          "properties": {
+            "scriptSig": {
+              "$ref": "#/components/schemas/Script"
+            },
+            "witness": {
+              "$ref": "#/components/schemas/WitScript"
+            }
+          },
+          "additionalProperties": false
+        },
+        "BuriedDeploymentsArray": {
+          "type": "object",
+          "additionalProperties": false
+        },
+        "ChainName": {
+          "type": "object",
+          "additionalProperties": false
+        },
+        "Coin": {
+          "type": "object",
+          "properties": {
+            "isMalleable": {
+              "type": "boolean",
+              "readOnly": true
+            },
+            "canGetScriptCode": {
+              "type": "boolean",
+              "readOnly": true
+            },
+            "outpoint": {
+              "$ref": "#/components/schemas/OutPoint"
+            },
+            "txOut": {
+              "$ref": "#/components/schemas/TxOut"
+            },
+            "amount": {
+              "$ref": "#/components/schemas/Money"
+            },
+            "scriptPubKey": {
+              "$ref": "#/components/schemas/Script"
+            }
+          },
+          "additionalProperties": false
+        },
+        "CoinJoinFeeRateMedian": {
+          "type": "object",
+          "properties": {
+            "timeFrame": {
+              "$ref": "#/components/schemas/TimeSpan"
+            },
+            "medianFeeRate": {
+              "$ref": "#/components/schemas/FeeRate"
+            }
+          },
+          "additionalProperties": false
+        },
+        "ConnectionConfirmationRequest": {
+          "type": "object",
+          "properties": {
+            "roundId": {
+              "$ref": "#/components/schemas/uint256"
+            },
+            "aliceId": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "zeroAmountCredentialRequests": {
+              "$ref": "#/components/schemas/ZeroCredentialsRequest"
+            },
+            "realAmountCredentialRequests": {
+              "$ref": "#/components/schemas/RealCredentialsRequest"
+            },
+            "zeroVsizeCredentialRequests": {
+              "$ref": "#/components/schemas/ZeroCredentialsRequest"
+            },
+            "realVsizeCredentialRequests": {
+              "$ref": "#/components/schemas/RealCredentialsRequest"
+            }
+          },
+          "additionalProperties": false
+        },
+        "ConnectionConfirmationResponse": {
+          "type": "object",
+          "properties": {
+            "zeroAmountCredentials": {
+              "$ref": "#/components/schemas/CredentialsResponse"
+            },
+            "zeroVsizeCredentials": {
+              "$ref": "#/components/schemas/CredentialsResponse"
+            },
+            "realAmountCredentials": {
+              "$ref": "#/components/schemas/CredentialsResponse"
+            },
+            "realVsizeCredentials": {
+              "$ref": "#/components/schemas/CredentialsResponse"
+            }
+          },
+          "additionalProperties": false
+        },
+        "Consensus": {
+          "type": "object",
+          "properties": {
+            "buriedDeployments": {
+              "$ref": "#/components/schemas/BuriedDeploymentsArray"
+            },
+            "biP9Deployments": {
+              "$ref": "#/components/schemas/BIP9DeploymentsArray"
+            },
+            "subsidyHalvingInterval": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "consensusFactory": {
+              "$ref": "#/components/schemas/ConsensusFactory"
+            },
+            "majorityEnforceBlockUpgrade": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "majorityRejectBlockOutdated": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "majorityWindow": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "biP34Hash": {
+              "$ref": "#/components/schemas/uint256"
+            },
+            "powLimit": {
+              "$ref": "#/components/schemas/Target"
+            },
+            "powTargetTimespan": {
+              "$ref": "#/components/schemas/TimeSpan"
+            },
+            "powTargetSpacing": {
+              "$ref": "#/components/schemas/TimeSpan"
+            },
+            "powAllowMinDifficultyBlocks": {
+              "type": "boolean"
+            },
+            "powNoRetargeting": {
+              "type": "boolean"
+            },
+            "hashGenesisBlock": {
+              "$ref": "#/components/schemas/uint256"
+            },
+            "minimumChainWork": {
+              "$ref": "#/components/schemas/uint256"
+            },
+            "difficultyAdjustmentInterval": {
+              "type": "integer",
+              "format": "int64",
+              "readOnly": true
+            },
+            "minerConfirmationWindow": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "ruleChangeActivationThreshold": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "coinbaseMaturity": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "coinType": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "litecoinWorkCalculation": {
+              "type": "boolean"
+            },
+            "supportTaproot": {
+              "type": "boolean"
+            },
+            "supportSegwit": {
+              "type": "boolean"
+            },
+            "neverNeedPreviousTxForSigning": {
+              "type": "boolean"
+            }
+          },
+          "additionalProperties": false
+        },
+        "ConsensusFactory": {
+          "type": "object",
+          "additionalProperties": false
+        },
+        "CoordinationFeeRate": {
+          "type": "object",
+          "properties": {
+            "rate": {
+              "type": "number",
+              "format": "double"
+            },
+            "plebsDontPayThreshold": {
+              "$ref": "#/components/schemas/Money"
+            }
+          },
+          "additionalProperties": false
+        },
+        "CredentialIssuerParameters": {
+          "type": "object",
+          "properties": {
+            "cw": {
+              "$ref": "#/components/schemas/GroupElement"
+            },
+            "i": {
+              "$ref": "#/components/schemas/GroupElement"
+            }
+          },
+          "additionalProperties": false
+        },
+        "CredentialPresentation": {
+          "type": "object",
+          "properties": {
+            "ca": {
+              "$ref": "#/components/schemas/GroupElement"
+            },
+            "cx0": {
+              "$ref": "#/components/schemas/GroupElement"
+            },
+            "cx1": {
+              "$ref": "#/components/schemas/GroupElement"
+            },
+            "cv": {
+              "$ref": "#/components/schemas/GroupElement"
+            },
+            "s": {
+              "$ref": "#/components/schemas/GroupElement"
+            }
+          },
+          "additionalProperties": false
+        },
+        "CredentialsResponse": {
+          "type": "object",
+          "properties": {
+            "issuedCredentials": {
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/MAC"
+              },
+              "nullable": true
+            },
+            "proofs": {
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/Proof"
+              },
+              "nullable": true
+            }
+          },
+          "additionalProperties": false
+        },
+        "DNSSeedData": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string",
+              "nullable": true
+            },
+            "host": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          "additionalProperties": false
+        },
+        "EndPoint": {
+          "type": "object",
+          "properties": {
+            "addressFamily": {
+              "$ref": "#/components/schemas/AddressFamily"
+            }
+          },
+          "additionalProperties": false
+        },
+        "EndRoundState": {
+          "enum": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8
+          ],
+          "type": "integer",
+          "format": "int32"
+        },
+        "FeeRate": {
+          "type": "object",
+          "properties": {
+            "feePerK": {
+              "$ref": "#/components/schemas/Money"
+            },
+            "satoshiPerByte": {
+              "type": "number",
+              "format": "double",
+              "readOnly": true
+            }
+          },
+          "additionalProperties": false
+        },
+        "GroupElement": {
+          "type": "object",
+          "properties": {
+            "isInfinity": {
+              "type": "boolean",
+              "readOnly": true
+            }
+          },
+          "additionalProperties": false
+        },
+        "HumanMonitorResponse": {
+          "type": "object",
+          "properties": {
+            "roundStates": {
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/HumanMonitorRoundResponse"
+              },
+              "nullable": true
+            }
+          },
+          "additionalProperties": false
+        },
+        "HumanMonitorRoundResponse": {
+          "type": "object",
+          "properties": {
+            "roundId": {
+              "$ref": "#/components/schemas/uint256"
+            },
+            "isBlameRound": {
+              "type": "boolean"
+            },
+            "inputCount": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "maxSuggestedAmount": {
+              "type": "number",
+              "format": "double"
+            },
+            "inputRegistrationRemaining": {
+              "$ref": "#/components/schemas/TimeSpan"
+            },
+            "phase": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          "additionalProperties": false
+        },
+        "IEvent": {
+          "type": "object",
+          "additionalProperties": false
+        },
+        "INetworkSet": {
+          "type": "object",
+          "properties": {
+            "mainnet": {
+              "$ref": "#/components/schemas/Network"
+            },
+            "testnet": {
+              "$ref": "#/components/schemas/Network"
+            },
+            "regtest": {
+              "$ref": "#/components/schemas/Network"
+            },
+            "cryptoCode": {
+              "type": "string",
+              "nullable": true,
+              "readOnly": true
+            }
+          },
+          "additionalProperties": false
+        },
+        "InputRegistrationRequest": {
+          "type": "object",
+          "properties": {
+            "roundId": {
+              "$ref": "#/components/schemas/uint256"
+            },
+            "input": {
+              "$ref": "#/components/schemas/OutPoint"
+            },
+            "ownershipProof": {
+              "$ref": "#/components/schemas/OwnershipProof"
+            },
+            "zeroAmountCredentialRequests": {
+              "$ref": "#/components/schemas/ZeroCredentialsRequest"
+            },
+            "zeroVsizeCredentialRequests": {
+              "$ref": "#/components/schemas/ZeroCredentialsRequest"
+            }
+          },
+          "additionalProperties": false
+        },
+        "InputRegistrationResponse": {
+          "type": "object",
+          "properties": {
+            "aliceId": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "amountCredentials": {
+              "$ref": "#/components/schemas/CredentialsResponse"
+            },
+            "vsizeCredentials": {
+              "$ref": "#/components/schemas/CredentialsResponse"
+            },
+            "isCoordinationFeeExempted": {
+              "type": "boolean"
+            }
+          },
+          "additionalProperties": false
+        },
+        "InputsRemovalRequest": {
+          "type": "object",
+          "properties": {
+            "roundId": {
+              "$ref": "#/components/schemas/uint256"
+            },
+            "aliceId": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          "additionalProperties": false
+        },
+        "IssuanceRequest": {
+          "type": "object",
+          "properties": {
+            "ma": {
+              "$ref": "#/components/schemas/GroupElement"
+            },
+            "bitCommitments": {
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/GroupElement"
+              },
+              "nullable": true,
+              "readOnly": true
+            }
+          },
+          "additionalProperties": false
+        },
+        "MAC": {
+          "type": "object",
+          "properties": {
+            "t": {
+              "$ref": "#/components/schemas/Scalar"
+            },
+            "v": {
+              "$ref": "#/components/schemas/GroupElement"
+            }
+          },
+          "additionalProperties": false
+        },
+        "Money": {
+          "type": "object",
+          "properties": {
+            "satoshi": {
+              "type": "integer",
+              "format": "int64",
+              "readOnly": true
+            }
+          },
+          "additionalProperties": false
+        },
+        "MoneyRange": {
+          "type": "object",
+          "properties": {
+            "min": {
+              "$ref": "#/components/schemas/Money"
+            },
+            "max": {
+              "$ref": "#/components/schemas/Money"
+            }
+          },
+          "additionalProperties": false
+        },
+        "MultipartyTransactionState": {
+          "type": "object",
+          "properties": {
+            "parameters": {
+              "$ref": "#/components/schemas/RoundParameters"
+            },
+            "inputs": {
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/Coin"
+              },
+              "nullable": true,
+              "readOnly": true
+            },
+            "outputs": {
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/TxOut"
+              },
+              "nullable": true,
+              "readOnly": true
+            },
+            "balance": {
+              "$ref": "#/components/schemas/Money"
+            },
+            "estimatedInputsVsize": {
+              "type": "integer",
+              "format": "int32",
+              "readOnly": true
+            },
+            "outputsVsize": {
+              "type": "integer",
+              "format": "int32",
+              "readOnly": true
+            },
+            "estimatedVsize": {
+              "type": "integer",
+              "format": "int32",
+              "readOnly": true
+            },
+            "estimatedCost": {
+              "$ref": "#/components/schemas/Money"
+            },
+            "unpaidSharedOverhead": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "effectiveFeeRate": {
+              "$ref": "#/components/schemas/FeeRate"
+            },
+            "events": {
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/IEvent"
+              },
+              "nullable": true
+            }
+          },
+          "additionalProperties": false
+        },
+        "Network": {
+          "type": "object",
+          "properties": {
+            "uriScheme": {
+              "type": "string",
+              "nullable": true,
+              "readOnly": true
+            },
+            "maxP2PVersion": {
+              "type": "integer",
+              "format": "int32",
+              "readOnly": true
+            },
+            "rpcPort": {
+              "type": "integer",
+              "format": "int32",
+              "readOnly": true
+            },
+            "defaultPort": {
+              "type": "integer",
+              "format": "int32",
+              "readOnly": true
+            },
+            "consensus": {
+              "$ref": "#/components/schemas/Consensus"
+            },
+            "name": {
+              "type": "string",
+              "nullable": true,
+              "readOnly": true
+            },
+            "chainName": {
+              "$ref": "#/components/schemas/ChainName"
+            },
+            "networkSet": {
+              "$ref": "#/components/schemas/INetworkSet"
+            },
+            "genesisHash": {
+              "$ref": "#/components/schemas/uint256"
+            },
+            "seedNodes": {
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/NetworkAddress"
+              },
+              "nullable": true,
+              "readOnly": true
+            },
+            "dnsSeeds": {
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/DNSSeedData"
+              },
+              "nullable": true,
+              "readOnly": true
+            },
+            "magicBytes": {
+              "type": "string",
+              "format": "byte",
+              "nullable": true,
+              "readOnly": true
+            },
+            "magic": {
+              "type": "integer",
+              "format": "int32",
+              "readOnly": true
+            }
+          },
+          "additionalProperties": false
+        },
+        "NetworkAddress": {
+          "type": "object",
+          "properties": {
+            "addressType": {
+              "$ref": "#/components/schemas/NetworkAddressType"
+            },
+            "port": {
+              "type": "integer",
+              "format": "int32",
+              "readOnly": true
+            },
+            "isIPv4": {
+              "type": "boolean",
+              "readOnly": true,
+              "deprecated": true
+            },
+            "isIPv6": {
+              "type": "boolean",
+              "readOnly": true,
+              "deprecated": true
+            },
+            "isTor": {
+              "type": "boolean",
+              "readOnly": true,
+              "deprecated": true
+            },
+            "isI2P": {
+              "type": "boolean",
+              "readOnly": true,
+              "deprecated": true
+            },
+            "isCjdns": {
+              "type": "boolean",
+              "readOnly": true,
+              "deprecated": true
+            },
+            "endpoint": {
+              "$ref": "#/components/schemas/EndPoint"
+            },
+            "services": {
+              "$ref": "#/components/schemas/NodeServices"
+            },
+            "time": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "ago": {
+              "$ref": "#/components/schemas/TimeSpan"
+            },
+            "isAddrV1Compatible": {
+              "type": "boolean",
+              "readOnly": true
+            }
+          },
+          "additionalProperties": false
+        },
+        "NetworkAddressType": {
+          "enum": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5
+          ],
+          "type": "integer",
+          "format": "int32"
+        },
+        "NodeServices": {
+          "enum": [
+            0,
+            1,
+            2,
+            4,
+            8,
+            64,
+            1024
+          ],
+          "type": "integer",
+          "format": "int64"
+        },
+        "OutPoint": {
+          "type": "object",
+          "properties": {
+            "isNull": {
+              "type": "boolean",
+              "readOnly": true
+            },
+            "hash": {
+              "$ref": "#/components/schemas/uint256"
+            },
+            "n": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          "additionalProperties": false
+        },
+        "OutputRegistrationRequest": {
+          "type": "object",
+          "properties": {
+            "roundId": {
+              "$ref": "#/components/schemas/uint256"
+            },
+            "script": {
+              "$ref": "#/components/schemas/Script"
+            },
+            "amountCredentialRequests": {
+              "$ref": "#/components/schemas/RealCredentialsRequest"
+            },
+            "vsizeCredentialRequests": {
+              "$ref": "#/components/schemas/RealCredentialsRequest"
+            }
+          },
+          "additionalProperties": false
+        },
+        "OwnershipIdentifier": {
+          "type": "object",
+          "properties": {
+            "bytes": {
+              "type": "string",
+              "format": "byte",
+              "nullable": true,
+              "readOnly": true
+            }
+          },
+          "additionalProperties": false
+        },
+        "OwnershipProof": {
+          "type": "object",
+          "properties": {
+            "proofBody": {
+              "$ref": "#/components/schemas/ProofBody"
+            },
+            "proofSignature": {
+              "$ref": "#/components/schemas/Bip322Signature"
+            }
+          },
+          "additionalProperties": false
+        },
+        "Phase": {
+          "enum": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ],
+          "type": "integer",
+          "format": "int32"
+        },
+        "ProblemDetails": {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "string",
+              "nullable": true
+            },
+            "title": {
+              "type": "string",
+              "nullable": true
+            },
+            "status": {
+              "type": "integer",
+              "format": "int32",
+              "nullable": true
+            },
+            "detail": {
+              "type": "string",
+              "nullable": true
+            },
+            "instance": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          "additionalProperties": { }
+        },
+        "Proof": {
+          "type": "object",
+          "properties": {
+            "publicNonces": {
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/GroupElement"
+              },
+              "nullable": true,
+              "readOnly": true
+            },
+            "responses": {
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/Scalar"
+              },
+              "nullable": true,
+              "readOnly": true
+            }
+          },
+          "additionalProperties": false
+        },
+        "ProofBody": {
+          "type": "object",
+          "properties": {
+            "ownershipIdentifiers": {
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/OwnershipIdentifier"
+              },
+              "nullable": true,
+              "readOnly": true
+            },
+            "flags": {
+              "$ref": "#/components/schemas/ProofBodyFlags"
+            }
+          },
+          "additionalProperties": false
+        },
+        "ProofBodyFlags": {
+          "enum": [
+            1
+          ],
+          "type": "integer",
+          "format": "int32"
+        },
+        "ReadyToSignRequestRequest": {
+          "type": "object",
+          "properties": {
+            "roundId": {
+              "$ref": "#/components/schemas/uint256"
+            },
+            "aliceId": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "affiliationId": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          "additionalProperties": false
+        },
+        "RealCredentialsRequest": {
+          "type": "object",
+          "properties": {
+            "delta": {
+              "type": "integer",
+              "format": "int64"
+            },
+            "presented": {
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/CredentialPresentation"
+              },
+              "nullable": true
+            },
+            "requested": {
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/IssuanceRequest"
+              },
+              "nullable": true
+            },
+            "proofs": {
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/Proof"
+              },
+              "nullable": true
+            }
+          },
+          "additionalProperties": false
+        },
+        "ReissueCredentialRequest": {
+          "type": "object",
+          "properties": {
+            "roundId": {
+              "$ref": "#/components/schemas/uint256"
+            },
+            "realAmountCredentialRequests": {
+              "$ref": "#/components/schemas/RealCredentialsRequest"
+            },
+            "realVsizeCredentialRequests": {
+              "$ref": "#/components/schemas/RealCredentialsRequest"
+            },
+            "zeroAmountCredentialRequests": {
+              "$ref": "#/components/schemas/ZeroCredentialsRequest"
+            },
+            "zeroVsizeCredentialsRequests": {
+              "$ref": "#/components/schemas/ZeroCredentialsRequest"
+            }
+          },
+          "additionalProperties": false
+        },
+        "ReissueCredentialResponse": {
+          "type": "object",
+          "properties": {
+            "realAmountCredentials": {
+              "$ref": "#/components/schemas/CredentialsResponse"
+            },
+            "realVsizeCredentials": {
+              "$ref": "#/components/schemas/CredentialsResponse"
+            },
+            "zeroAmountCredentials": {
+              "$ref": "#/components/schemas/CredentialsResponse"
+            },
+            "zeroVsizeCredentials": {
+              "$ref": "#/components/schemas/CredentialsResponse"
+            }
+          },
+          "additionalProperties": false
+        },
+        "RoundParameters": {
+          "type": "object",
+          "properties": {
+            "network": {
+              "$ref": "#/components/schemas/Network"
+            },
+            "miningFeeRate": {
+              "$ref": "#/components/schemas/FeeRate"
+            },
+            "coordinationFeeRate": {
+              "$ref": "#/components/schemas/CoordinationFeeRate"
+            },
+            "maxSuggestedAmount": {
+              "$ref": "#/components/schemas/Money"
+            },
+            "minInputCountByRound": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "maxInputCountByRound": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "allowedInputAmounts": {
+              "$ref": "#/components/schemas/MoneyRange"
+            },
+            "allowedOutputAmounts": {
+              "$ref": "#/components/schemas/MoneyRange"
+            },
+            "allowedInputTypes": {
+              "uniqueItems": true,
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/ScriptType"
+              },
+              "nullable": true
+            },
+            "allowedOutputTypes": {
+              "uniqueItems": true,
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/ScriptType"
+              },
+              "nullable": true
+            },
+            "standardInputRegistrationTimeout": {
+              "$ref": "#/components/schemas/TimeSpan"
+            },
+            "connectionConfirmationTimeout": {
+              "$ref": "#/components/schemas/TimeSpan"
+            },
+            "outputRegistrationTimeout": {
+              "$ref": "#/components/schemas/TimeSpan"
+            },
+            "transactionSigningTimeout": {
+              "$ref": "#/components/schemas/TimeSpan"
+            },
+            "blameInputRegistrationTimeout": {
+              "$ref": "#/components/schemas/TimeSpan"
+            },
+            "minAmountCredentialValue": {
+              "$ref": "#/components/schemas/Money"
+            },
+            "maxAmountCredentialValue": {
+              "$ref": "#/components/schemas/Money"
+            },
+            "initialInputVsizeAllocation": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "maxVsizeCredentialValue": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "maxVsizeAllocationPerAlice": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "coordinationIdentifier": {
+              "type": "string",
+              "nullable": true
+            },
+            "delayTransactionSigning": {
+              "type": "boolean"
+            },
+            "maxTransactionSize": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "minRelayTxFee": {
+              "$ref": "#/components/schemas/FeeRate"
+            }
+          },
+          "additionalProperties": false
+        },
+        "RoundState": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "$ref": "#/components/schemas/uint256"
+            },
+            "blameOf": {
+              "$ref": "#/components/schemas/uint256"
+            },
+            "amountCredentialIssuerParameters": {
+              "$ref": "#/components/schemas/CredentialIssuerParameters"
+            },
+            "vsizeCredentialIssuerParameters": {
+              "$ref": "#/components/schemas/CredentialIssuerParameters"
+            },
+            "phase": {
+              "$ref": "#/components/schemas/Phase"
+            },
+            "endRoundState": {
+              "$ref": "#/components/schemas/EndRoundState"
+            },
+            "inputRegistrationStart": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "inputRegistrationTimeout": {
+              "$ref": "#/components/schemas/TimeSpan"
+            },
+            "coinjoinState": {
+              "$ref": "#/components/schemas/MultipartyTransactionState"
+            },
+            "inputRegistrationEnd": {
+              "type": "string",
+              "format": "date-time",
+              "readOnly": true
+            },
+            "isBlame": {
+              "type": "boolean",
+              "readOnly": true
+            }
+          },
+          "additionalProperties": false
+        },
+        "RoundStateCheckpoint": {
+          "type": "object",
+          "properties": {
+            "roundId": {
+              "$ref": "#/components/schemas/uint256"
+            },
+            "stateId": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          "additionalProperties": false
+        },
+        "RoundStateRequest": {
+          "type": "object",
+          "properties": {
+            "roundCheckpoints": {
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/RoundStateCheckpoint"
+              },
+              "nullable": true
+            }
+          },
+          "additionalProperties": false
+        },
+        "RoundStateResponse": {
+          "type": "object",
+          "properties": {
+            "roundStates": {
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/RoundState"
+              },
+              "nullable": true
+            },
+            "coinJoinFeeRateMedians": {
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/CoinJoinFeeRateMedian"
+              },
+              "nullable": true
+            },
+            "affiliateInformation": {
+              "$ref": "#/components/schemas/AffiliateInformation"
+            }
+          },
+          "additionalProperties": false
+        },
+        "Scalar": {
+          "type": "object",
+          "properties": {
+            "isOverflow": {
+              "type": "boolean",
+              "readOnly": true
+            },
+            "isEven": {
+              "type": "boolean",
+              "readOnly": true
+            },
+            "isHigh": {
+              "type": "boolean",
+              "readOnly": true
+            },
+            "isZero": {
+              "type": "boolean",
+              "readOnly": true
+            },
+            "isOne": {
+              "type": "boolean",
+              "readOnly": true
+            }
+          },
+          "additionalProperties": false
+        },
+        "Script": {
+          "type": "object",
+          "properties": {
+            "length": {
+              "type": "integer",
+              "format": "int32",
+              "readOnly": true
+            },
+            "taprootV1LeafHash": {
+              "$ref": "#/components/schemas/uint256"
+            },
+            "paymentScript": {
+              "$ref": "#/components/schemas/Script"
+            },
+            "isPushOnly": {
+              "type": "boolean",
+              "readOnly": true
+            },
+            "hasCanonicalPushes": {
+              "type": "boolean",
+              "readOnly": true
+            },
+            "hash": {
+              "$ref": "#/components/schemas/ScriptId"
+            },
+            "witHash": {
+              "$ref": "#/components/schemas/WitScriptId"
+            },
+            "isMalleable": {
+              "type": "boolean",
+              "readOnly": true
+            },
+            "isUnspendable": {
+              "type": "boolean",
+              "readOnly": true
+            },
+            "isValid": {
+              "type": "boolean",
+              "readOnly": true
+            }
+          },
+          "additionalProperties": false
+        },
+        "ScriptId": {
+          "type": "object",
+          "properties": {
+            "scriptPubKey": {
+              "$ref": "#/components/schemas/Script"
+            }
+          },
+          "additionalProperties": false
+        },
+        "ScriptType": {
+          "enum": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7
+          ],
+          "type": "integer",
+          "format": "int32"
+        },
+        "StatusResponse": {
+          "type": "object",
+          "properties": {
+            "filterCreationActive": {
+              "type": "boolean"
+            },
+            "wabiSabiCoinJoinCreationActive": {
+              "type": "boolean"
+            }
+          },
+          "additionalProperties": false
+        },
+        "Target": {
+          "type": "object",
+          "properties": {
+            "difficulty": {
+              "type": "number",
+              "format": "double",
+              "readOnly": true
+            }
+          },
+          "additionalProperties": false
+        },
+        "TimeSpan": {
+          "type": "object",
+          "properties": {
+            "ticks": {
+              "type": "integer",
+              "format": "int64"
+            },
+            "days": {
+              "type": "integer",
+              "format": "int32",
+              "readOnly": true
+            },
+            "hours": {
+              "type": "integer",
+              "format": "int32",
+              "readOnly": true
+            },
+            "milliseconds": {
+              "type": "integer",
+              "format": "int32",
+              "readOnly": true
+            },
+            "microseconds": {
+              "type": "integer",
+              "format": "int32",
+              "readOnly": true
+            },
+            "nanoseconds": {
+              "type": "integer",
+              "format": "int32",
+              "readOnly": true
+            },
+            "minutes": {
+              "type": "integer",
+              "format": "int32",
+              "readOnly": true
+            },
+            "seconds": {
+              "type": "integer",
+              "format": "int32",
+              "readOnly": true
+            },
+            "totalDays": {
+              "type": "number",
+              "format": "double",
+              "readOnly": true
+            },
+            "totalHours": {
+              "type": "number",
+              "format": "double",
+              "readOnly": true
+            },
+            "totalMilliseconds": {
+              "type": "number",
+              "format": "double",
+              "readOnly": true
+            },
+            "totalMicroseconds": {
+              "type": "number",
+              "format": "double",
+              "readOnly": true
+            },
+            "totalNanoseconds": {
+              "type": "number",
+              "format": "double",
+              "readOnly": true
+            },
+            "totalMinutes": {
+              "type": "number",
+              "format": "double",
+              "readOnly": true
+            },
+            "totalSeconds": {
+              "type": "number",
+              "format": "double",
+              "readOnly": true
+            }
+          },
+          "additionalProperties": false
+        },
+        "TransactionSignaturesRequest": {
+          "type": "object",
+          "properties": {
+            "roundId": {
+              "$ref": "#/components/schemas/uint256"
+            },
+            "inputIndex": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "witness": {
+              "$ref": "#/components/schemas/WitScript"
+            }
+          },
+          "additionalProperties": false
+        },
+        "TxOut": {
+          "type": "object",
+          "properties": {
+            "scriptPubKey": {
+              "$ref": "#/components/schemas/Script"
+            },
+            "value": {
+              "$ref": "#/components/schemas/Money"
+            }
+          },
+          "additionalProperties": false
+        },
+        "VersionsResponse": {
+          "type": "object",
+          "properties": {
+            "clientVersion": {
+              "type": "string",
+              "nullable": true
+            },
+            "backendMajorVersion": {
+              "type": "string",
+              "nullable": true
+            },
+            "ww1LegalDocumentsVersion": {
+              "type": "string",
+              "nullable": true
+            },
+            "ww2LegalDocumentsVersion": {
+              "type": "string",
+              "nullable": true
+            },
+            "commitHash": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          "additionalProperties": false
+        },
+        "WitScript": {
+          "type": "object",
+          "properties": {
+            "pushes": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "format": "byte"
+              },
+              "nullable": true,
+              "readOnly": true
+            },
+            "pushCount": {
+              "type": "integer",
+              "format": "int32",
+              "readOnly": true
+            }
+          },
+          "additionalProperties": false
+        },
+        "WitScriptId": {
+          "type": "object",
+          "properties": {
+            "hashForLookUp": {
+              "$ref": "#/components/schemas/ScriptId"
+            },
+            "scriptPubKey": {
+              "$ref": "#/components/schemas/Script"
+            }
+          },
+          "additionalProperties": false
+        },
+        "ZeroCredentialsRequest": {
+          "type": "object",
+          "properties": {
+            "delta": {
+              "type": "integer",
+              "format": "int64",
+              "readOnly": true
+            },
+            "presented": {
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/CredentialPresentation"
+              },
+              "nullable": true,
+              "readOnly": true
+            },
+            "requested": {
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/IssuanceRequest"
+              },
+              "nullable": true
+            },
+            "proofs": {
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/Proof"
+              },
+              "nullable": true
+            }
+          },
+          "additionalProperties": false
+        },
+        "uint256": {
+          "type": "object",
+          "properties": {
+            "size": {
+              "type": "integer",
+              "format": "int32",
+              "readOnly": true
+            }
+          },
+          "additionalProperties": false
+        }
+      }
+    }
+  }
