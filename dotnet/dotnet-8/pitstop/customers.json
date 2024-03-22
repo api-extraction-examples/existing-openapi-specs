@@ -1,0 +1,86 @@
+{
+    "openapi": "3.0.1",
+    "info": {
+      "title": "CustomerManagement API",
+      "version": "v1"
+    },
+    "paths": {
+      "/api/Customers": {
+        "get": {
+          "tags": [
+            "Customers"
+          ],
+          "responses": {
+            "200": {
+              "description": "Success"
+            }
+          }
+        },
+        "post": {
+          "tags": [
+            "Customers"
+          ],
+          "requestBody": {
+            "content": {
+              "application/json-patch+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RegisterCustomer"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RegisterCustomer"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RegisterCustomer"
+                }
+              },
+              "application/*+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RegisterCustomer"
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "Success"
+            }
+          }
+        }
+      },
+      "/api/Customers/{customerId}": {
+        "get": {
+          "tags": [
+            "Customers"
+          ],
+          "operationId": "GetByCustomerId",
+          "parameters": [
+            {
+              "name": "customerId",
+              "in": "path",
+              "required": true,
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Success"
+            }
+          }
+        }
+      }
+    },
+    "components": {
+      "schemas": {
+        "RegisterCustomer": {
+          "type": "object",
+          "additionalProperties": false
+        }
+      }
+    }
+  }
