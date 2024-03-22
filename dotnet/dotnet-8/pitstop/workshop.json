@@ -1,0 +1,248 @@
+{
+    "openapi": "3.0.1",
+    "info": {
+      "title": "WorkshopManagement API",
+      "version": "v1"
+    },
+    "paths": {
+      "/api/RefData/customers": {
+        "get": {
+          "tags": [
+            "RefData"
+          ],
+          "responses": {
+            "200": {
+              "description": "Success"
+            }
+          }
+        }
+      },
+      "/api/RefData/customers/{customerId}": {
+        "get": {
+          "tags": [
+            "RefData"
+          ],
+          "parameters": [
+            {
+              "name": "customerId",
+              "in": "path",
+              "required": true,
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Success"
+            }
+          }
+        }
+      },
+      "/api/RefData/vehicles": {
+        "get": {
+          "tags": [
+            "RefData"
+          ],
+          "responses": {
+            "200": {
+              "description": "Success"
+            }
+          }
+        }
+      },
+      "/api/RefData/vehicles/{licenseNumber}": {
+        "get": {
+          "tags": [
+            "RefData"
+          ],
+          "parameters": [
+            {
+              "name": "licenseNumber",
+              "in": "path",
+              "required": true,
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Success"
+            }
+          }
+        }
+      },
+      "/api/WorkshopPlanning/{planningDate}": {
+        "get": {
+          "tags": [
+            "WorkshopPlanning"
+          ],
+          "operationId": "GetByDate",
+          "parameters": [
+            {
+              "name": "planningDate",
+              "in": "path",
+              "required": true,
+              "schema": {
+                "type": "string",
+                "format": "date-time"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Success"
+            }
+          }
+        }
+      },
+      "/api/WorkshopPlanning/{planningDate}/jobs/{jobId}": {
+        "get": {
+          "tags": [
+            "WorkshopPlanning"
+          ],
+          "parameters": [
+            {
+              "name": "planningDate",
+              "in": "path",
+              "required": true,
+              "schema": {
+                "type": "string",
+                "format": "date-time"
+              }
+            },
+            {
+              "name": "jobId",
+              "in": "path",
+              "required": true,
+              "schema": {
+                "type": "string",
+                "format": "uuid"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Success"
+            }
+          }
+        }
+      },
+      "/api/WorkshopPlanning/{planningDate}/jobs": {
+        "post": {
+          "tags": [
+            "WorkshopPlanning"
+          ],
+          "parameters": [
+            {
+              "name": "planningDate",
+              "in": "path",
+              "required": true,
+              "schema": {
+                "type": "string",
+                "format": "date-time"
+              }
+            }
+          ],
+          "requestBody": {
+            "content": {
+              "application/json-patch+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PlanMaintenanceJob"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PlanMaintenanceJob"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PlanMaintenanceJob"
+                }
+              },
+              "application/*+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PlanMaintenanceJob"
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "Success"
+            }
+          }
+        }
+      },
+      "/api/WorkshopPlanning/{planningDate}/jobs/{jobId}/finish": {
+        "put": {
+          "tags": [
+            "WorkshopPlanning"
+          ],
+          "parameters": [
+            {
+              "name": "planningDate",
+              "in": "path",
+              "required": true,
+              "schema": {
+                "type": "string",
+                "format": "date-time"
+              }
+            },
+            {
+              "name": "jobId",
+              "in": "path",
+              "required": true,
+              "schema": {
+                "type": "string",
+                "format": "uuid"
+              }
+            }
+          ],
+          "requestBody": {
+            "content": {
+              "application/json-patch+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FinishMaintenanceJob"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FinishMaintenanceJob"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FinishMaintenanceJob"
+                }
+              },
+              "application/*+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FinishMaintenanceJob"
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "Success"
+            }
+          }
+        }
+      }
+    },
+    "components": {
+      "schemas": {
+        "FinishMaintenanceJob": {
+          "type": "object",
+          "additionalProperties": false
+        },
+        "PlanMaintenanceJob": {
+          "type": "object",
+          "additionalProperties": false
+        }
+      }
+    }
+  }
