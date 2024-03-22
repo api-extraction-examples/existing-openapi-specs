@@ -1,0 +1,1714 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "FeatBit Open Api",
+    "contact": {
+      "name": "FeatBit",
+      "url": "https://github.com/featbit/featbit"
+    },
+    "license": {
+      "name": "MIT",
+      "url": "https://opensource.org/licenses/MIT"
+    },
+    "version": "1.0"
+  },
+  "paths": {
+    "/api/v1/envs/{envId}/feature-flags": {
+      "get": {
+        "tags": [
+          "FeatureFlag"
+        ],
+        "summary": "Get flag list of an environment",
+        "description": "Get the list of flags of a particular environment.",
+        "parameters": [
+          {
+            "name": "envId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "Name",
+            "in": "query",
+            "description": "The name or part of the name of the feature flag",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Tags",
+            "in": "query",
+            "description": "The list of tags, you must use the complete name of tags",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "IsEnabled",
+            "in": "query",
+            "description": "Return only enabled feature flags if true, and return only disabled feature flags if false.\r\nIf you don't provide any value, both enabled and disabled feature flags would be returned.",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "IsArchived",
+            "in": "query",
+            "description": "Return only archived feature flags if true, the default value is false",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "PageIndex",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "PageSize",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FeatureFlagVmPagedResultApiResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "FeatureFlag"
+        ],
+        "summary": "Create a feature flag",
+        "description": "Create a feature flag with the given name, key, and description.",
+        "parameters": [
+          {
+            "name": "envId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateFeatureFlag"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateFeatureFlag"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateFeatureFlag"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FeatureFlagApiResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        }
+      }
+    },
+    "/api/v1/envs/{envId}/feature-flags/{key}": {
+      "get": {
+        "tags": [
+          "FeatureFlag"
+        ],
+        "summary": "Get a feature flag",
+        "description": "Get a single feature flag by key.",
+        "parameters": [
+          {
+            "name": "envId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "key",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FeatureFlagApiResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "FeatureFlag"
+        ],
+        "summary": "Delete a feature flag",
+        "parameters": [
+          {
+            "name": "envId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "key",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BooleanApiResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "FeatureFlag"
+        ],
+        "summary": "Update a feature flag with the JSON patch method",
+        "description": "Perform a partial update to a feature flag. The request body must be a valid JSON patch.",
+        "parameters": [
+          {
+            "name": "envId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "key",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": { },
+              "examples": {
+                "Update name and description": {
+                  "value": [{"value":"new name","path":"/name","op":"replace"},{"value":"new description","path":"/description","op":"replace"}]
+                },
+                "Archive the flag": {
+                  "value": [{"value":true,"path":"isArchived","op":"replace"}]
+                },
+                "Restore the flag": {
+                  "value": [{"value":false,"path":"isArchived","op":"replace"}]
+                },
+                "Enable the flag": {
+                  "value": [{"value":true,"path":"isEnabled","op":"replace"}]
+                },
+                "Disable the flag": {
+                  "value": [{"value":false,"path":"isEnabled","op":"replace"}]
+                },
+                "Add target user when the targeting variation has no users": {
+                  "value": [{"value":{"variationId":"51dfeca4-c1b0-4aa4-aff1-851ddb1c180d","keyIds":["user1","user2"]},"path":"/targetUsers/-","op":"add"}]
+                },
+                "Add target user to the first targeting variation": {
+                  "value": [{"value":"new-user","path":"/targetUsers/0/keyIds/0","op":"add"}]
+                },
+                "Add rule": {
+                  "value": [{"value":{"id":"f5a5629e-523d-459e-b0b0-f4996e32842a","name":"Rule 2","dispatchKey":"name","includedInExpt":false,"conditions":[{"property":"keyId","op":"IsOneOf","value":"[\"ja\",\"jb\",\"jc\"]"}],"variations":[{"id":"51dfeca4-c1b0-4aa4-aff1-851ddb1c180d","rollout":[0.0,0.64],"exptRollout":1},{"id":"990c319a-a21d-418b-a900-4fd4713ade29","rollout":[0.64,1.0],"exptRollout":1}]},"path":"/rules/-","op":"add"}]
+                },
+                "Remove the first rule": {
+                  "value": [{"path":"/rules/0","op":"remove"}]
+                }
+              }
+            },
+            "text/json": {
+              "schema": { },
+              "examples": {
+                "Update name and description": {
+                  "value": [{"value":"new name","path":"/name","op":"replace"},{"value":"new description","path":"/description","op":"replace"}]
+                },
+                "Archive the flag": {
+                  "value": [{"value":true,"path":"isArchived","op":"replace"}]
+                },
+                "Restore the flag": {
+                  "value": [{"value":false,"path":"isArchived","op":"replace"}]
+                },
+                "Enable the flag": {
+                  "value": [{"value":true,"path":"isEnabled","op":"replace"}]
+                },
+                "Disable the flag": {
+                  "value": [{"value":false,"path":"isEnabled","op":"replace"}]
+                },
+                "Add target user when the targeting variation has no users": {
+                  "value": [{"value":{"variationId":"51dfeca4-c1b0-4aa4-aff1-851ddb1c180d","keyIds":["user1","user2"]},"path":"/targetUsers/-","op":"add"}]
+                },
+                "Add target user to the first targeting variation": {
+                  "value": [{"value":"new-user","path":"/targetUsers/0/keyIds/0","op":"add"}]
+                },
+                "Add rule": {
+                  "value": [{"value":{"id":"f5a5629e-523d-459e-b0b0-f4996e32842a","name":"Rule 2","dispatchKey":"name","includedInExpt":false,"conditions":[{"property":"keyId","op":"IsOneOf","value":"[\"ja\",\"jb\",\"jc\"]"}],"variations":[{"id":"51dfeca4-c1b0-4aa4-aff1-851ddb1c180d","rollout":[0.0,0.64],"exptRollout":1},{"id":"990c319a-a21d-418b-a900-4fd4713ade29","rollout":[0.64,1.0],"exptRollout":1}]},"path":"/rules/-","op":"add"}]
+                },
+                "Remove the first rule": {
+                  "value": [{"path":"/rules/0","op":"remove"}]
+                }
+              }
+            },
+            "application/*+json": {
+              "schema": { },
+              "examples": {
+                "Update name and description": {
+                  "value": [{"value":"new name","path":"/name","op":"replace"},{"value":"new description","path":"/description","op":"replace"}]
+                },
+                "Archive the flag": {
+                  "value": [{"value":true,"path":"isArchived","op":"replace"}]
+                },
+                "Restore the flag": {
+                  "value": [{"value":false,"path":"isArchived","op":"replace"}]
+                },
+                "Enable the flag": {
+                  "value": [{"value":true,"path":"isEnabled","op":"replace"}]
+                },
+                "Disable the flag": {
+                  "value": [{"value":false,"path":"isEnabled","op":"replace"}]
+                },
+                "Add target user when the targeting variation has no users": {
+                  "value": [{"value":{"variationId":"51dfeca4-c1b0-4aa4-aff1-851ddb1c180d","keyIds":["user1","user2"]},"path":"/targetUsers/-","op":"add"}]
+                },
+                "Add target user to the first targeting variation": {
+                  "value": [{"value":"new-user","path":"/targetUsers/0/keyIds/0","op":"add"}]
+                },
+                "Add rule": {
+                  "value": [{"value":{"id":"f5a5629e-523d-459e-b0b0-f4996e32842a","name":"Rule 2","dispatchKey":"name","includedInExpt":false,"conditions":[{"property":"keyId","op":"IsOneOf","value":"[\"ja\",\"jb\",\"jc\"]"}],"variations":[{"id":"51dfeca4-c1b0-4aa4-aff1-851ddb1c180d","rollout":[0.0,0.64],"exptRollout":1},{"id":"990c319a-a21d-418b-a900-4fd4713ade29","rollout":[0.64,1.0],"exptRollout":1}]},"path":"/rules/-","op":"add"}]
+                },
+                "Remove the first rule": {
+                  "value": [{"path":"/rules/0","op":"remove"}]
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BooleanApiResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        }
+      }
+    },
+    "/api/v1/envs/{envId}/feature-flags/{key}/archive": {
+      "put": {
+        "tags": [
+          "FeatureFlag"
+        ],
+        "summary": "Archive a feature flag",
+        "parameters": [
+          {
+            "name": "envId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "key",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BooleanApiResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        }
+      }
+    },
+    "/api/v1/envs/{envId}/feature-flags/{key}/restore": {
+      "put": {
+        "tags": [
+          "FeatureFlag"
+        ],
+        "summary": "Restore a feature flag",
+        "parameters": [
+          {
+            "name": "envId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "key",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BooleanApiResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        }
+      }
+    },
+    "/api/v1/envs/{envId}/segments/{id}": {
+      "get": {
+        "tags": [
+          "Segment"
+        ],
+        "summary": "Get a segment",
+        "description": "Get a single segment by id.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "envId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SegmentApiResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "Segment"
+        ],
+        "summary": "Update a segment with the JSON patch method",
+        "description": "Perform a partial update to a segment. The request body must be a valid JSON patch.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "envId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": { },
+              "examples": {
+                "Update name and description": {
+                  "value": [{"value":"new name","path":"/name","op":"replace"},{"value":"new description","path":"/description","op":"replace"}]
+                },
+                "Archive the segment": {
+                  "value": [{"value":true,"path":"isArchived","op":"replace"}]
+                },
+                "Restore the segment": {
+                  "value": [{"value":false,"path":"isArchived","op":"replace"}]
+                },
+                "Add one targeting user to included users": {
+                  "value": [{"value":"user1","path":"/included/-","op":"add"}]
+                },
+                "Add one targeting user to excluded users": {
+                  "value": [{"value":"user1","path":"/excluded/-","op":"add"}]
+                },
+                "Overwrite included users": {
+                  "value": [{"value":["user1","user2"],"path":"/included","op":"add"}]
+                },
+                "Overwrite excluded users": {
+                  "value": [{"value":["user1","user2"],"path":"/excluded","op":"add"}]
+                },
+                "Add rule": {
+                  "value": [{"value":{"id":"f5a5629e-523d-459e-b0b0-f4996e32842a","name":"Rule 1","conditions":[{"property":"keyId","op":"IsOneOf","value":"[\"ja\",\"jb\",\"jc\"]"}]},"path":"/rules/-","op":"add"}]
+                },
+                "Remove the first rule": {
+                  "value": [{"path":"/rules/0","op":"remove"}]
+                }
+              }
+            },
+            "text/json": {
+              "schema": { },
+              "examples": {
+                "Update name and description": {
+                  "value": [{"value":"new name","path":"/name","op":"replace"},{"value":"new description","path":"/description","op":"replace"}]
+                },
+                "Archive the segment": {
+                  "value": [{"value":true,"path":"isArchived","op":"replace"}]
+                },
+                "Restore the segment": {
+                  "value": [{"value":false,"path":"isArchived","op":"replace"}]
+                },
+                "Add one targeting user to included users": {
+                  "value": [{"value":"user1","path":"/included/-","op":"add"}]
+                },
+                "Add one targeting user to excluded users": {
+                  "value": [{"value":"user1","path":"/excluded/-","op":"add"}]
+                },
+                "Overwrite included users": {
+                  "value": [{"value":["user1","user2"],"path":"/included","op":"add"}]
+                },
+                "Overwrite excluded users": {
+                  "value": [{"value":["user1","user2"],"path":"/excluded","op":"add"}]
+                },
+                "Add rule": {
+                  "value": [{"value":{"id":"f5a5629e-523d-459e-b0b0-f4996e32842a","name":"Rule 1","conditions":[{"property":"keyId","op":"IsOneOf","value":"[\"ja\",\"jb\",\"jc\"]"}]},"path":"/rules/-","op":"add"}]
+                },
+                "Remove the first rule": {
+                  "value": [{"path":"/rules/0","op":"remove"}]
+                }
+              }
+            },
+            "application/*+json": {
+              "schema": { },
+              "examples": {
+                "Update name and description": {
+                  "value": [{"value":"new name","path":"/name","op":"replace"},{"value":"new description","path":"/description","op":"replace"}]
+                },
+                "Archive the segment": {
+                  "value": [{"value":true,"path":"isArchived","op":"replace"}]
+                },
+                "Restore the segment": {
+                  "value": [{"value":false,"path":"isArchived","op":"replace"}]
+                },
+                "Add one targeting user to included users": {
+                  "value": [{"value":"user1","path":"/included/-","op":"add"}]
+                },
+                "Add one targeting user to excluded users": {
+                  "value": [{"value":"user1","path":"/excluded/-","op":"add"}]
+                },
+                "Overwrite included users": {
+                  "value": [{"value":["user1","user2"],"path":"/included","op":"add"}]
+                },
+                "Overwrite excluded users": {
+                  "value": [{"value":["user1","user2"],"path":"/excluded","op":"add"}]
+                },
+                "Add rule": {
+                  "value": [{"value":{"id":"f5a5629e-523d-459e-b0b0-f4996e32842a","name":"Rule 1","conditions":[{"property":"keyId","op":"IsOneOf","value":"[\"ja\",\"jb\",\"jc\"]"}]},"path":"/rules/-","op":"add"}]
+                },
+                "Remove the first rule": {
+                  "value": [{"path":"/rules/0","op":"remove"}]
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BooleanApiResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Segment"
+        ],
+        "summary": "Delete a segment",
+        "parameters": [
+          {
+            "name": "envId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BooleanApiResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        }
+      }
+    },
+    "/api/v1/envs/{envId}/segments": {
+      "get": {
+        "tags": [
+          "Segment"
+        ],
+        "summary": "Get segment list of an environment",
+        "description": "Get the list of segments of a particular environment.",
+        "parameters": [
+          {
+            "name": "envId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "Name",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "IsArchived",
+            "in": "query",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "PageIndex",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "PageSize",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SegmentVmPagedResultApiResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Segment"
+        ],
+        "summary": "Create a segment",
+        "description": "Create a segment with the given settings.",
+        "parameters": [
+          {
+            "name": "envId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateSegment"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateSegment"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateSegment"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SegmentApiResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        }
+      }
+    },
+    "/api/v1/envs/{envId}/segments/{id}/archive": {
+      "put": {
+        "tags": [
+          "Segment"
+        ],
+        "summary": "Archive a segment",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "envId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BooleanApiResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        }
+      }
+    },
+    "/api/v1/envs/{envId}/segments/{id}/restore": {
+      "put": {
+        "tags": [
+          "Segment"
+        ],
+        "summary": "Restore a segment",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "envId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BooleanApiResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        }
+      }
+    },
+    "/api/v1/workspaces": {
+      "get": {
+        "tags": [
+          "Workspace"
+        ],
+        "summary": "Get a workspace",
+        "description": "Get a workspace by id.",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WorkspaceVmApiResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "BooleanApiResponse": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "description": "Indicating whether the API call was successful."
+          },
+          "errors": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "A collection of error messages returned by the API call.",
+            "nullable": true
+          },
+          "data": {
+            "type": "boolean",
+            "description": "The data returned by the API call."
+          }
+        },
+        "additionalProperties": false,
+        "description": "Represents the response of an API call."
+      },
+      "Condition": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "nullable": true
+          },
+          "property": {
+            "type": "string",
+            "nullable": true
+          },
+          "op": {
+            "type": "string",
+            "nullable": true
+          },
+          "value": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "CreateFeatureFlag": {
+        "type": "object",
+        "properties": {
+          "envId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "key": {
+            "type": "string",
+            "nullable": true
+          },
+          "isEnabled": {
+            "type": "boolean"
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          },
+          "variationType": {
+            "type": "string",
+            "nullable": true
+          },
+          "variations": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Variation"
+            },
+            "nullable": true
+          },
+          "enabledVariationId": {
+            "type": "string",
+            "nullable": true
+          },
+          "disabledVariationId": {
+            "type": "string",
+            "nullable": true
+          },
+          "tags": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "CreateSegment": {
+        "type": "object",
+        "properties": {
+          "envId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          },
+          "included": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "nullable": true
+          },
+          "excluded": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "nullable": true
+          },
+          "rules": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MatchRule"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "Fallthrough": {
+        "type": "object",
+        "properties": {
+          "dispatchKey": {
+            "type": "string",
+            "nullable": true
+          },
+          "includedInExpt": {
+            "type": "boolean"
+          },
+          "variations": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/RolloutVariation"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "FeatureFlag": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "creatorId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "updatorId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "envId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "revision": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          },
+          "key": {
+            "type": "string",
+            "nullable": true
+          },
+          "variationType": {
+            "type": "string",
+            "nullable": true
+          },
+          "variations": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Variation"
+            },
+            "nullable": true
+          },
+          "targetUsers": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TargetUser"
+            },
+            "nullable": true
+          },
+          "rules": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TargetRule"
+            },
+            "nullable": true
+          },
+          "isEnabled": {
+            "type": "boolean"
+          },
+          "disabledVariationId": {
+            "type": "string",
+            "nullable": true
+          },
+          "fallthrough": {
+            "$ref": "#/components/schemas/Fallthrough"
+          },
+          "exptIncludeAllTargets": {
+            "type": "boolean"
+          },
+          "tags": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "nullable": true
+          },
+          "isArchived": {
+            "type": "boolean"
+          },
+          "disabledVariation": {
+            "$ref": "#/components/schemas/Variation"
+          }
+        },
+        "additionalProperties": false
+      },
+      "FeatureFlagApiResponse": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "description": "Indicating whether the API call was successful."
+          },
+          "errors": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "A collection of error messages returned by the API call.",
+            "nullable": true
+          },
+          "data": {
+            "$ref": "#/components/schemas/FeatureFlag"
+          }
+        },
+        "additionalProperties": false,
+        "description": "Represents the response of an API call."
+      },
+      "FeatureFlagVm": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "nullable": true
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          },
+          "key": {
+            "type": "string",
+            "nullable": true
+          },
+          "isEnabled": {
+            "type": "boolean"
+          },
+          "variationType": {
+            "type": "string",
+            "nullable": true
+          },
+          "variations": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Variation"
+            },
+            "nullable": true
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "serves": {
+            "$ref": "#/components/schemas/Serves"
+          },
+          "tags": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "FeatureFlagVmPagedResult": {
+        "type": "object",
+        "properties": {
+          "totalCount": {
+            "type": "integer",
+            "description": "The total count of items.",
+            "format": "int64"
+          },
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/FeatureFlagVm"
+            },
+            "description": "The items in the current page.",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Represents a paged result of items."
+      },
+      "FeatureFlagVmPagedResultApiResponse": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "description": "Indicating whether the API call was successful."
+          },
+          "errors": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "A collection of error messages returned by the API call.",
+            "nullable": true
+          },
+          "data": {
+            "$ref": "#/components/schemas/FeatureFlagVmPagedResult"
+          }
+        },
+        "additionalProperties": false,
+        "description": "Represents the response of an API call."
+      },
+      "MatchRule": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "nullable": true
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "conditions": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Condition"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "OidcConfig": {
+        "type": "object",
+        "properties": {
+          "clientId": {
+            "type": "string",
+            "nullable": true
+          },
+          "clientSecret": {
+            "type": "string",
+            "nullable": true
+          },
+          "tokenEndpoint": {
+            "type": "string",
+            "nullable": true
+          },
+          "clientAuthenticationMethod": {
+            "type": "string",
+            "nullable": true
+          },
+          "authorizationEndpoint": {
+            "type": "string",
+            "nullable": true
+          },
+          "scope": {
+            "type": "string",
+            "nullable": true
+          },
+          "userEmailClaim": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "RolloutVariation": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "nullable": true
+          },
+          "rollout": {
+            "type": "array",
+            "items": {
+              "type": "number",
+              "format": "double"
+            },
+            "nullable": true
+          },
+          "exptRollout": {
+            "type": "number",
+            "format": "double"
+          }
+        },
+        "additionalProperties": false
+      },
+      "Segment": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "envId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          },
+          "included": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "nullable": true
+          },
+          "excluded": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "nullable": true
+          },
+          "rules": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MatchRule"
+            },
+            "nullable": true
+          },
+          "isArchived": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false
+      },
+      "SegmentApiResponse": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "description": "Indicating whether the API call was successful."
+          },
+          "errors": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "A collection of error messages returned by the API call.",
+            "nullable": true
+          },
+          "data": {
+            "$ref": "#/components/schemas/Segment"
+          }
+        },
+        "additionalProperties": false,
+        "description": "Represents the response of an API call."
+      },
+      "SegmentVm": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "nullable": true
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "additionalProperties": false
+      },
+      "SegmentVmPagedResult": {
+        "type": "object",
+        "properties": {
+          "totalCount": {
+            "type": "integer",
+            "description": "The total count of items.",
+            "format": "int64"
+          },
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SegmentVm"
+            },
+            "description": "The items in the current page.",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Represents a paged result of items."
+      },
+      "SegmentVmPagedResultApiResponse": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "description": "Indicating whether the API call was successful."
+          },
+          "errors": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "A collection of error messages returned by the API call.",
+            "nullable": true
+          },
+          "data": {
+            "$ref": "#/components/schemas/SegmentVmPagedResult"
+          }
+        },
+        "additionalProperties": false,
+        "description": "Represents the response of an API call."
+      },
+      "Serves": {
+        "type": "object",
+        "properties": {
+          "enabledVariations": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "nullable": true
+          },
+          "disabledVariation": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "SsoConfig": {
+        "type": "object",
+        "properties": {
+          "oidc": {
+            "$ref": "#/components/schemas/OidcConfig"
+          }
+        },
+        "additionalProperties": false
+      },
+      "TargetRule": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "nullable": true
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "dispatchKey": {
+            "type": "string",
+            "nullable": true
+          },
+          "includedInExpt": {
+            "type": "boolean"
+          },
+          "conditions": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Condition"
+            },
+            "nullable": true
+          },
+          "variations": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/RolloutVariation"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "TargetUser": {
+        "type": "object",
+        "properties": {
+          "keyIds": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "nullable": true
+          },
+          "variationId": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "Variation": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "nullable": true
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "value": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "WorkspaceVm": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "nullable": true
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "key": {
+            "type": "string",
+            "nullable": true
+          },
+          "license": {
+            "type": "string",
+            "nullable": true
+          },
+          "sso": {
+            "$ref": "#/components/schemas/SsoConfig"
+          }
+        },
+        "additionalProperties": false
+      },
+      "WorkspaceVmApiResponse": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "description": "Indicating whether the API call was successful."
+          },
+          "errors": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "A collection of error messages returned by the API call.",
+            "nullable": true
+          },
+          "data": {
+            "$ref": "#/components/schemas/WorkspaceVm"
+          }
+        },
+        "additionalProperties": false,
+        "description": "Represents the response of an API call."
+      }
+    },
+    "securitySchemes": {
+      "JwtBearer": {
+        "type": "http",
+        "description": "Standard Authorization header using the Bearer scheme (JWT). Example: \"Authorization: Bearer eyJ...\"",
+        "scheme": "Bearer",
+        "bearerFormat": "JWT"
+      },
+      "AccessToken": {
+        "type": "apiKey",
+        "description": "Use access token to access this API. Example: \"Authorization: api-MzQ...\"",
+        "name": "Authorization",
+        "in": "header"
+      }
+    }
+  },
+  "security": [
+    {
+      "JwtBearer": [ ]
+    },
+    {
+      "AccessToken": [ ]
+    }
+  ]
+}
