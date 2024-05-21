@@ -3190,7 +3190,7 @@
       }
     ],
     "paths": {
-      "/api/v2/robot/capabilities": {
+      "/api/v2/robot/capabilities/": {
         "get": {
           "tags": [
             "Robot"
@@ -3722,7 +3722,7 @@
           }
         }
       },
-      "/api/v2/robot": {
+      "/api/v2/robot/": {
         "get": {
           "tags": [
             "Robot"
@@ -5390,7 +5390,7 @@
           }
         }
       },
-      "/api/v2/timers": {
+      "/api/v2/timers/": {
         "get": {
           "tags": [
             "Timers"
@@ -6325,7 +6325,7 @@
           }
         }
       },
-      "/api/v2/updater": {
+      "/api/v2/updater/": {
         "put": {
           "tags": [
             "Updater"
@@ -6433,7 +6433,7 @@
           }
         }
       },
-      "/api/v2/events": {
+      "/api/v2/events/": {
         "get": {
           "tags": [
             "ValetudoEvents"
@@ -6548,7 +6548,7 @@
           }
         }
       },
-      "/api/v2/valetudo": {
+      "/api/v2/valetudo/": {
         "get": {
           "tags": [
             "Valetudo"
@@ -7420,7 +7420,7 @@
           }
         }
       },
-      "/api/v2/robot/capabilities/AutoEmptyDockManualTriggerCapability": {
+      "/api/v2/robot/capabilities/AutoEmptyDockManualTriggerCapability/": {
         "put": {
           "tags": [
             "AutoEmptyDockManualTriggerCapability"
@@ -7473,7 +7473,7 @@
           }
         }
       },
-      "/api/v2/robot/capabilities/BasicControlCapability": {
+      "/api/v2/robot/capabilities/BasicControlCapability/": {
         "put": {
           "tags": [
             "BasicControlCapability"
@@ -7557,7 +7557,7 @@
           }
         }
       },
-      "/api/v2/robot/capabilities/CarpetSensorModeControlCapability": {
+      "/api/v2/robot/capabilities/CarpetSensorModeControlCapability/": {
         "get": {
           "tags": [
             "CarpetSensorModeControlCapability"
@@ -7653,7 +7653,7 @@
           }
         }
       },
-      "/api/v2/robot/capabilities/CombinedVirtualRestrictionsCapability": {
+      "/api/v2/robot/capabilities/CombinedVirtualRestrictionsCapability/": {
         "get": {
           "tags": [
             "CombinedVirtualRestrictionsCapability"
@@ -7983,7 +7983,7 @@
           }
         }
       },
-      "/api/v2/robot/capabilities/ConsumableMonitoringCapability": {
+      "/api/v2/robot/capabilities/ConsumableMonitoringCapability/": {
         "get": {
           "tags": [
             "ConsumableMonitoringCapability"
@@ -8104,51 +8104,7 @@
           }
         }
       },
-      "/api/v2/robot/capabilities/ConsumableMonitoringCapability/{type}": {
-        "put": {
-          "tags": [
-            "ConsumableMonitoringCapability"
-          ],
-          "summary": "Reset consumable",
-          "parameters": [
-            {
-              "in": "path",
-              "name": "type",
-              "description": "Consumable type",
-              "required": true,
-              "schema": {
-                "type": "string"
-              }
-            }
-          ],
-          "requestBody": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "action": {
-                      "type": "string",
-                      "enum": [
-                        "reset"
-                      ]
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "responses": {
-            "200": {
-              "description": "Ok"
-            },
-            "400": {
-              "description": "Bad request"
-            }
-          }
-        }
-      },
-      "/api/v2/robot/capabilities/ConsumableMonitoringCapability/{type}/{sub_type}": {
+      "/api/v2/robot/capabilities/ConsumableMonitoringCapability/{type}/{sub_type?}": {
         "put": {
           "tags": [
             "ConsumableMonitoringCapability"
@@ -8243,7 +8199,7 @@
           }
         }
       },
-      "/api/v2/robot/capabilities/DoNotDisturbCapability": {
+      "/api/v2/robot/capabilities/DoNotDisturbCapability/": {
         "get": {
           "tags": [
             "DoNotDisturbCapability"
@@ -8400,7 +8356,7 @@
           }
         }
       },
-      "/api/v2/robot/capabilities/GoToLocationCapability": {
+      "/api/v2/robot/capabilities/GoToLocationCapability/": {
         "put": {
           "tags": [
             "GoToLocationCapability"
@@ -8482,7 +8438,7 @@
           }
         }
       },
-      "/api/v2/robot/capabilities/LocateCapability": {
+      "/api/v2/robot/capabilities/LocateCapability/": {
         "put": {
           "tags": [
             "LocateCapability"
@@ -8535,7 +8491,7 @@
           }
         }
       },
-      "/api/v2/robot/capabilities/ManualControlCapability": {
+      "/api/v2/robot/capabilities/ManualControlCapability/": {
         "get": {
           "tags": [
             "ManualControlCapability"
@@ -8680,7 +8636,7 @@
           }
         }
       },
-      "/api/v2/robot/capabilities/MappingPassCapability": {
+      "/api/v2/robot/capabilities/MappingPassCapability/": {
         "put": {
           "tags": [
             "MappingPassCapability"
@@ -8733,7 +8689,7 @@
           }
         }
       },
-      "/api/v2/robot/capabilities/MapResetCapability": {
+      "/api/v2/robot/capabilities/MapResetCapability/": {
         "put": {
           "tags": [
             "MapResetCapability"
@@ -8786,7 +8742,7 @@
           }
         }
       },
-      "/api/v2/robot/capabilities/MapSegmentationCapability": {
+      "/api/v2/robot/capabilities/MapSegmentationCapability/": {
         "get": {
           "tags": [
             "MapSegmentationCapability"
@@ -8955,7 +8911,7 @@
           }
         }
       },
-      "/api/v2/robot/capabilities/MapSegmentEditCapability": {
+      "/api/v2/robot/capabilities/MapSegmentEditCapability/": {
         "put": {
           "tags": [
             "MapSegmentEditCapability"
@@ -9081,7 +9037,7 @@
           }
         }
       },
-      "/api/v2/robot/capabilities/MapSegmentRenameCapability": {
+      "/api/v2/robot/capabilities/MapSegmentRenameCapability/": {
         "put": {
           "tags": [
             "MapSegmentRenameCapability"
@@ -9140,7 +9096,7 @@
           }
         }
       },
-      "/api/v2/robot/capabilities/MapSnapshotCapability": {
+      "/api/v2/robot/capabilities/MapSnapshotCapability/": {
         "get": {
           "tags": [
             "MapSnapshotCapability"
@@ -9527,7 +9483,7 @@
           }
         }
       },
-      "/api/v2/robot/capabilities/MopDockCleanManualTriggerCapability": {
+      "/api/v2/robot/capabilities/MopDockCleanManualTriggerCapability/": {
         "put": {
           "tags": [
             "MopDockCleanManualTriggerCapability"
@@ -9583,7 +9539,7 @@
           }
         }
       },
-      "/api/v2/robot/capabilities/MopDockDryManualTriggerCapability": {
+      "/api/v2/robot/capabilities/MopDockDryManualTriggerCapability/": {
         "put": {
           "tags": [
             "MopDockDryManualTriggerCapability"
@@ -9639,7 +9595,7 @@
           }
         }
       },
-      "/api/v2/robot/capabilities/PendingMapChangeHandlingCapability": {
+      "/api/v2/robot/capabilities/PendingMapChangeHandlingCapability/": {
         "get": {
           "tags": [
             "PendingMapChangeHandlingCapability"
@@ -9968,7 +9924,7 @@
           }
         }
       },
-      "/api/v2/robot/capabilities/QuirksCapability": {
+      "/api/v2/robot/capabilities/QuirksCapability/": {
         "get": {
           "tags": [
             "QuirksCapability"
@@ -10063,7 +10019,7 @@
           }
         }
       },
-      "/api/v2/robot/capabilities/CarpetModeControlCapability": {
+      "/api/v2/robot/capabilities/CarpetModeControlCapability/": {
         "get": {
           "tags": [
             "CarpetModeControlCapability"
@@ -10140,7 +10096,7 @@
           }
         }
       },
-      "/api/v2/robot/capabilities/PersistentMapControlCapability": {
+      "/api/v2/robot/capabilities/PersistentMapControlCapability/": {
         "get": {
           "tags": [
             "PersistentMapControlCapability"
@@ -10217,7 +10173,7 @@
           }
         }
       },
-      "/api/v2/robot/capabilities/KeyLockCapability": {
+      "/api/v2/robot/capabilities/KeyLockCapability/": {
         "get": {
           "tags": [
             "KeyLockCapability"
@@ -10294,7 +10250,7 @@
           }
         }
       },
-      "/api/v2/robot/capabilities/ObstacleAvoidanceControlCapability": {
+      "/api/v2/robot/capabilities/ObstacleAvoidanceControlCapability/": {
         "get": {
           "tags": [
             "ObstacleAvoidanceControlCapability"
@@ -10371,7 +10327,7 @@
           }
         }
       },
-      "/api/v2/robot/capabilities/PetObstacleAvoidanceControlCapability": {
+      "/api/v2/robot/capabilities/PetObstacleAvoidanceControlCapability/": {
         "get": {
           "tags": [
             "PetObstacleAvoidanceControlCapability"
@@ -10448,7 +10404,7 @@
           }
         }
       },
-      "/api/v2/robot/capabilities/AutoEmptyDockAutoEmptyControlCapability": {
+      "/api/v2/robot/capabilities/AutoEmptyDockAutoEmptyControlCapability/": {
         "get": {
           "tags": [
             "AutoEmptyDockAutoEmptyControlCapability"
@@ -10525,7 +10481,7 @@
           }
         }
       },
-      "/api/v2/robot/capabilities/CollisionAvoidantNavigationControlCapability": {
+      "/api/v2/robot/capabilities/CollisionAvoidantNavigationControlCapability/": {
         "get": {
           "tags": [
             "CollisionAvoidantNavigationControlCapability"
@@ -10602,7 +10558,7 @@
           }
         }
       },
-      "/api/v2/robot/capabilities/SpeakerTestCapability": {
+      "/api/v2/robot/capabilities/SpeakerTestCapability/": {
         "put": {
           "tags": [
             "SpeakerTestCapability"
@@ -10655,7 +10611,7 @@
           }
         }
       },
-      "/api/v2/robot/capabilities/SpeakerVolumeControlCapability": {
+      "/api/v2/robot/capabilities/SpeakerVolumeControlCapability/": {
         "get": {
           "tags": [
             "SpeakerVolumeControlCapability"
@@ -10736,7 +10692,7 @@
           }
         }
       },
-      "/api/v2/robot/capabilities/TotalStatisticsCapability": {
+      "/api/v2/robot/capabilities/TotalStatisticsCapability/": {
         "get": {
           "tags": [
             "TotalStatisticsCapability"
@@ -10812,7 +10768,7 @@
           }
         }
       },
-      "/api/v2/robot/capabilities/CurrentStatisticsCapability": {
+      "/api/v2/robot/capabilities/CurrentStatisticsCapability/": {
         "get": {
           "tags": [
             "CurrentStatisticsCapability"
@@ -10888,7 +10844,7 @@
           }
         }
       },
-      "/api/v2/robot/capabilities/VoicePackManagementCapability": {
+      "/api/v2/robot/capabilities/VoicePackManagementCapability/": {
         "get": {
           "tags": [
             "VoicePackManagementCapability"
@@ -11006,7 +10962,7 @@
           }
         }
       },
-      "/api/v2/robot/capabilities/WifiConfigurationCapability": {
+      "/api/v2/robot/capabilities/WifiConfigurationCapability/": {
         "get": {
           "tags": [
             "WifiConfigurationCapability"
@@ -11160,7 +11116,7 @@
           }
         }
       },
-      "/api/v2/robot/capabilities/WifiScanCapability": {
+      "/api/v2/robot/capabilities/WifiScanCapability/": {
         "get": {
           "tags": [
             "WifiScanCapability"
@@ -11223,7 +11179,7 @@
           }
         }
       },
-      "/api/v2/robot/capabilities/ZoneCleaningCapability": {
+      "/api/v2/robot/capabilities/ZoneCleaningCapability/": {
         "put": {
           "tags": [
             "ZoneCleaningCapability"
