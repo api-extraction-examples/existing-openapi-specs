@@ -7324,7 +7324,7 @@
           }
         }
       },
-      "/api/v2/robot/capabilities/AutoEmptyDockAutoEmptyIntervalControlCapability": {
+      "/api/v2/robot/capabilities/AutoEmptyDockAutoEmptyIntervalControlCapability/": {
         "get": {
           "tags": [
             "AutoEmptyDockAutoEmptyIntervalControlCapability"
