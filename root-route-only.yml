@@ -1,0 +1,13 @@
+components: {}
+info:
+  description: Root route only. Useful for diff tests when no spec exists
+  title: OpenAPI 3 specification
+  version: "0.1"
+openapi: 3.0.0
+paths:
+  /:
+    get:
+      operationId: root_GET
+      responses:
+        default:
+          description: Default response
