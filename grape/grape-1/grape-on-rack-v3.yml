@@ -1,0 +1,288 @@
+openapi: 3.0.1
+info:
+  title: API title
+  version: 0.0.1
+servers:
+  - url: //localhost:9292/
+tags:
+  - name: decorated
+    description: Operations about decorateds
+  - name: spline
+    description: Operations about splines
+  - name: reticulated_splines
+    description: Operations about reticulated_splines
+  - name: entities
+    description: Operations about entities
+  - name: headers
+    description: Operations about headers
+  - name: ping
+    description: Operations about pings
+  - name: raise
+    description: Operations about raises
+  - name: ring
+    description: Operations about rings
+  - name: plain_text
+    description: Operations about plain_texts
+  - name: mixed
+    description: Operations about mixeds
+  - name: avatar
+    description: Operations about avatars
+  - name: download
+    description: Operations about downloads
+  - name: stream
+    description: Operations about streams
+paths:
+  /api/decorated/ping:
+    get:
+      tags:
+        - decorated
+      description: Returns pong.
+      operationId: getApiDecoratedPing
+      responses:
+        "200":
+          description: Returns pong.
+          content: {}
+  /api/spline:
+    post:
+      tags:
+        - spline
+      description: Creates a spline that can be reticulated.
+      operationId: postApiSpline
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/postApiSpline'
+        required: true
+      responses:
+        "201":
+          description: Creates a spline that can be reticulated.
+          content: {}
+      x-codegen-request-body-name: postApiSpline
+  /api/reticulated_splines:
+    get:
+      tags:
+        - reticulated_splines
+      description: Flips reticulated in a collection of splines passed as JSON in a query string.
+      operationId: getApiReticulatedSplines
+      parameters:
+        - name: splines[id]
+          in: query
+          required: true
+          style: form
+          explode: false
+          schema:
+            type: array
+            items:
+              type: integer
+              format: int32
+        - name: splines[reticulated]
+          in: query
+          required: true
+          style: form
+          explode: false
+          schema:
+            type: array
+            items:
+              type: boolean
+      responses:
+        "200":
+          description: Flips reticulated in a collection of splines passed as JSON in a query string.
+          content: {}
+  /api/entities/{id}:
+    get:
+      tags:
+        - entities
+      description: Expose a tool
+      operationId: getApiEntitiesId
+      parameters:
+        - name: length
+          in: query
+          description: length of the tool
+          schema:
+            type: string
+        - name: weight
+          in: query
+          description: weight of the tool
+          schema:
+            type: string
+        - name: foo
+          in: query
+          description: foo
+          schema:
+            type: string
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int32
+      responses:
+        "200":
+          description: Expose a tool
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Acme_Entities_Tool'
+  /api/headers:
+    get:
+      tags:
+        - headers
+      description: Returns all headers.
+      operationId: getApiHeaders
+      responses:
+        "200":
+          description: Returns all headers.
+          content: {}
+  /api/headers/{key}:
+    get:
+      tags:
+        - headers
+      description: Returns a header value.
+      operationId: getApiHeadersKey
+      parameters:
+        - name: key
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Returns a header value.
+          content: {}
+  /api/ping:
+    get:
+      tags:
+        - ping
+      operationId: getApiPing
+      responses:
+        "200":
+          description: get Ping(s)
+          content: {}
+  /api/raise:
+    get:
+      tags:
+        - raise
+      description: Raises an exception.
+      operationId: getApiRaise
+      responses:
+        "500":
+          description: 'Error: Internal Server Error'
+          content: {}
+  /api/ring:
+    get:
+      tags:
+        - ring
+      description: Returns pong.
+      operationId: getApiRing
+      responses:
+        "200":
+          description: Returns pong.
+          content: {}
+    put:
+      tags:
+        - ring
+      operationId: putApiRing
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/putApiRing'
+        required: true
+      responses:
+        "200":
+          description: updated Ring
+          content: {}
+      x-codegen-request-body-name: putApiRing
+    post:
+      tags:
+        - ring
+      operationId: postApiRing
+      responses:
+        "201":
+          description: created Ring
+          content: {}
+  /api/plain_text:
+    get:
+      tags:
+        - plain_text
+      description: Returns a plain text file.
+      operationId: getApiPlainText
+      responses:
+        "200":
+          description: Returns a plain text file.
+          content: {}
+  /api/mixed:
+    get:
+      tags:
+        - mixed
+      description: Returns a response in either XML or JSON format.
+      operationId: getApiMixed
+      responses:
+        "200":
+          description: Returns a response in either XML or JSON format.
+          content: {}
+  /api/avatar:
+    post:
+      tags:
+        - avatar
+      description: Upload an image.
+      operationId: postApiAvatar
+      responses:
+        "201":
+          description: Upload an image.
+          content: {}
+  /api/download:
+    post:
+      tags:
+        - download
+      description: Upload and download a file of any format.
+      operationId: postApiDownload
+      responses:
+        "201":
+          description: Upload and download a file of any format.
+          content: {}
+  /api/stream:
+    get:
+      tags:
+        - stream
+      description: Streams data.
+      operationId: getApiStream
+      responses:
+        "200":
+          description: Streams data.
+          content: {}
+components:
+  schemas:
+    postApiSpline:
+      required:
+        - reticulated
+      type: object
+      properties:
+        reticulated:
+          type: string
+      description: Creates a spline that can be reticulated.
+    Acme_Entities_Tool:
+      type: object
+      properties:
+        id:
+          type: string
+        length:
+          type: string
+          description: length of the tool
+        weight:
+          type: string
+          description: weight of the tool
+        foo:
+          type: string
+          description: foo
+      description: Acme_Entities_Tool model
+    putApiRing:
+      required:
+        - count
+      type: object
+      properties:
+        count:
+          type: integer
+          format: int32
+x-original-swagger-version: "2.0"
