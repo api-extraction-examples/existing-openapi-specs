@@ -1,0 +1,2454 @@
+openapi: 3.0.1
+info:
+  title: Helpy API Spec
+  description: |-
+    The Helpy API provides programmatic access to most functionality
+               in Helpy.  Administrators and Agents can create an API key through the
+               admin settings control panel to authenticate and gain
+               access to the API endpoints.
+  contact:
+    url: https://support.helpy.io/api
+  version: 0.0.1
+servers:
+  - url: //demo.helpy.io/
+tags:
+  - name: categories
+    description: Operations about categories
+  - name: docs
+    description: Operations about docs
+  - name: forums
+    description: Operations about forums
+  - name: tickets
+    description: Operations about tickets
+  - name: topics
+    description: Operations about topics
+  - name: posts
+    description: Operations about posts
+  - name: users
+    description: Operations about users
+  - name: search
+    description: Operations about searches
+  - name: settings
+    description: Operations about settings
+  - name: flags
+    description: Operations about flags
+  - name: tags
+    description: Operations about tags
+  - name: advanced_search
+    description: Operations about advanced_searches
+  - name: key_values
+    description: Operations about key_values
+  - name: subscriptions
+    description: Operations about subscriptions
+  - name: triggers
+    description: Operations about triggers
+paths:
+  /api/v1/categories/{id}:
+    get:
+      tags:
+        - categories
+      description: Return a single category with listing of docs
+      operationId: getApiV1CategoriesId
+      parameters:
+        - name: id
+          in: path
+          description: Category to list docs from
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Return a single category with listing of docs
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Category'
+    patch:
+      tags:
+        - categories
+      description: Update a single category
+      operationId: patchApiV1CategoriesId
+      parameters:
+        - name: id
+          in: path
+          description: Category to update
+          required: true
+          schema:
+            type: integer
+            format: int32
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+                - name
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: The name of the category of articles
+                icon:
+                  type: string
+                  description: An icon that represents the category
+                keywords:
+                  type: string
+                  description: Keywords that will be used for internal search and SEO
+                title_tag:
+                  type: string
+                  description: An alternate title tag that will be used if provided
+                meta_description:
+                  type: string
+                  description: A short description for SEO and internal purposes
+                rank:
+                  type: integer
+                  description: The rank can be used to determine the ordering of categories
+                  format: int32
+                front_page:
+                  type: boolean
+                  description: Whether or not the category should appear on the front page
+                active:
+                  type: boolean
+                  description: Whether or not the category is live on the site
+                visibility:
+                  type: string
+                  description: Lets you filter categories by visibility.
+                  enum:
+                    - all
+                    - public
+                    - internal
+        required: true
+      responses:
+        "200":
+          description: Update a single category
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Category'
+  /api/v1/categories:
+    get:
+      tags:
+        - categories
+      description: List all public categories
+      operationId: getApiV1Categories
+      parameters:
+        - name: docs
+          in: query
+          description: Whether to include the documents in the response
+          schema:
+            type: boolean
+        - name: docs_limit
+          in: query
+          description: How many docs to return with the category
+          schema:
+            type: integer
+            format: int32
+        - name: visibility
+          in: query
+          description: Lets you filter categories by visibility.
+          schema:
+            type: string
+            enum:
+              - all
+              - public
+              - internal
+      responses:
+        "200":
+          description: List all public categories
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Category'
+    post:
+      tags:
+        - categories
+      description: Create a new category
+      operationId: postApiV1Categories
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+                - name
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: The name of the category of articles
+                icon:
+                  type: string
+                  description: An icon that represents the category
+                keywords:
+                  type: string
+                  description: Keywords that will be used for internal search and SEO
+                title_tag:
+                  type: string
+                  description: An alternate title tag that will be used if provided
+                meta_description:
+                  type: string
+                  description: A short description for SEO and internal purposes
+                rank:
+                  type: integer
+                  description: The rank can be used to determine the ordering of categories
+                  format: int32
+                front_page:
+                  type: boolean
+                  description: Whether or not the category should appear on the front page
+                active:
+                  type: boolean
+                  description: Whether or not the category is live on the site
+                visibility:
+                  type: string
+                  description: Lets you filter categories by visibility.
+                  enum:
+                    - all
+                    - public
+                    - internal
+        required: true
+      responses:
+        "201":
+          description: Create a new category
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Category'
+  /api/v1/docs/{id}:
+    get:
+      tags:
+        - docs
+      description: Shows a single doc
+      operationId: getApiV1DocsId
+      parameters:
+        - name: id
+          in: path
+          description: ID of the doc to show
+          required: true
+          schema:
+            type: string
+        - name: category
+          in: query
+          description: Whether to return the category object in full
+          schema:
+            type: boolean
+      responses:
+        "200":
+          description: Shows a single doc
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Doc'
+    patch:
+      tags:
+        - docs
+      description: Update a doc
+      operationId: patchApiV1DocsId
+      parameters:
+        - name: id
+          in: path
+          description: The ID of the Doc being updated
+          required: true
+          schema:
+            type: integer
+            format: int32
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                  description: The name of the category of articles
+                category_id:
+                  type: integer
+                  description: The category the doc belongs to
+                  format: int32
+                body:
+                  type: string
+                  description: The body/text of the article
+                user_id:
+                  type: integer
+                  description: The author of the article
+                  format: int32
+                keywords:
+                  type: string
+                  description: Keywords that will be used for internal search and SEO
+                title_tag:
+                  type: string
+                  description: An alternate title tag that will be used if provided
+                meta_description:
+                  type: string
+                  description: A short description for SEO and internal purposes
+                rank:
+                  type: integer
+                  description: The rank can be used to determine the ordering of docs
+                  format: int32
+                front_page:
+                  type: boolean
+                  description: Whether or not the doc should appear on the front page
+                active:
+                  type: boolean
+                  description: Whether or not the doc is live on the site
+      responses:
+        "200":
+          description: Update a doc
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Doc'
+  /api/v1/docs:
+    post:
+      tags:
+        - docs
+      description: Create a new doc
+      operationId: postApiV1Docs
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+                - body
+                - category_id
+                - title
+                - user_id
+              type: object
+              properties:
+                title:
+                  type: string
+                  description: The name of the articles
+                category_id:
+                  type: integer
+                  description: The category the doc belongs to
+                  format: int32
+                body:
+                  type: string
+                  description: The body/text of the article
+                user_id:
+                  type: integer
+                  description: The author of the article
+                  format: int32
+                keywords:
+                  type: string
+                  description: Keywords that will be used for internal search and SEO
+                title_tag:
+                  type: string
+                  description: An alternate title tag that will be used if provided
+                meta_description:
+                  type: string
+                  description: A short description for SEO and internal purposes
+                rank:
+                  type: integer
+                  description: The rank can be used to determine the ordering of docs
+                  format: int32
+                front_page:
+                  type: boolean
+                  description: Whether or not the doc should appear on the front page
+                active:
+                  type: boolean
+                  description: Whether or not the doc is live on the site
+        required: true
+      responses:
+        "201":
+          description: Create a new doc
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Doc'
+  /api/v1/forums/{id}:
+    get:
+      tags:
+        - forums
+      description: Show one forum
+      operationId: getApiV1ForumsId
+      parameters:
+        - name: id
+          in: path
+          description: ID of the forum
+          required: true
+          schema:
+            type: string
+        - name: topics_limit
+          in: query
+          description: How many topics to return
+          schema:
+            type: integer
+            format: int32
+      responses:
+        "200":
+          description: Show one forum
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Forum'
+    patch:
+      tags:
+        - forums
+      description: Update a forum
+      operationId: patchApiV1ForumsId
+      parameters:
+        - name: id
+          in: path
+          description: The ID of the forum you are updating
+          required: true
+          schema:
+            type: integer
+            format: int32
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+                - description
+                - name
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: The name of the forum
+                description:
+                  type: string
+                  description: The description of the forum
+                allow_post_voting:
+                  type: boolean
+                  description: Should topic replies be voteable?
+                allow_topic_voting:
+                  type: boolean
+                  description: Should topics be voteable?
+                layout:
+                  type: string
+                  description: The layout used by the forum
+        required: true
+      responses:
+        "200":
+          description: Update a forum
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Forum'
+  /api/v1/forums:
+    get:
+      tags:
+        - forums
+      description: List all forums
+      operationId: getApiV1Forums
+      responses:
+        "200":
+          description: List all forums
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Forum'
+    post:
+      tags:
+        - forums
+      description: Create a new forum
+      operationId: postApiV1Forums
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+                - description
+                - name
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: The name of the forum
+                description:
+                  type: string
+                  description: The description of the forum
+                allow_post_voting:
+                  type: boolean
+                  description: Should topic replies be voteable?
+                allow_topic_voting:
+                  type: boolean
+                  description: Should topics be voteable?
+                layout:
+                  type: string
+                  description: The layout used by the forum
+        required: true
+      responses:
+        "201":
+          description: Create a new forum
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Forum'
+  /api/v1/tickets/merge:
+    post:
+      tags:
+        - tickets
+      description: Merge two or more tickets together.
+      operationId: postApiV1TicketsMerge
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+                - topic_ids
+                - user_id
+              type: object
+              properties:
+                topic_ids:
+                  type: array
+                  description: The topics to merge. Provide 2 ID in the format topic_ids[]=123&topic_ids[]=124
+                  items:
+                    type: integer
+                    format: int32
+                user_id:
+                  type: integer
+                  description: the User ID
+                  format: int32
+        required: true
+      responses:
+        "201":
+          description: Merge two or more tickets together.
+          content: {}
+  /api/v1/tickets/split/{post_id}:
+    post:
+      tags:
+        - tickets
+      description: Create a new discussion from a ticket
+      operationId: postApiV1TicketsSplitPostId
+      parameters:
+        - name: post_id
+          in: path
+          description: The post to split into new topic
+          required: true
+          schema:
+            type: integer
+            format: int32
+      responses:
+        "201":
+          description: Create a new discussion from a ticket
+          content: {}
+  /api/v1/tickets/update_forum/{id}:
+    post:
+      tags:
+        - tickets
+      description: Move forums, set privacy
+      operationId: postApiV1TicketsUpdateForumId
+      parameters:
+        - name: id
+          in: path
+          description: The ticket ID to update
+          required: true
+          schema:
+            type: integer
+            format: int32
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+                - forum_id
+              type: object
+              properties:
+                forum_id:
+                  type: integer
+                  description: The forum this ticket is associated with
+                  format: int32
+        required: true
+      responses:
+        "201":
+          description: Move forums, set privacy
+          content: {}
+  /api/v1/tickets/update_tags/{id}:
+    post:
+      tags:
+        - tickets
+      description: Update tags for this ticket
+      operationId: postApiV1TicketsUpdateTagsId
+      parameters:
+        - name: id
+          in: path
+          description: The ticket ID to update
+          required: true
+          schema:
+            type: integer
+            format: int32
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+                - tag_list
+              type: object
+              properties:
+                tag_list:
+                  type: string
+                  description: A list of tags to apply to this ticket
+        required: true
+      responses:
+        "201":
+          description: Update tags for this ticket
+          content: {}
+  /api/v1/tickets/update_status/{id}:
+    post:
+      tags:
+        - tickets
+      description: Change the status of a ticket
+      operationId: postApiV1TicketsUpdateStatusId
+      parameters:
+        - name: id
+          in: path
+          description: The ticket ID to update
+          required: true
+          schema:
+            type: integer
+            format: int32
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+                - status
+              type: object
+              properties:
+                status:
+                  type: string
+                  description: The status of the topic (New, Open, Pending, Resolved)
+        required: true
+      responses:
+        "201":
+          description: Change the status of a ticket
+          content: {}
+  /api/v1/tickets/assign/{id}:
+    post:
+      tags:
+        - tickets
+      description: Assign ticket to an agent
+      operationId: postApiV1TicketsAssignId
+      parameters:
+        - name: id
+          in: path
+          description: The ticket ID to update
+          required: true
+          schema:
+            type: integer
+            format: int32
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+                - assigned_user_id
+              type: object
+              properties:
+                assigned_user_id:
+                  type: integer
+                  description: The assigned agent for this ticket
+                  format: int32
+        required: true
+      responses:
+        "201":
+          description: Assign ticket to an agent
+          content: {}
+  /api/v1/tickets:
+    post:
+      tags:
+        - tickets
+      summary: Creates a new ticket.
+      description: |-
+        You must provide a reference to the ticket creator
+                  in one of two ways. Either with the `user_id` of an already instantiated user
+                  object, or by supplying both an email address `user_email` along with a user name `user_name`.
+      operationId: postApiV1Tickets
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+                - body
+                - name
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: The subject of the ticket
+                body:
+                  type: string
+                  description: The post body
+                team_list:
+                  type: string
+                  description: The group that this ticket is assigned to
+                channel:
+                  type: string
+                  description: The source channel the ticket was created from, Defaults to API if no value provided.
+                kind:
+                  type: string
+                  description: he kind of topic this is, can be 'ticket','discussion','chat', etc.
+                user_id:
+                  type: integer
+                  description: the User ID. Required if `user_email` and `user_name` are not supplied.
+                  format: int32
+                user_email:
+                  type: string
+                  description: The user who is creating a ticket. Can be either registered or non-registered. Required if `user_id` not supplied.
+                user_name:
+                  type: string
+                  description: The user name for register a non-registered user. Required if `user_id` is not supplied.
+                tag_list:
+                  type: string
+                  description: A list of tags to apply to this ticket
+                cc:
+                  type: string
+                  description: Comma separated list of emails to CC
+                bcc:
+                  type: string
+                  description: Comma separated list of emails to BCC
+        required: true
+      responses:
+        "201":
+          description: Creates a new ticket.
+          content: {}
+  /api/v1/tickets/{id}:
+    get:
+      tags:
+        - tickets
+      description: Show a single ticket
+      operationId: getApiV1TicketsId
+      parameters:
+        - name: id
+          in: path
+          description: Ticket ID
+          required: true
+          schema:
+            type: integer
+            format: int32
+      responses:
+        "200":
+          description: Show a single ticket
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Topic'
+  /api/v1/tickets/user/{user_id}:
+    get:
+      tags:
+        - tickets
+      description: List all PRIVATE tickets for a user
+      operationId: getApiV1TicketsUserUserId
+      parameters:
+        - name: user_id
+          in: path
+          description: ID of the user
+          required: true
+          schema:
+            type: integer
+            format: int32
+      responses:
+        "200":
+          description: List all PRIVATE tickets for a user
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Topic'
+  /api/v1/tickets/status/{status}:
+    get:
+      tags:
+        - tickets
+      description: List all PRIVATE tickets by status
+      operationId: getApiV1TicketsStatusStatus
+      parameters:
+        - name: status
+          in: path
+          description: Status group (New, Open, Pending, etc.)
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: List all PRIVATE tickets by status
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Topic'
+  /api/v1/topics/{id}/vote:
+    patch:
+      tags:
+        - topics
+      description: Vote for a topic
+      operationId: patchApiV1TopicsIdVote
+      parameters:
+        - name: id
+          in: path
+          description: The ID of the topic to vote for
+          required: true
+          schema:
+            type: integer
+            format: int32
+      responses:
+        "200":
+          description: Vote for a topic
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Topic'
+  /api/v1/topics/{id}:
+    get:
+      tags:
+        - topics
+      description: Show a single ticket
+      operationId: getApiV1TopicsId
+      parameters:
+        - name: id
+          in: path
+          description: Topic ID
+          required: true
+          schema:
+            type: integer
+            format: int32
+      responses:
+        "200":
+          description: Show a single ticket
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Topic'
+    patch:
+      tags:
+        - topics
+      description: Update the status, assigned user, etc of a community topic
+      operationId: patchApiV1TopicsId
+      parameters:
+        - name: id
+          in: path
+          description: The topic ID to update
+          required: true
+          schema:
+            type: integer
+            format: int32
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+                - forum_id
+              type: object
+              properties:
+                forum_id:
+                  type: integer
+                  description: The forum this topic is associated with
+                  format: int32
+                current_status:
+                  type: string
+                  description: The status of the topic (New, Open, Pending, Resolved)
+                private:
+                  type: boolean
+                  description: Whether or not the topic is marked private
+                assigned_user_id:
+                  type: integer
+                  description: The assigned agent for this topic
+                  format: int32
+                priority:
+                  type: string
+                  description: Priority of the topic, can be 'low', 'normal', 'high' or 'very_high'
+                  enum:
+                    - low
+                    - normal
+                    - high
+                    - very_high
+        required: true
+      responses:
+        "200":
+          description: Update the status, assigned user, etc of a community topic
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Topic'
+  /api/v1/topics:
+    post:
+      tags:
+        - topics
+      description: Create a new public topic
+      operationId: postApiV1Topics
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+                - body
+                - forum_id
+                - name
+                - user_id
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: The subject of the ticket
+                body:
+                  type: string
+                  description: The post body
+                user_id:
+                  type: integer
+                  description: the User ID
+                  format: int32
+                forum_id:
+                  type: integer
+                  description: The forum to add the topic to
+                  format: int32
+                channel:
+                  type: string
+                  description: The source channel the ticket was created from. Defaults to API.
+                kind:
+                  type: string
+                  description: The kind of topic this is, can be 'ticket','discussion','chat', etc.
+                priority:
+                  type: string
+                  description: Priority of the topic, can be 'low', 'normal', 'high' or 'very_high'
+                  enum:
+                    - low
+                    - normal
+                    - high
+                    - very_high
+        required: true
+      responses:
+        "201":
+          description: Create a new public topic
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Topic'
+  /api/v1/posts/{id}:
+    patch:
+      tags:
+        - posts
+      description: Update a post
+      operationId: patchApiV1PostsId
+      parameters:
+        - name: id
+          in: path
+          description: The Post ID
+          required: true
+          schema:
+            type: integer
+            format: int32
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+                - active
+                - body
+              type: object
+              properties:
+                body:
+                  type: string
+                  description: The post body
+                active:
+                  type: boolean
+                  description: Whether the post is live or not
+        required: true
+      responses:
+        "200":
+          description: Update a post
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Post'
+  /api/v1/posts:
+    post:
+      tags:
+        - posts
+      description: Add a new reply to an existing discussion
+      operationId: postApiV1Posts
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+                - body
+                - kind
+                - topic_id
+                - user_id
+              type: object
+              properties:
+                topic_id:
+                  type: integer
+                  description: Topic to add post to
+                  format: int32
+                body:
+                  type: string
+                  description: The post body
+                user_id:
+                  type: integer
+                  description: The User ID of the poster
+                  format: int32
+                kind:
+                  type: string
+                  description: The kind of post, either 'reply' or 'note'
+                cc:
+                  type: string
+                  description: Comma separated list of emails to CC
+                bcc:
+                  type: string
+                  description: Comma separated list of emails to BCC
+        required: true
+      responses:
+        "201":
+          description: Add a new reply to an existing discussion
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Post'
+  /api/v1/users/invite:
+    post:
+      tags:
+        - users
+      description: Invite one or more users to create an account
+      operationId: postApiV1UsersInvite
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+                - emails
+                - message
+                - role
+              type: object
+              properties:
+                emails:
+                  type: string
+                  description: Comma separated list of email addresses
+                message:
+                  type: string
+                  description: A short message to be included with your invitation
+                role:
+                  type: string
+                  description: The role given to the new invited users (user, editor, agent, admin)
+        required: true
+      responses:
+        "201":
+          description: Invite one or more users to create an account
+          content: {}
+  /api/v1/users/anonymize/{id}:
+    post:
+      tags:
+        - users
+      description: Anonymize a user
+      operationId: postApiV1UsersAnonymizeId
+      parameters:
+        - name: id
+          in: path
+          description: User ID
+          required: true
+          schema:
+            type: integer
+            format: int32
+      responses:
+        "201":
+          description: Anonymize a user
+          content: {}
+  /api/v1/users/{id}:
+    get:
+      tags:
+        - users
+      description: Show details of a user
+      operationId: getApiV1UsersId
+      parameters:
+        - name: id
+          in: path
+          description: User ID
+          required: true
+          schema:
+            type: integer
+            format: int32
+      responses:
+        "200":
+          description: Show details of a user
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+    delete:
+      tags:
+        - users
+      description: Delete a user
+      operationId: deleteApiV1UsersId
+      parameters:
+        - name: id
+          in: path
+          description: User ID
+          required: true
+          schema:
+            type: integer
+            format: int32
+      responses:
+        "204":
+          description: Delete a user
+          content: {}
+    patch:
+      tags:
+        - users
+      description: Update a user
+      operationId: patchApiV1UsersId
+      parameters:
+        - name: id
+          in: path
+          description: User ID
+          required: true
+          schema:
+            type: integer
+            format: int32
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: Users full name
+                email:
+                  type: string
+                  description: Users email address
+                password:
+                  type: string
+                  description: Users password
+                account_number:
+                  type: string
+                  description: Users account_number
+                login:
+                  type: string
+                  description: Users login (optional)
+                bio:
+                  type: string
+                  description: Users bio
+                signature:
+                  type: string
+                  description: Users signature
+                role:
+                  type: string
+                  description: Users role
+                  default: user
+                  enum:
+                    - user
+                    - editor
+                    - agent
+                    - admin
+                home_phone:
+                  type: string
+                  description: Users home phone
+                work_phone:
+                  type: string
+                  description: Users work phone
+                cell_phone:
+                  type: string
+                  description: Users cell phone
+                company:
+                  type: string
+                  description: Users company
+                street:
+                  type: string
+                  description: Users street
+                city:
+                  type: string
+                  description: Users city
+                state:
+                  type: string
+                  description: Users state
+                zip:
+                  type: string
+                  description: Users Postal Code
+                title:
+                  type: string
+                  description: Users title
+                twitter:
+                  type: string
+                  description: Users Twitter handle
+                linkedin:
+                  type: string
+                  description: Users Linkedin username
+                language:
+                  type: string
+                  description: Users prefered language
+                active:
+                  type: boolean
+                  description: User active or deactivated
+                priority:
+                  type: string
+                  description: Users Priority- low, normal, high or vip
+                  default: normal
+                notes:
+                  type: string
+                  description: Notes about the user
+                status:
+                  type: string
+                  description: User/Agent status
+      responses:
+        "200":
+          description: Update a user
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+  /api/v1/users/status/{id}:
+    patch:
+      tags:
+        - users
+      description: Update agents status
+      operationId: patchApiV1UsersStatusId
+      parameters:
+        - name: id
+          in: path
+          description: User ID
+          required: true
+          schema:
+            type: integer
+            format: int32
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+                - status
+              type: object
+              properties:
+                status:
+                  type: string
+                  description: User/Agent status
+        required: true
+      responses:
+        "200":
+          description: Update agents status
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+  /api/v1/users:
+    get:
+      tags:
+        - users
+      description: List all users
+      operationId: getApiV1Users
+      responses:
+        "200":
+          description: List all users
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+    post:
+      tags:
+        - users
+      description: Create a new user
+      operationId: postApiV1Users
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+                - name
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: Users full name
+                email:
+                  type: string
+                  description: Users email address
+                password:
+                  type: string
+                  description: Users password
+                login:
+                  type: string
+                  description: Users login (optional)
+                bio:
+                  type: string
+                  description: Users bio
+                signature:
+                  type: string
+                  description: Users signature
+                role:
+                  type: string
+                  description: Users role
+                  default: user
+                  enum:
+                    - user
+                    - editor
+                    - agent
+                    - admin
+                home_phone:
+                  type: string
+                  description: Users home phone
+                work_phone:
+                  type: string
+                  description: Users work phone
+                cell_phone:
+                  type: string
+                  description: Users cell phone
+                account_number:
+                  type: string
+                  description: Users account_number
+                company:
+                  type: string
+                  description: Users company
+                street:
+                  type: string
+                  description: Users street
+                city:
+                  type: string
+                  description: Users city
+                state:
+                  type: string
+                  description: Users state
+                zip:
+                  type: string
+                  description: Users Postal Code
+                title:
+                  type: string
+                  description: Users title
+                twitter:
+                  type: string
+                  description: Users Twitter handle
+                linkedin:
+                  type: string
+                  description: Users Linkedin username
+                language:
+                  type: string
+                  description: Users prefered language
+                active:
+                  type: boolean
+                  description: User active or deactivated
+                  default: true
+                priority:
+                  type: string
+                  description: Users Priority
+                  default: normal
+                  enum:
+                    - low
+                    - normal
+                    - high
+                    - vip
+                notes:
+                  type: string
+                  description: Notes about the user
+                status:
+                  type: string
+                  description: User/Agent status
+        required: true
+      responses:
+        "201":
+          description: Create a new user
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+  /api/v1/users/search:
+    get:
+      tags:
+        - users
+      description: Search users by name, email, account number, phone, etc.
+      operationId: getApiV1UsersSearch
+      parameters:
+        - name: q
+          in: query
+          description: User search query
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Search users by name, email, account number, phone, etc.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+  /api/v1/users/self:
+    get:
+      tags:
+        - users
+      description: Load your own user
+      operationId: getApiV1UsersSelf
+      responses:
+        "200":
+          description: Load your own user
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+  /api/v1/search:
+    get:
+      tags:
+        - search
+      description: Search public docs or topics
+      operationId: getApiV1Search
+      parameters:
+        - name: q
+          in: query
+          description: The query term to search for
+          required: true
+          schema:
+            type: string
+        - name: type
+          in: query
+          description: The type of entity to search for. Could be Topic or Doc
+          schema:
+            type: string
+        - name: page
+          in: query
+          description: The current page
+          schema:
+            type: integer
+            format: int32
+            default: 1
+        - name: per_page
+          in: query
+          description: The number of results to return per page
+          schema:
+            type: integer
+            format: int32
+            default: 25
+      responses:
+        "200":
+          description: Search public docs or topics
+          content: {}
+  /api/v1/settings:
+    get:
+      tags:
+        - settings
+      description: List all settings and their values
+      operationId: getApiV1Settings
+      responses:
+        "200":
+          description: List all settings and their values
+          content: {}
+    post:
+      tags:
+        - settings
+      description: Update a setting value
+      operationId: postApiV1Settings
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+                - key
+                - value
+              type: object
+              properties:
+                key:
+                  type: string
+                value:
+                  type: string
+        required: true
+      responses:
+        "201":
+          description: Update a setting value
+          content: {}
+  /api/v1/flags:
+    post:
+      tags:
+        - flags
+      description: Flag a post for review
+      operationId: postApiV1Flags
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+                - post_id
+                - reason
+              type: object
+              properties:
+                post_id:
+                  type: integer
+                  description: The post to flag for review
+                  format: int32
+                reason:
+                  type: string
+                  description: The reason for flagging this post
+        required: true
+      responses:
+        "201":
+          description: Flag a post for review
+          content: {}
+  /api/v1/tags/{id}:
+    get:
+      tags:
+        - tags
+      description: Show one tag
+      operationId: getApiV1TagsId
+      parameters:
+        - name: id
+          in: path
+          description: ID of the tag
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Show one tag
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Tag'
+    patch:
+      tags:
+        - tags
+      description: Update a tag
+      operationId: patchApiV1TagsId
+      parameters:
+        - name: id
+          in: path
+          description: The ID of the tag you are updating
+          required: true
+          schema:
+            type: integer
+            format: int32
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+                - description
+                - name
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: The name of the tag
+                description:
+                  type: string
+                  description: The description of the tag
+                color:
+                  type: string
+                  description: 'The color hex code used for the tag, e.g. #ffcc33'
+        required: true
+      responses:
+        "200":
+          description: Update a tag
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Tag'
+  /api/v1/tags:
+    get:
+      tags:
+        - tags
+      description: List all tags
+      operationId: getApiV1Tags
+      responses:
+        "200":
+          description: List all tags
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Tag'
+    post:
+      tags:
+        - tags
+      description: Create a new tag
+      operationId: postApiV1Tags
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+                - description
+                - name
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: The name of the tag
+                description:
+                  type: string
+                  description: The description of the tag
+                color:
+                  type: string
+                  description: 'The color hex code used for the tag, e.g. #ffcc33'
+        required: true
+      responses:
+        "201":
+          description: Create a new tag
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Tag'
+  /api/v1/advanced_search/users:
+    post:
+      tags:
+        - advanced_search
+      summary: Advanced User Search
+      description: |-
+        Allows searching using the advanced search functionality.  The
+                  advanced search requires a JSON object describing the various filters
+                  comprising the search query. Behind the scenes, Helpy uses a Ruby Gem
+                  called 'Ransack' so any of the filter types here are allowable:
+                  https://github.com/activerecord-hackery/ransack/wiki/Basic-Searching. An
+                  example search JSON follows:
+
+                  `
+                  {
+                    "name_eq": "Jon",
+                    "priority_eq": "high"
+                  }
+                  `
+      operationId: postApiV1AdvancedSearchUsers
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+                - q
+              type: object
+              properties:
+                q:
+                  description: Advanced Search requires a JSON construct representing the user
+                page:
+                  type: integer
+                  description: The current page
+                  format: int32
+                  default: 1
+                per_page:
+                  type: integer
+                  description: The number of results to return per page
+                  format: int32
+                  default: 25
+        required: true
+      responses:
+        "201":
+          description: Advanced User Search
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+  /api/v1/advanced_search/tickets:
+    post:
+      tags:
+        - advanced_search
+      summary: Advanced Ticket Search
+      description: |-
+        Allows searching using the advanced search functionality.  The
+                  advanced search requires a JSON object describing the various filters
+                  comprising the search query. Behind the scenes, Helpy uses a Ruby Gem
+                  called 'Ransack' so any of the filter types here are allowable:
+                  https://github.com/activerecord-hackery/ransack/wiki/Basic-Searching. An
+                  example search JSON follows:
+
+                  `
+                  {
+                    "current_status_eq": "closed",
+                    "user_name_cont": "Lena"
+                  }
+                  `
+      operationId: postApiV1AdvancedSearchTickets
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+                - q
+              type: object
+              properties:
+                q:
+                  description: Advanced Search requires a JSON construct representing the search
+                page:
+                  type: integer
+                  description: The current page
+                  format: int32
+                  default: 1
+                per_page:
+                  type: integer
+                  description: The number of results to return per page
+                  format: int32
+                  default: 25
+        required: true
+      responses:
+        "201":
+          description: Advanced Ticket Search
+          content: {}
+  /api/v1/key_values/{id}:
+    get:
+      tags:
+        - key_values
+      summary: Show a single meta key value attribute.
+      description: Look up a single key value attribute object by its' ID.
+      operationId: getApiV1KeyValuesId
+      parameters:
+        - name: id
+          in: path
+          description: id of the KV object
+          required: true
+          schema:
+            type: integer
+            format: int32
+      responses:
+        "200":
+          description: Show a single meta key value attribute.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/KeyValue'
+    delete:
+      tags:
+        - key_values
+      summary: Delete a key value meta attribute from an object.
+      description: To delete a key value object, pass the ID of the object.
+      operationId: deleteApiV1KeyValuesId
+      parameters:
+        - name: id
+          in: path
+          description: The object to be deleted
+          required: true
+          schema:
+            type: integer
+            format: int32
+      responses:
+        "200":
+          description: Delete a key value meta attribute from an object.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/KeyValue'
+    patch:
+      tags:
+        - key_values
+      summary: Update key value meta attributes for an object.
+      description: |-
+        To update an existing key value attribute, pass the ID of the
+                  key value and any changes to the `key` or `value`.
+      operationId: patchApiV1KeyValuesId
+      parameters:
+        - name: id
+          in: path
+          description: The key value object id
+          required: true
+          schema:
+            type: integer
+            format: int32
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                key:
+                  type: string
+                value:
+                  type: string
+      responses:
+        "200":
+          description: Update key value meta attributes for an object.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/KeyValue'
+  /api/v1/key_values:
+    get:
+      tags:
+        - key_values
+      summary: Show meta key value attributes for an object.
+      description: |-
+        Key Values allow you to attach metadata to either `Topic` or `User`
+                  objects in Helpy.  This is useful for storing additional custom data that
+                  is not provided by Helpy.  Tickets generated by custom ticket form fields
+                  will also be stored as attributes and attached to the ticket. <br/><br>
+                  Some examples of how you might want to use Key Value attributes could be
+                  storing a customers service plan or sign up date.
+      operationId: getApiV1KeyValues
+      parameters:
+        - name: kvable_id
+          in: query
+          description: id of the object
+          required: true
+          schema:
+            type: integer
+            format: int32
+        - name: kvable_type
+          in: query
+          description: object Type
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Show meta key value attributes for an object.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/KeyValue'
+    post:
+      tags:
+        - key_values
+      summary: Add one or more key value meta attributes to an object.
+      description: |-
+        Creating one or multiple new key value attribute(s) requires the
+                  type (`kvable_type`) of object (`Topic`,`User`,etc.) and the foreign key
+                  ID of the topic or user object ('kvable_id'). To add a single key value object,
+                  pass a `key` and `value` in the params. To add multiple key-values,
+                  pass a JSON construct representing multiple key:value pairs in the `json`
+                  parameter like this:
+
+                  {
+                    "your-key":"your-value",
+                    "key-two":"value-2"
+                  }
+      operationId: postApiV1KeyValues
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+                - kvable_id
+                - kvable_type
+              type: object
+              properties:
+                kvable_id:
+                  type: integer
+                  description: The object foreign key
+                  format: int32
+                kvable_type:
+                  type: string
+                  description: The object type
+                key:
+                  type: string
+                  description: Attribute key
+                value:
+                  type: string
+                  description: Attribute value
+                json:
+                  description: JSON object with keys and values
+        required: true
+      responses:
+        "201":
+          description: Add one or more key value meta attributes to an object.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/KeyValue'
+    patch:
+      tags:
+        - key_values
+      summary: Update meta attribute values for an object.
+      description: "To update one or more attribute values for an object, provide\n          the object id and type and a json object expressing the keys and values\n          you would like to update.  Example format:\n\n          {\n            \"your-key\":\"your-value\",\n            \"key-two\":\"value-2\"\n          } "
+      operationId: patchApiV1KeyValues
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+                - json
+                - kvable_id
+                - kvable_type
+              type: object
+              properties:
+                kvable_id:
+                  type: integer
+                  description: The key value object id
+                  format: int32
+                kvable_type:
+                  type: string
+                  description: The key value object type
+                json: {}
+        required: true
+      responses:
+        "200":
+          description: Update meta attribute values for an object.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/KeyValue'
+  /api/v1/subscriptions/{user_id}:
+    delete:
+      tags:
+        - subscriptions
+      description: Delete a subscription
+      operationId: deleteApiV1SubscriptionsUserId
+      parameters:
+        - name: user_id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int32
+        - name: list_id
+          in: query
+          required: true
+          schema:
+            type: integer
+            format: int32
+      responses:
+        "204":
+          description: Delete a subscription
+          content: {}
+  /api/v1/subscriptions/unsubscribe/{user_id}:
+    put:
+      tags:
+        - subscriptions
+      description: Unsubscribe a user from a known list
+      operationId: putApiV1SubscriptionsUnsubscribeUserId
+      parameters:
+        - name: user_id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int32
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+                - list_id
+              type: object
+              properties:
+                list_id:
+                  type: integer
+                  format: int32
+        required: true
+      responses:
+        "200":
+          description: Unsubscribe a user from a known list
+          content: {}
+  /api/v1/subscriptions:
+    post:
+      tags:
+        - subscriptions
+      description: Subscribe a user to a known list
+      operationId: postApiV1Subscriptions
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+                - list_id
+                - user_id
+              type: object
+              properties:
+                user_id:
+                  type: integer
+                  format: int32
+                list_id:
+                  type: integer
+                  format: int32
+        required: true
+      responses:
+        "201":
+          description: Subscribe a user to a known list
+          content: {}
+  /api/v1/triggers/{id}:
+    delete:
+      tags:
+        - triggers
+      description: Delete a trigger
+      operationId: deleteApiV1TriggersId
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int32
+      responses:
+        "204":
+          description: Delete a trigger
+          content: {}
+  /api/v1/triggers/hook/{event}:
+    get:
+      tags:
+        - triggers
+      description: Show a sample webhook trigger response
+      operationId: getApiV1TriggersHookEvent
+      parameters:
+        - name: event
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Show a sample webhook trigger response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Trigger'
+  /api/v1/triggers:
+    get:
+      tags:
+        - triggers
+      description: List all triggers
+      operationId: getApiV1Triggers
+      responses:
+        "200":
+          description: List all triggers
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Trigger'
+    post:
+      tags:
+        - triggers
+      description: Add a new trigger automation or webhook
+      operationId: postApiV1Triggers
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+                - actions
+                - active
+                - event
+                - mode
+              type: object
+              properties:
+                name:
+                  type: string
+                event:
+                  type: string
+                conditions:
+                  type: string
+                actions:
+                  type: string
+                mode:
+                  type: string
+                url:
+                  type: string
+                active:
+                  type: boolean
+        required: true
+      responses:
+        "201":
+          description: Add a new trigger automation or webhook
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Trigger'
+components:
+  schemas:
+    Category:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Category ID
+          format: int32
+        slug:
+          type: string
+        name:
+          type: string
+          description: The name of the category of articles
+        icon:
+          type: string
+          description: An icon that represents the category
+        keywords:
+          type: string
+          description: Keywords that will be used for internal search and SEO
+        title_tag:
+          type: string
+          description: An alternate title tag that will be used if provided
+        meta_description:
+          type: string
+          description: A short description for SEO and internal purposes
+        rank:
+          type: integer
+          description: The rank can be used to determine the ordering of categories
+          format: int32
+        front_page:
+          type: boolean
+          description: Whether or not the category should appear on the front page
+        active:
+          type: boolean
+          description: Whether or not the category is live on the site
+        visibility:
+          type: string
+          description: The visibility of the category.  Can be all, internal or public.
+        created_at:
+          type: string
+        updated_at:
+          type: string
+        docs:
+          $ref: '#/components/schemas/Doc'
+      description: List all public categories
+    Doc:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+        slug:
+          type: string
+        title:
+          type: string
+        body:
+          type: string
+        keywords:
+          type: string
+        title_tag:
+          type: string
+        meta_description:
+          type: string
+        category_id:
+          type: integer
+          description: The ID of the category the document belongs to.
+          format: int32
+        user_id:
+          type: integer
+          description: The user_id of the author of the document.
+          format: int32
+        active:
+          type: boolean
+          description: Whether or not the document is active on the support site.
+        rank:
+          type: integer
+          description: The rank can be used to determine the ordering of categories
+          format: int32
+        version:
+          type: integer
+          format: int32
+        front_page:
+          type: boolean
+          description: Whether or not the document should be featured.
+        created_at:
+          type: string
+        updated_at:
+          type: string
+        topics_count:
+          type: integer
+          format: int32
+        allow_comments:
+          type: boolean
+          description: Whether or not the document should allow commenting.
+        category:
+          $ref: '#/components/schemas/Category'
+      description: Shows a single doc
+    Forum:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+          description: The name of the forum
+        description:
+          type: string
+          description: A description for the forum
+        topics_count:
+          type: integer
+          format: int32
+        last_post_id:
+          type: integer
+          format: int32
+        last_post_date:
+          type: string
+        private:
+          type: boolean
+          description: Whether the forum is publically accessible
+        created_at:
+          type: string
+        updated_at:
+          type: string
+        allow_topic_voting:
+          type: boolean
+          description: Whether or not to allow topic voting
+        allow_post_voting:
+          type: boolean
+          description: Whether or not to allow voting of reply posts
+        layout:
+          type: string
+          description: The layout the forum uses. Can be Table, Grid, or Q&A
+        topics:
+          $ref: '#/components/schemas/Topic'
+      description: List all forums
+    Topic:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+        forum_id:
+          type: integer
+          description: The Forum this topic belongs to.
+          format: int32
+        user_id:
+          type: integer
+          description: The ID representing the creator of the topic.
+          format: int32
+        user_name:
+          type: string
+        user:
+          $ref: '#/components/schemas/User'
+        name:
+          type: string
+          description: The title or subject of the Topic thread.
+        posts_count:
+          type: integer
+          format: int32
+        last_post_date:
+          type: string
+        closed_date:
+          type: string
+        last_post_id:
+          type: integer
+          description: Cached ID of the most recent post.
+          format: int32
+        current_status:
+          type: string
+          description: The status of the Topic. Can be 'new', 'open', 'pending', 'closed', 'spam', 'trash'
+        private:
+          type: string
+          description: Whether or not the Topic is private (a ticket). Tickets must also have forum_ID 1
+        assigned_user_id:
+          type: integer
+          format: int32
+        points:
+          type: integer
+          description: The number of times this Topic has been voted for.
+          format: int32
+        created_at:
+          type: string
+        updated_at:
+          type: string
+        doc_id:
+          type: integer
+          format: int32
+        locale:
+          type: string
+          description: The locale used when the author created the Topic.
+        team_list:
+          type: string
+        tag_list:
+          type: string
+        channel:
+          type: string
+          description: The channel that the topic was created from.
+        kind:
+          type: string
+          description: The kind of topic this is, can be 'ticket','discussion','chat', etc.
+        priority:
+          type: string
+          description: Priority of the topic, can be 'low', 'normal', 'high' or 'very_high'
+        posts:
+          $ref: '#/components/schemas/Post'
+        spam_score:
+          type: string
+        spam_report:
+          type: string
+        violations:
+          $ref: '#/components/schemas/Violation'
+        key_values:
+          $ref: '#/components/schemas/KeyValue'
+      description: Show a single ticket
+    User:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+        login:
+          type: string
+        name:
+          type: string
+        bio:
+          type: string
+        signature:
+          type: string
+        role:
+          type: string
+        home_phone:
+          type: string
+        work_phone:
+          type: string
+        cell_phone:
+          type: string
+        company:
+          type: string
+        street:
+          type: string
+        city:
+          type: string
+        state:
+          type: string
+        zip:
+          type: string
+        title:
+          type: string
+        twitter:
+          type: string
+        linkedin:
+          type: string
+        thumbnail:
+          type: string
+        medium_image:
+          type: string
+        large_image:
+          type: string
+        language:
+          type: string
+        assigned_ticket_count:
+          type: integer
+          format: int32
+        topics_count:
+          type: integer
+          format: int32
+        active:
+          type: boolean
+          description: Whether or not the user is active.
+        created_at:
+          type: string
+        updated_at:
+          type: string
+        email:
+          type: string
+        sign_in_count:
+          type: integer
+          format: int32
+        team_list:
+          type: string
+        account_number:
+          type: string
+        priority:
+          type: string
+        notes:
+          type: string
+        status:
+          type: string
+        key_values:
+          $ref: '#/components/schemas/KeyValue'
+      description: |-
+        Allows searching using the advanced search functionality.  The
+                  advanced search requires a JSON object describing the various filters
+                  comprising the search query. Behind the scenes, Helpy uses a Ruby Gem
+                  called 'Ransack' so any of the filter types here are allowable:
+                  https://github.com/activerecord-hackery/ransack/wiki/Basic-Searching. An
+                  example search JSON follows:
+
+                  `
+                  {
+                    "name_eq": "Jon",
+                    "priority_eq": "high"
+                  }
+                  `
+    KeyValue:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: The PK for this kv pair
+          format: int32
+        key:
+          type: string
+          description: The key (variable) name for this attribute
+        value:
+          type: string
+          description: The attribute value
+        kvable_id:
+          type: integer
+          description: FK to the parent object of the attribute
+          format: int32
+        kvable_type:
+          type: string
+          description: The type of object this attribute belongs to
+      description: |-
+        Key Values allow you to attach metadata to either `Topic` or `User`
+                  objects in Helpy.  This is useful for storing additional custom data that
+                  is not provided by Helpy.  Tickets generated by custom ticket form fields
+                  will also be stored as attributes and attached to the ticket. <br/><br>
+                  Some examples of how you might want to use Key Value attributes could be
+                  storing a customers service plan or sign up date.
+    Post:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+        topic_id:
+          type: integer
+          description: The Topic this post belongs to.
+          format: int32
+        user_id:
+          type: integer
+          description: The ID representing the author of the post.
+          format: int32
+        user:
+          $ref: '#/components/schemas/User'
+        body:
+          type: string
+        kind:
+          type: string
+          description: The type of Post this is- can be 'first', 'reply' or 'note'.
+        active:
+          type: boolean
+          description: Whether or not the post is visible onsite.
+        created_at:
+          type: string
+        updated_at:
+          type: string
+        points:
+          type: integer
+          format: int32
+        cc:
+          type: string
+          description: Comma separated list of emails to CC
+        bcc:
+          type: string
+          description: Comma separated list of emails to BCC
+        raw_email:
+          type: string
+          description: The original full raw email body
+        email_to_address:
+          type: string
+          description: The address a ticket was sent to
+      description: Add a new reply to an existing discussion
+    Violation:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: The PK for this kv pair
+          format: int32
+        topic_id:
+          type: integer
+          description: The FK to the Topic which generated the violation
+          format: int32
+        sla_id:
+          type: integer
+          description: The FK to the SLA which created the violation
+          format: int32
+    Tag:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+          description: The name of the tag
+        description:
+          type: string
+          description: A description for the tag
+        color:
+          type: string
+          description: A color hex code used for the tag
+      description: List all tags
+    Trigger:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: The trigger ID
+          format: int32
+        name:
+          type: string
+          description: The name of the Trigger
+        event:
+          type: string
+          description: The ticket lifecycle event
+        conditions:
+          type: string
+          description: The ticket conditions
+        actions:
+          type: string
+          description: The trigger actions
+        mode:
+          type: string
+          description: The trigger mode- and/or
+        url:
+          type: string
+          description: The trigger URL for webhook triggers
+        active:
+          type: boolean
+          description: Whether or not the trigger is active
+      description: Add a new trigger automation or webhook
+x-original-swagger-version: "2.0"
