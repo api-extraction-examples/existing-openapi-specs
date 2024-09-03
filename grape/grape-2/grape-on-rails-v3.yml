@@ -1,0 +1,100 @@
+openapi: 3.0.1
+info:
+  title: grape-on-rails
+  version: 0.0.1
+servers:
+  - url: //localhost:3000/
+tags:
+  - name: protected
+    description: Operations about protecteds
+  - name: spline
+    description: Operations about splines
+  - name: headers
+    description: Operations about headers
+  - name: ping
+    description: Operations about pings
+  - name: raise
+    description: Operations about raises
+paths:
+  /api/protected/ping:
+    get:
+      tags:
+        - protected
+      description: Returns pong if username=username and password=password.
+      operationId: getApiProtectedPing
+      responses:
+        "200":
+          description: Returns pong if username=username and password=password.
+          content: {}
+  /api/spline:
+    post:
+      tags:
+        - spline
+      description: Creates a spline that can be reticulated.
+      operationId: postApiSpline
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/postApiSpline'
+        required: true
+      responses:
+        "201":
+          description: Creates a spline that can be reticulated.
+          content: {}
+      x-codegen-request-body-name: postApiSpline
+  /api/headers/{key}:
+    get:
+      tags:
+        - headers
+      description: Returns a header value.
+      operationId: getApiHeadersKey
+      parameters:
+        - name: key
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Returns a header value.
+          content: {}
+  /api/headers:
+    get:
+      tags:
+        - headers
+      description: Returns all headers.
+      operationId: getApiHeaders
+      responses:
+        "200":
+          description: Returns all headers.
+          content: {}
+  /api/ping:
+    get:
+      tags:
+        - ping
+      description: Returns pong.
+      operationId: getApiPing
+      responses:
+        "200":
+          description: Returns pong.
+          content: {}
+  /api/raise:
+    get:
+      tags:
+        - raise
+      description: Raises an exception.
+      operationId: getApiRaise
+      responses:
+        "200":
+          description: Raises an exception.
+          content: {}
+components:
+  schemas:
+    postApiSpline:
+      type: object
+      properties:
+        reticulated:
+          type: boolean
+      description: Creates a spline that can be reticulated.
+x-original-swagger-version: "2.0"
