@@ -1,0 +1,3175 @@
+openapi: 3.0.1
+info:
+  contact: {}
+  license: {}
+servers:
+- url: /
+paths:
+  /nodes:
+    get:
+      tags:
+      - node
+      summary: Get nodes
+      description: Get nodes
+      parameters:
+      - name: Authorization
+        in: header
+        description: With the bearer started
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+  /nodes/{id}:
+    get:
+      tags:
+      - node
+      summary: Get node
+      description: Get node
+      parameters:
+      - name: Authorization
+        in: header
+        description: With the bearer started
+        required: true
+        schema:
+          type: string
+      - name: id
+        in: path
+        description: id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+    post:
+      tags:
+      - node
+      summary: Post node
+      description: Post node
+      parameters:
+      - name: Authorization
+        in: header
+        description: With the bearer started
+        required: true
+        schema:
+          type: string
+      - name: id
+        in: path
+        description: post node
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+    delete:
+      tags:
+      - node
+      summary: Delete node
+      description: Delete node
+      parameters:
+      - name: Authorization
+        in: header
+        description: With the bearer started
+        required: true
+        schema:
+          type: string
+      - name: id
+        in: path
+        description: node id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+  /nodes/{id}/deps:
+    get:
+      tags:
+      - system
+      summary: Get dep list
+      description: Get dep list
+      parameters:
+      - name: Authorization
+        in: header
+        description: Authorization token
+        required: true
+        schema:
+          type: string
+      - name: id
+        in: path
+        description: node id
+        required: true
+        schema:
+          type: string
+      - name: lang
+        in: query
+        description: language
+        required: true
+        schema:
+          type: string
+      - name: dep_name
+        in: query
+        description: dep name
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+  /nodes/{id}/deps/install:
+    post:
+      tags:
+      - system
+      summary: Install  dep
+      description: Install dep
+      parameters:
+      - name: Authorization
+        in: header
+        description: Authorization token
+        required: true
+        schema:
+          type: string
+      - name: id
+        in: path
+        description: node id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+  /nodes/{id}/deps/installed:
+    get:
+      tags:
+      - system
+      summary: Get installed dep list
+      description: Get installed dep list
+      parameters:
+      - name: Authorization
+        in: header
+        description: Authorization token
+        required: true
+        schema:
+          type: string
+      - name: id
+        in: path
+        description: node id
+        required: true
+        schema:
+          type: string
+      - name: lang
+        in: query
+        description: language
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+  /nodes/{id}/deps/uninstall:
+    post:
+      tags:
+      - system
+      summary: Uninstall  dep
+      description: Uninstall dep
+      parameters:
+      - name: Authorization
+        in: header
+        description: Authorization token
+        required: true
+        schema:
+          type: string
+      - name: id
+        in: path
+        description: node id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+  /nodes/{id}/langs:
+    get:
+      tags:
+      - system
+      summary: Get language list
+      description: Get language list
+      parameters:
+      - name: Authorization
+        in: header
+        description: Authorization token
+        required: true
+        schema:
+          type: string
+      - name: id
+        in: path
+        description: node id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+  /nodes/{id}/langs/install:
+    post:
+      tags:
+      - system
+      summary: Install language
+      description: Install language
+      parameters:
+      - name: Authorization
+        in: header
+        description: Authorization token
+        required: true
+        schema:
+          type: string
+      - name: id
+        in: path
+        description: node id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+  /nodes/{id}/system:
+    get:
+      tags:
+      - node
+      summary: Get system info
+      description: Get system info
+      parameters:
+      - name: Authorization
+        in: header
+        description: With the bearer started
+        required: true
+        schema:
+          type: string
+      - name: id
+        in: path
+        description: node id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+  /nodes/{id}/tasks:
+    get:
+      tags:
+      - node
+      summary: Get tasks on node
+      description: Get tasks on node
+      parameters:
+      - name: Authorization
+        in: header
+        description: With the bearer started
+        required: true
+        schema:
+          type: string
+      - name: id
+        in: path
+        description: node id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+  /projects:
+    get:
+      tags:
+      - project
+      summary: Get projects
+      description: Get projects
+      parameters:
+      - name: Authorization
+        in: header
+        description: With the bearer started
+        required: true
+        schema:
+          type: string
+      - name: tag
+        in: query
+        description: projects
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+    put:
+      tags:
+      - project
+      summary: Put project
+      description: Put project
+      parameters:
+      - name: Authorization
+        in: header
+        description: With the bearer started
+        required: true
+        schema:
+          type: string
+      requestBody:
+        description: post project
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/model.Project'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+      x-codegen-request-body-name: p
+  /projects/{id}:
+    post:
+      tags:
+      - project
+      summary: Post project
+      description: Post project
+      parameters:
+      - name: Authorization
+        in: header
+        description: Authorization token
+        required: true
+        schema:
+          type: string
+      - name: id
+        in: path
+        description: project id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        description: project item
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/model.Project'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+      x-codegen-request-body-name: item
+    delete:
+      tags:
+      - project
+      summary: Delete project
+      description: Delete project
+      parameters:
+      - name: Authorization
+        in: header
+        description: Authorization token
+        required: true
+        schema:
+          type: string
+      - name: id
+        in: path
+        description: project id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+  /projects/tags:
+    get:
+      tags:
+      - project
+      summary: Get project tags
+      description: Get projects tags
+      parameters:
+      - name: Authorization
+        in: header
+        description: Authorization token
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+  /schedules:
+    get:
+      tags:
+      - schedule
+      summary: Get schedule list
+      description: Get schedule list
+      parameters:
+      - name: Authorization
+        in: header
+        description: Authorization token
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+    put:
+      tags:
+      - schedule
+      summary: Put schedule
+      description: Put schedule
+      parameters:
+      - name: Authorization
+        in: header
+        description: Authorization token
+        required: true
+        schema:
+          type: string
+      requestBody:
+        description: schedule item
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/model.Schedule'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+      x-codegen-request-body-name: item
+  /schedules/{id}:
+    get:
+      tags:
+      - schedule
+      summary: Get schedule by id
+      description: Get schedule  by id
+      parameters:
+      - name: Authorization
+        in: header
+        description: Authorization token
+        required: true
+        schema:
+          type: string
+      - name: id
+        in: path
+        description: schedule id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+    post:
+      tags:
+      - schedule
+      summary: Post schedule
+      description: Post schedule
+      parameters:
+      - name: Authorization
+        in: header
+        description: Authorization token
+        required: true
+        schema:
+          type: string
+      - name: id
+        in: path
+        description: schedule id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        description: schedule item
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/model.Schedule'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+      x-codegen-request-body-name: newItem
+    delete:
+      tags:
+      - schedule
+      summary: Delete schedule
+      description: Delete schedule
+      parameters:
+      - name: Authorization
+        in: header
+        description: Authorization token
+        required: true
+        schema:
+          type: string
+      - name: id
+        in: path
+        description: schedule id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+  /schedules/{id}/disable:
+    post:
+      tags:
+      - schedule
+      summary: disable schedule
+      description: disable schedule
+      parameters:
+      - name: Authorization
+        in: header
+        description: Authorization token
+        required: true
+        schema:
+          type: string
+      - name: id
+        in: path
+        description: schedule id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+  /schedules/{id}/enable:
+    post:
+      tags:
+      - schedule
+      summary: enable schedule
+      description: enable schedule
+      parameters:
+      - name: Authorization
+        in: header
+        description: Authorization token
+        required: true
+        schema:
+          type: string
+      - name: id
+        in: path
+        description: schedule id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+  /setting:
+    get:
+      tags:
+      - setting
+      summary: Get setting
+      description: Get setting
+      parameters:
+      - name: Authorization
+        in: header
+        description: Authorization token
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+  /spiders:
+    put:
+      tags:
+      - spider
+      summary: Put spider
+      description: Put spider
+      parameters:
+      - name: Authorization
+        in: header
+        description: Authorization token
+        required: true
+        schema:
+          type: string
+      requestBody:
+        description: spider item
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/model.Spider'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+      x-codegen-request-body-name: spider
+    post:
+      tags:
+      - spider
+      summary: delete spider
+      description: delete spider
+      parameters:
+      - name: Authorization
+        in: header
+        description: Authorization token
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+  /spiders-cancel:
+    post:
+      tags:
+      - spider
+      summary: cancel spider
+      description: cancel spider
+      parameters:
+      - name: Authorization
+        in: header
+        description: Authorization token
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+  /spiders-run:
+    post:
+      tags:
+      - spider
+      summary: run spider
+      description: run spider
+      parameters:
+      - name: Authorization
+        in: header
+        description: Authorization token
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+  /spiders/{id}:
+    get:
+      tags:
+      - spider
+      summary: Get spider by id
+      description: Get spider  by id
+      parameters:
+      - name: Authorization
+        in: header
+        description: Authorization token
+        required: true
+        schema:
+          type: string
+      - name: id
+        in: path
+        description: schedule id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+    post:
+      tags:
+      - spider
+      summary: Post spider
+      description: Post spider
+      parameters:
+      - name: Authorization
+        in: header
+        description: Authorization token
+        required: true
+        schema:
+          type: string
+      - name: id
+        in: path
+        description: schedule id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        description: spider item
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/model.Spider'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+      x-codegen-request-body-name: item
+    delete:
+      tags:
+      - spider
+      summary: Delete spider by id
+      description: Delete spider by id
+      parameters:
+      - name: Authorization
+        in: header
+        description: Authorization token
+        required: true
+        schema:
+          type: string
+      - name: id
+        in: path
+        description: spider id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+  /spiders/{id}/copy:
+    post:
+      tags:
+      - spider
+      summary: Copy spider
+      description: Copy spider
+      parameters:
+      - name: Authorization
+        in: header
+        description: Authorization token
+        required: true
+        schema:
+          type: string
+      - name: id
+        in: path
+        description: schedule id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+  /spiders/{id}/dir:
+    get:
+      tags:
+      - spider
+      summary: Get spider dir
+      description: Get spider dir
+      parameters:
+      - name: Authorization
+        in: header
+        description: Authorization token
+        required: true
+        schema:
+          type: string
+      - name: id
+        in: path
+        description: spider id
+        required: true
+        schema:
+          type: string
+      - name: path
+        in: query
+        description: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+  /spiders/{id}/file:
+    get:
+      tags:
+      - spider
+      summary: Get spider file
+      description: Get spider file
+      parameters:
+      - name: Authorization
+        in: header
+        description: Authorization token
+        required: true
+        schema:
+          type: string
+      - name: id
+        in: path
+        description: spider id
+        required: true
+        schema:
+          type: string
+      - name: path
+        in: query
+        description: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+    put:
+      tags:
+      - spider
+      summary: Post spider dir
+      description: Post spider dir
+      parameters:
+      - name: Authorization
+        in: header
+        description: Authorization token
+        required: true
+        schema:
+          type: string
+      - name: id
+        in: path
+        description: spider id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        description: path
+        content:
+          '*/*':
+            schema:
+              $ref: '#/components/schemas/routes.SpiderFileReqBody'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+      x-codegen-request-body-name: reqBody
+    post:
+      tags:
+      - spider
+      summary: Put spider file
+      description: Put spider file
+      parameters:
+      - name: Authorization
+        in: header
+        description: Authorization token
+        required: true
+        schema:
+          type: string
+      - name: id
+        in: path
+        description: spider id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        description: path
+        content:
+          '*/*':
+            schema:
+              $ref: '#/components/schemas/routes.SpiderFileReqBody'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+      x-codegen-request-body-name: reqBody
+    delete:
+      tags:
+      - spider
+      summary: Delete spider file
+      description: Delete spider file
+      parameters:
+      - name: Authorization
+        in: header
+        description: Authorization token
+        required: true
+        schema:
+          type: string
+      - name: id
+        in: path
+        description: spider id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        description: path
+        content:
+          '*/*':
+            schema:
+              $ref: '#/components/schemas/routes.SpiderFileReqBody'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+      x-codegen-request-body-name: reqBody
+  /spiders/{id}/file/rename:
+    post:
+      tags:
+      - spider
+      summary: Rename spider file
+      description: Rename spider file
+      parameters:
+      - name: Authorization
+        in: header
+        description: Authorization token
+        required: true
+        schema:
+          type: string
+      - name: id
+        in: path
+        description: spider id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        description: path
+        content:
+          '*/*':
+            schema:
+              $ref: '#/components/schemas/routes.SpiderFileReqBody'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+      x-codegen-request-body-name: reqBody
+  /spiders/{id}/file/tree:
+    get:
+      tags:
+      - spider
+      summary: Get spider dir
+      description: Get spider dir
+      parameters:
+      - name: Authorization
+        in: header
+        description: Authorization token
+        required: true
+        schema:
+          type: string
+      - name: id
+        in: path
+        description: spider id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+  /spiders/{id}/git/reset:
+    post:
+      tags:
+      - spider
+      summary: Post  spider  reset git
+      description: Post  spider  reset git
+      parameters:
+      - name: Authorization
+        in: header
+        description: Authorization token
+        required: true
+        schema:
+          type: string
+      - name: id
+        in: path
+        description: spider id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+  /spiders/{id}/git/sync:
+    post:
+      tags:
+      - spider
+      summary: Post  spider  sync git
+      description: Post  spider  sync git
+      parameters:
+      - name: Authorization
+        in: header
+        description: Authorization token
+        required: true
+        schema:
+          type: string
+      - name: id
+        in: path
+        description: spider id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+  /spiders/{id}/publish:
+    post:
+      tags:
+      - spider
+      summary: Publish spider
+      description: Publish spider
+      parameters:
+      - name: Authorization
+        in: header
+        description: Authorization token
+        required: true
+        schema:
+          type: string
+      - name: id
+        in: path
+        description: schedule id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+  /spiders/{id}/schedules:
+    get:
+      tags:
+      - spider
+      summary: Get schedules
+      description: Get schedules
+      parameters:
+      - name: Authorization
+        in: header
+        description: Authorization token
+        required: true
+        schema:
+          type: string
+      - name: id
+        in: path
+        description: spider id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+  /spiders/{id}/scrapy/items:
+    get:
+      tags:
+      - spider
+      summary: Get scrapy spider items
+      description: Get scrapy spider items
+      parameters:
+      - name: Authorization
+        in: header
+        description: Authorization token
+        required: true
+        schema:
+          type: string
+      - name: id
+        in: path
+        description: spider id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+    post:
+      tags:
+      - spider
+      summary: Post scrapy spider items
+      description: Post scrapy spider items
+      parameters:
+      - name: Authorization
+        in: header
+        description: Authorization token
+        required: true
+        schema:
+          type: string
+      - name: id
+        in: path
+        description: spider id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        description: req data
+        content:
+          '*/*':
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/entity.ScrapyItem'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+      x-codegen-request-body-name: reqData
+  /spiders/{id}/scrapy/pipelines:
+    get:
+      tags:
+      - spider
+      summary: Get scrapy spider pipelines
+      description: Get scrapy spider pipelines
+      parameters:
+      - name: Authorization
+        in: header
+        description: Authorization token
+        required: true
+        schema:
+          type: string
+      - name: id
+        in: path
+        description: spider id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+  /spiders/{id}/scrapy/settings:
+    get:
+      tags:
+      - spider
+      summary: Get scrapy spider settings
+      description: Get scrapy spider settings
+      parameters:
+      - name: Authorization
+        in: header
+        description: Authorization token
+        required: true
+        schema:
+          type: string
+      - name: id
+        in: path
+        description: spider id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+    post:
+      tags:
+      - spider
+      summary: Get scrapy spider file
+      description: Get scrapy spider file
+      parameters:
+      - name: Authorization
+        in: header
+        description: Authorization token
+        required: true
+        schema:
+          type: string
+      - name: id
+        in: path
+        description: spider id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        description: req data
+        content:
+          '*/*':
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/entity.ScrapySettingParam'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+      x-codegen-request-body-name: reqData
+  /spiders/{id}/scrapy/spider/filepath:
+    get:
+      tags:
+      - spider
+      summary: Get scrapy spider file path
+      description: Get scrapy spider file path
+      parameters:
+      - name: Authorization
+        in: header
+        description: Authorization token
+        required: true
+        schema:
+          type: string
+      - name: id
+        in: path
+        description: spider id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+  /spiders/{id}/scrapy/spiders:
+    get:
+      tags:
+      - spider
+      summary: Get scrapy spider file
+      description: Get scrapy spider file
+      parameters:
+      - name: Authorization
+        in: header
+        description: Authorization token
+        required: true
+        schema:
+          type: string
+      - name: id
+        in: path
+        description: spider id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+    put:
+      tags:
+      - spider
+      summary: Put scrapy spider file
+      description: Put scrapy spider file
+      parameters:
+      - name: Authorization
+        in: header
+        description: Authorization token
+        required: true
+        schema:
+          type: string
+      - name: id
+        in: path
+        description: spider id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+  /spiders/{id}/stats:
+    get:
+      tags:
+      - spider
+      summary: Get spider stats
+      description: Get spider stats
+      parameters:
+      - name: Authorization
+        in: header
+        description: Authorization token
+        required: true
+        schema:
+          type: string
+      - name: id
+        in: path
+        description: spider id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+  /spiders/{id}/tasks:
+    get:
+      tags:
+      - spider
+      summary: Get task list
+      description: Get task list
+      parameters:
+      - name: Authorization
+        in: header
+        description: Authorization token
+        required: true
+        schema:
+          type: string
+      - name: id
+        in: path
+        description: spider id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+  /spiders/{id}/upload:
+    post:
+      tags:
+      - spider
+      summary: Upload spider by id
+      description: Upload spider by id
+      parameters:
+      - name: Authorization
+        in: header
+        description: Authorization token
+        required: true
+        schema:
+          type: string
+      - name: id
+        in: path
+        description: spider id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+              - file
+              type: object
+              properties:
+                file:
+                  type: string
+                  description: spider file to upload
+                  format: binary
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+  /system/deps/:
+    get:
+      tags:
+      - system
+      summary: Get all dep list
+      description: Get all dep list
+      parameters:
+      - name: Authorization
+        in: header
+        description: Authorization token
+        required: true
+        schema:
+          type: string
+      - name: lang
+        in: path
+        description: language
+        required: true
+        schema:
+          type: string
+      - name: dep_nane
+        in: query
+        description: dep name
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+  /system/deps/{lang}/{dep_name}/json:
+    get:
+      tags:
+      - system
+      summary: Get dep json
+      description: Get dep json
+      parameters:
+      - name: Authorization
+        in: header
+        description: Authorization token
+        required: true
+        schema:
+          type: string
+      - name: lang
+        in: path
+        description: language
+        required: true
+        schema:
+          type: string
+      - name: dep_name
+        in: path
+        description: dep name
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+  /task/{id}:
+    delete:
+      tags:
+      - task
+      summary: Delete task
+      description: Delete task
+      parameters:
+      - name: Authorization
+        in: header
+        description: Authorization token
+        required: true
+        schema:
+          type: string
+      - name: id
+        in: path
+        description: task id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+  /tasks:
+    get:
+      tags:
+      - task
+      summary: Get task list
+      description: Get task list
+      parameters:
+      - name: Authorization
+        in: header
+        description: Authorization token
+        required: true
+        schema:
+          type: string
+      requestBody:
+        description: req data
+        content:
+          '*/*':
+            schema:
+              $ref: '#/components/schemas/routes.TaskListRequestData'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+      x-codegen-request-body-name: data
+    put:
+      tags:
+      - task
+      summary: Put task
+      description: Put task
+      parameters:
+      - name: Authorization
+        in: header
+        description: Authorization token
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+    delete:
+      tags:
+      - task
+      summary: Delete tasks
+      description: Delete tasks
+      parameters:
+      - name: Authorization
+        in: header
+        description: Authorization token
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+  /tasks/{id}:
+    get:
+      tags:
+      - task
+      summary: Get task
+      description: Get task
+      parameters:
+      - name: Authorization
+        in: header
+        description: Authorization token
+        required: true
+        schema:
+          type: string
+      - name: id
+        in: path
+        description: task id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+  /tasks/{id}/cancel:
+    post:
+      tags:
+      - task
+      summary: Cancel task
+      description: Cancel task
+      parameters:
+      - name: Authorization
+        in: header
+        description: Authorization token
+        required: true
+        schema:
+          type: string
+      - name: id
+        in: path
+        description: task id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+  /tasks/{id}/error-log:
+    delete:
+      tags:
+      - task
+      summary: Get task error log
+      description: Get task error log
+      parameters:
+      - name: Authorization
+        in: header
+        description: Authorization token
+        required: true
+        schema:
+          type: string
+      - name: id
+        in: path
+        description: task id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+  /tasks/{id}/log:
+    delete:
+      tags:
+      - task
+      summary: Get task log
+      description: Get task log
+      parameters:
+      - name: Authorization
+        in: header
+        description: Authorization token
+        required: true
+        schema:
+          type: string
+      - name: id
+        in: path
+        description: task id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+  /tasks/{id}/restart:
+    post:
+      tags:
+      - task
+      summary: Restart task
+      description: Restart task
+      parameters:
+      - name: Authorization
+        in: header
+        description: Authorization token
+        required: true
+        schema:
+          type: string
+      - name: id
+        in: path
+        description: task id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+  /tasks/{id}/results:
+    get:
+      tags:
+      - task
+      summary: Get task list
+      description: Get task list
+      parameters:
+      - name: Authorization
+        in: header
+        description: Authorization token
+        required: true
+        schema:
+          type: string
+      - name: id
+        in: path
+        description: task id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        description: req data
+        content:
+          '*/*':
+            schema:
+              $ref: '#/components/schemas/routes.TaskResultsRequestData'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+      x-codegen-request-body-name: data
+  /tasks/{id}/results/download:
+    get:
+      tags:
+      - task
+      summary: Get task results
+      description: Get task results
+      parameters:
+      - name: Authorization
+        in: header
+        description: Authorization token
+        required: true
+        schema:
+          type: string
+      - name: id
+        in: path
+        description: task id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+  /tasks_by_status:
+    delete:
+      tags:
+      - task
+      summary: Delete task
+      description: Delete task
+      parameters:
+      - name: Authorization
+        in: header
+        description: Authorization token
+        required: true
+        schema:
+          type: string
+      - name: status
+        in: query
+        description: task status
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+  /tokens:
+    get:
+      tags:
+      - token
+      summary: Get token
+      description: token
+      parameters:
+      - name: Authorization
+        in: header
+        description: Authorization token
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+    put:
+      tags:
+      - token
+      summary: Put token
+      description: token
+      parameters:
+      - name: Authorization
+        in: header
+        description: Authorization token
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+  /tokens/{id}:
+    delete:
+      tags:
+      - token
+      summary: Delete token
+      description: Delete token
+      parameters:
+      - name: Authorization
+        in: header
+        description: Authorization token
+        required: true
+        schema:
+          type: string
+      - name: id
+        in: path
+        description: token id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+  /users:
+    get:
+      tags:
+      - token
+      summary: Get user list
+      description: Get user list
+      parameters:
+      - name: Authorization
+        in: header
+        description: Authorization token
+        required: true
+        schema:
+          type: string
+      requestBody:
+        description: data body
+        content:
+          '*/*':
+            schema:
+              $ref: '#/components/schemas/routes.UserListRequestData'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+      x-codegen-request-body-name: data
+    put:
+      tags:
+      - user
+      summary: Put user
+      description: Put user
+      parameters:
+      - name: Authorization
+        in: header
+        description: Authorization token
+        required: true
+        schema:
+          type: string
+      requestBody:
+        description: reqData body
+        content:
+          '*/*':
+            schema:
+              $ref: '#/components/schemas/routes.UserRequestData'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+      x-codegen-request-body-name: reqData
+  /users/{id}:
+    get:
+      tags:
+      - user
+      summary: Get user
+      description: user
+      parameters:
+      - name: Authorization
+        in: header
+        description: Authorization token
+        required: true
+        schema:
+          type: string
+      - name: id
+        in: path
+        description: user id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+    post:
+      tags:
+      - user
+      summary: Post user
+      description: Post user
+      parameters:
+      - name: Authorization
+        in: header
+        description: Authorization token
+        required: true
+        schema:
+          type: string
+      - name: id
+        in: path
+        description: user id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        description: user body
+        content:
+          '*/*':
+            schema:
+              $ref: '#/components/schemas/model.User'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+      x-codegen-request-body-name: item
+    delete:
+      tags:
+      - user
+      summary: Delete user
+      description: Delete user
+      parameters:
+      - name: Authorization
+        in: header
+        description: Authorization token
+        required: true
+        schema:
+          type: string
+      - name: id
+        in: path
+        description: user id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+  /variable:
+    put:
+      tags:
+      - variable
+      summary: Put variable
+      description: Put variable
+      parameters:
+      - name: Authorization
+        in: header
+        description: Authorization token
+        required: true
+        schema:
+          type: string
+      requestBody:
+        description: reqData body
+        content:
+          '*/*':
+            schema:
+              $ref: '#/components/schemas/model.Variable'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+      x-codegen-request-body-name: variable
+  /variable/{id}:
+    post:
+      tags:
+      - variable
+      summary: Post variable
+      description: Post variable
+      parameters:
+      - name: Authorization
+        in: header
+        description: Authorization token
+        required: true
+        schema:
+          type: string
+      - name: id
+        in: path
+        description: variable id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        description: reqData body
+        content:
+          '*/*':
+            schema:
+              $ref: '#/components/schemas/model.Variable'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+      x-codegen-request-body-name: variable
+    delete:
+      tags:
+      - variable
+      summary: Delete variable
+      description: Delete variable
+      parameters:
+      - name: Authorization
+        in: header
+        description: Authorization token
+        required: true
+        schema:
+          type: string
+      - name: id
+        in: path
+        description: variable id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+  /variables:
+    get:
+      tags:
+      - variable
+      summary: Get variable  list
+      description: Get variable  list
+      parameters:
+      - name: Authorization
+        in: header
+        description: Authorization token
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+  /version:
+    get:
+      tags:
+      - setting
+      summary: Get version
+      description: Get version
+      parameters:
+      - name: Authorization
+        in: header
+        description: Authorization token
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+components:
+  schemas:
+    entity.ConfigSpiderData:
+      type: object
+      properties:
+        cmd:
+          type: string
+          description: 自定义爬虫
+        col:
+          type: string
+        display_name:
+          type: string
+        engine:
+          type: string
+          description: 可配置爬虫
+        name:
+          type: string
+          description: 通用
+        remark:
+          type: string
+        settings:
+          type: object
+          properties: {}
+        stages:
+          type: array
+          items:
+            $ref: '#/components/schemas/entity.Stage'
+        start_stage:
+          type: string
+        start_url:
+          type: string
+        type:
+          type: string
+    entity.Field:
+      type: object
+      properties:
+        attr:
+          type: string
+        css:
+          type: string
+        name:
+          type: string
+        next_stage:
+          type: string
+        remark:
+          type: string
+        xpath:
+          type: string
+    entity.ScrapyItem:
+      type: object
+      properties:
+        fields:
+          type: array
+          items:
+            type: string
+        name:
+          type: string
+    entity.ScrapySettingParam:
+      type: object
+      properties:
+        key:
+          type: string
+        type:
+          type: string
+        value:
+          type: object
+          properties: {}
+    entity.Stage:
+      type: object
+      properties:
+        fields:
+          type: array
+          items:
+            $ref: '#/components/schemas/entity.Field'
+        is_list:
+          type: boolean
+        list_css:
+          type: string
+        list_xpath:
+          type: string
+        name:
+          type: string
+        page_attr:
+          type: string
+        page_css:
+          type: string
+        page_xpath:
+          type: string
+    model.Env:
+      type: object
+      properties:
+        name:
+          type: string
+        value:
+          type: string
+    model.Node:
+      type: object
+      properties:
+        _id:
+          type: string
+        create_ts:
+          type: string
+        description:
+          type: string
+        hostname:
+          type: string
+        ip:
+          type: string
+        is_master:
+          type: boolean
+          description: 前端展示
+        key:
+          type: string
+          description: 用于唯一标识节点，可能是mac地址，可能是ip地址
+        mac:
+          type: string
+        name:
+          type: string
+        port:
+          type: string
+        status:
+          type: string
+        update_ts:
+          type: string
+        update_ts_unix:
+          type: integer
+    model.Project:
+      type: object
+      properties:
+        _id:
+          type: string
+        create_ts:
+          type: string
+        description:
+          type: string
+        name:
+          type: string
+        spiders:
+          type: array
+          description: 前端展示
+          items:
+            $ref: '#/components/schemas/model.Spider'
+        tags:
+          type: array
+          items:
+            type: string
+        update_ts:
+          type: string
+        user_id:
+          type: string
+        username:
+          type: string
+    model.Schedule:
+      type: object
+      properties:
+        _id:
+          type: string
+        create_ts:
+          type: string
+        cron:
+          type: string
+        description:
+          type: string
+        enabled:
+          type: boolean
+        entry_id:
+          type: integer
+        message:
+          type: string
+        name:
+          type: string
+        node_ids:
+          type: array
+          items:
+            type: string
+        nodes:
+          type: array
+          items:
+            $ref: '#/components/schemas/model.Node'
+        param:
+          type: string
+        run_type:
+          type: string
+        scrapy_log_level:
+          type: string
+        scrapy_spider:
+          type: string
+        spider_id:
+          type: string
+        spider_name:
+          type: string
+          description: 前端展示
+        status:
+          type: string
+        update_ts:
+          type: string
+        user_id:
+          type: string
+        user_name:
+          type: string
+    model.Spider:
+      type: object
+      properties:
+        _id:
+          type: string
+          description: 爬虫ID
+        cmd:
+          type: string
+          description: 自定义爬虫
+        col:
+          type: string
+          description: 结果储存位置
+        config:
+          $ref: '#/components/schemas/entity.ConfigSpiderData'
+        create_ts:
+          type: string
+        dedup_field:
+          type: string
+          description: 去重字段
+        dedup_method:
+          type: string
+          description: 去重方式
+        display_name:
+          type: string
+          description: 爬虫显示名称
+        envs:
+          type: array
+          description: 环境变量
+          items:
+            $ref: '#/components/schemas/model.Env'
+        file_id:
+          type: string
+          description: GridFS文件ID
+        git_auto_sync:
+          type: boolean
+          description: Git 是否自动同步
+        git_branch:
+          type: string
+          description: Git 分支
+        git_has_credential:
+          type: boolean
+          description: Git 是否加密
+        git_password:
+          type: string
+          description: Git 密码
+        git_sync_error:
+          type: string
+          description: Git 同步错误
+        git_sync_frequency:
+          type: string
+          description: Git 同步频率
+        git_url:
+          type: string
+          description: Git URL
+        git_username:
+          type: string
+          description: Git 用户名
+        is_dedup:
+          type: boolean
+          description: 去重
+        is_git:
+          type: boolean
+          description: Git 设置
+        is_long_task:
+          type: boolean
+          description: 长任务
+        is_public:
+          type: boolean
+          description: 是否公开
+        is_scrapy:
+          type: boolean
+          description: Scrapy 爬虫（属于自定义爬虫）
+        is_web_hook:
+          type: boolean
+          description: Web Hook
+        last_run_ts:
+          type: string
+          description: 前端展示
+        last_status:
+          type: string
+          description: 最后执行状态
+        latest_tasks:
+          type: array
+          description: 最近任务列表
+          items:
+            $ref: '#/components/schemas/model.Task'
+        name:
+          type: string
+          description: 爬虫名称（唯一）
+        project_id:
+          type: string
+          description: 项目ID
+        remark:
+          type: string
+          description: 备注
+        site:
+          type: string
+          description: 爬虫网站
+        spider_names:
+          type: array
+          description: 爬虫名称列表
+          items:
+            type: string
+        src:
+          type: string
+          description: 源码位置
+        template:
+          type: string
+          description: 可配置爬虫
+        type:
+          type: string
+          description: 爬虫类别
+        update_ts:
+          type: string
+        user_id:
+          type: string
+          description: 时间
+        username:
+          type: string
+          description: 用户名称
+        web_hook_url:
+          type: string
+          description: Web Hook URL
+    model.Task:
+      type: object
+      properties:
+        _id:
+          type: string
+        cmd:
+          type: string
+        create_ts:
+          type: string
+        error:
+          type: string
+        error_log_count:
+          type: integer
+        finish_ts:
+          type: string
+        log_path:
+          type: string
+        node_id:
+          type: string
+        node_name:
+          type: string
+        param:
+          type: string
+        pid:
+          type: integer
+        result_count:
+          type: integer
+        run_type:
+          type: string
+        runtime_duration:
+          type: number
+        schedule_id:
+          type: string
+        spider_id:
+          type: string
+        spider_name:
+          type: string
+          description: 前端数据
+        start_ts:
+          type: string
+        status:
+          type: string
+        total_duration:
+          type: number
+        update_ts:
+          type: string
+        user_id:
+          type: string
+        username:
+          type: string
+        wait_duration:
+          type: number
+    model.User:
+      type: object
+      properties:
+        _id:
+          type: string
+        create_ts:
+          type: string
+        email:
+          type: string
+        password:
+          type: string
+        role:
+          type: string
+        setting:
+          $ref: '#/components/schemas/model.UserSetting'
+        update_ts:
+          type: string
+        user_id:
+          type: string
+        username:
+          type: string
+    model.UserSetting:
+      type: object
+      properties:
+        ding_talk_robot_webhook:
+          type: string
+        enabled_notifications:
+          type: array
+          items:
+            type: string
+        error_regex_pattern:
+          type: string
+        log_expire_duration:
+          type: integer
+        max_error_log:
+          type: integer
+        notification_trigger:
+          type: string
+        wechat_robot_webhook:
+          type: string
+    model.Variable:
+      type: object
+      properties:
+        _id:
+          type: string
+        key:
+          type: string
+        remark:
+          type: string
+        value:
+          type: string
+    routes.SpiderFileReqBody:
+      type: object
+      properties:
+        content:
+          type: string
+        new_path:
+          type: string
+        path:
+          type: string
+    routes.TaskListRequestData:
+      type: object
+      properties:
+        nodeId:
+          type: string
+        pageNum:
+          type: integer
+        pageSize:
+          type: integer
+        scheduleId:
+          type: string
+        spiderId:
+          type: string
+        status:
+          type: string
+    routes.TaskResultsRequestData:
+      type: object
+      properties:
+        pageNum:
+          type: integer
+        pageSize:
+          type: integer
+    routes.UserListRequestData:
+      type: object
+      properties:
+        pageNum:
+          type: integer
+        pageSize:
+          type: integer
+    routes.UserRequestData:
+      type: object
+      properties:
+        email:
+          type: string
+        password:
+          type: string
+        role:
+          type: string
+        username:
+          type: string
+x-original-swagger-version: "2.0"

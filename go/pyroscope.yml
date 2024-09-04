@@ -1,0 +1,1719 @@
+openapi: 3.0.1
+info:
+  title: types/v1/types.proto
+  version: version not set
+servers:
+- url: /
+tags:
+- name: AdHocProfileService
+- name: MetastoreService
+- name: CompactionPlanner
+- name: PusherService
+- name: IngesterService
+- name: QuerierService
+- name: QueryFrontendService
+- name: QueryBackendService
+- name: SegmentWriterService
+- name: SettingsService
+- name: StatusService
+- name: StoreGatewayService
+- name: VCSService
+- name: Version
+paths:
+  /api/v1/status/buildinfo:
+    get:
+      tags:
+      - StatusService
+      summary: Retrieve build information about the binary
+      operationId: StatusService_GetBuildInfo
+      responses:
+        "200":
+          description: A successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/v1GetBuildInfoResponse'
+        default:
+          description: An unexpected error response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/rpcStatus'
+  /api/v1/status/config:
+    get:
+      tags:
+      - StatusService
+      summary: Retrieve the running config
+      operationId: StatusService_GetConfig
+      responses:
+        "200":
+          description: A successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/apiHttpBody'
+        default:
+          description: An unexpected error response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/rpcStatus'
+  /api/v1/status/config/default:
+    get:
+      tags:
+      - StatusService
+      operationId: StatusService_GetDefaultConfig
+      responses:
+        "200":
+          description: A successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/apiHttpBody'
+        default:
+          description: An unexpected error response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/rpcStatus'
+  /api/v1/status/config/diff:
+    get:
+      tags:
+      - StatusService
+      summary: Retrieve the diff config to the defaults
+      operationId: StatusService_GetDiffConfig
+      responses:
+        "200":
+          description: A successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/apiHttpBody'
+        default:
+          description: An unexpected error response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/rpcStatus'
+components:
+  schemas:
+    apiHttpBody:
+      type: object
+      properties:
+        contentType:
+          type: string
+          description: The HTTP Content-Type header value specifying the content type
+            of the body.
+        data:
+          pattern: "^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$"
+          type: string
+          description: The HTTP request/response body as raw binary.
+          format: byte
+        extensions:
+          type: array
+          description: |-
+            Application specific response metadata. Must be set in the first response
+            for streaming APIs.
+          items:
+            $ref: '#/components/schemas/protobufAny'
+      description: |-
+        Message that represents an arbitrary HTTP body. It should only be used for
+        payload formats that can't be represented as JSON, such as raw binary or
+        an HTML page.
+
+
+        This message can be used both in streaming and non-streaming API methods in
+        the request as well as the response.
+
+        It can be used as a top-level request field, which is convenient if one
+        wants to extract parameters from either the URL or HTTP template into the
+        request fields and also want access to the raw HTTP body.
+
+        Example:
+
+            message GetResourceRequest {
+              // A unique request id.
+              string request_id = 1;
+
+              // The raw HTTP body is bound to this field.
+              google.api.HttpBody http_body = 2;
+
+            }
+
+            service ResourceService {
+              rpc GetResource(GetResourceRequest)
+                returns (google.api.HttpBody);
+              rpc UpdateResource(google.api.HttpBody)
+                returns (google.protobuf.Empty);
+
+            }
+
+        Example with streaming methods:
+
+            service CaldavService {
+              rpc GetCalendar(stream google.api.HttpBody)
+                returns (stream google.api.HttpBody);
+              rpc UpdateCalendar(stream google.api.HttpBody)
+                returns (stream google.api.HttpBody);
+
+            }
+
+        Use of this type only changes how the request and response bodies are
+        handled, all other features will continue to work unchanged.
+    googlev1Label:
+      type: object
+      properties:
+        key:
+          title: Index into string table
+          type: string
+          format: int64
+        str:
+          title: At most one of the following must be present
+          type: string
+          description: Index into string table
+          format: int64
+        num:
+          type: string
+          format: int64
+        numUnit:
+          type: string
+          description: |-
+            Should only be present when num is present.
+            Specifies the units of num.
+            Use arbitrary string (for example, "requests") as a custom count unit.
+            If no unit is specified, consumer may apply heuristic to deduce the unit.
+            Consumers may also  interpret units like "bytes" and "kilobytes" as memory
+            units and units like "seconds" and "nanoseconds" as time units,
+            and apply appropriate unit conversions to these.
+
+            Index into string table
+          format: int64
+    googlev1Location:
+      type: object
+      properties:
+        id:
+          type: string
+          description: |-
+            Unique nonzero id for the location.  A profile could use
+            instruction addresses or any integer sequence as ids.
+          format: uint64
+        mappingId:
+          type: string
+          description: |-
+            The id of the corresponding profile.Mapping for this location.
+            It can be unset if the mapping is unknown or not applicable for
+            this profile type.
+          format: uint64
+        address:
+          type: string
+          description: |-
+            The instruction address for this location, if available.  It
+            should be within [Mapping.memory_start...Mapping.memory_limit]
+            for the corresponding mapping. A non-leaf address may be in the
+            middle of a call instruction. It is up to display tools to find
+            the beginning of the instruction if necessary.
+          format: uint64
+        line:
+          type: array
+          description: |-
+            Multiple line indicates this location has inlined functions,
+            where the last entry represents the caller into which the
+            preceding entries were inlined.
+
+            E.g., if memcpy() is inlined into printf:
+               line[0].function_name == "memcpy"
+               line[1].function_name == "printf"
+          items:
+            $ref: '#/components/schemas/v1Line'
+        isFolded:
+          type: boolean
+          description: |-
+            Provides an indication that multiple symbols map to this location's
+            address, for example due to identical code folding by the linker. In that
+            case the line information above represents one of the multiple
+            symbols. This field must be recomputed when the symbolization state of the
+            profile changes.
+      description: Describes function and line table debug information.
+    googlev1Profile:
+      type: object
+      properties:
+        sampleType:
+          type: array
+          description: |-
+            A description of the samples associated with each Sample.value.
+            For a cpu profile this might be:
+              [["cpu","nanoseconds"]] or [["wall","seconds"]] or [["syscall","count"]]
+            For a heap profile, this might be:
+              [["allocations","count"], ["space","bytes"]],
+            If one of the values represents the number of events represented
+            by the sample, by convention it should be at index 0 and use
+            sample_type.unit == "count".
+          items:
+            $ref: '#/components/schemas/v1ValueType'
+        sample:
+          type: array
+          description: The set of samples recorded in this profile.
+          items:
+            $ref: '#/components/schemas/v1Sample'
+        mapping:
+          type: array
+          description: |-
+            Mapping from address ranges to the image/binary/library mapped
+            into that address range.  mapping[0] will be the main binary.
+          items:
+            $ref: '#/components/schemas/v1Mapping'
+        location:
+          title: Useful program location
+          type: array
+          items:
+            $ref: '#/components/schemas/googlev1Location'
+        function:
+          title: Functions referenced by locations
+          type: array
+          items:
+            $ref: '#/components/schemas/v1Function'
+        stringTable:
+          type: array
+          description: |-
+            A common table for strings referenced by various messages.
+            string_table[0] must always be "".
+          items:
+            type: string
+        dropFrames:
+          type: string
+          description: |-
+            frames with Function.function_name fully matching the following
+            regexp will be dropped from the samples, along with their successors.
+
+            Index into string table.
+          format: int64
+        keepFrames:
+          type: string
+          description: |-
+            frames with Function.function_name fully matching the following
+            regexp will be kept, even if it matches drop_frames.
+
+            Index into string table.
+          format: int64
+        timeNanos:
+          type: string
+          description: Time of collection (UTC) represented as nanoseconds past the
+            epoch.
+          format: int64
+        durationNanos:
+          type: string
+          description: "Duration of the profile, if a duration makes sense."
+          format: int64
+        periodType:
+          $ref: '#/components/schemas/v1ValueType'
+        period:
+          type: string
+          description: The number of events between sampled occurrences.
+          format: int64
+        comment:
+          type: array
+          description: |-
+            Freeform text associated to the profile.
+
+            Indices into string table.
+          items:
+            type: string
+            format: int64
+        defaultSampleType:
+          type: string
+          description: |-
+            Index into the string table of the type of the preferred sample
+            value. If unset, clients should default to the last sample value.
+          format: int64
+    ingesterv1ProfileTypesResponse:
+      type: object
+      properties:
+        profileTypes:
+          type: array
+          items:
+            $ref: '#/components/schemas/v1ProfileType'
+    ingesterv1SeriesResponse:
+      type: object
+      properties:
+        labelsSet:
+          type: array
+          items:
+            $ref: '#/components/schemas/v1Labels'
+    protobufAny:
+      type: object
+      properties:
+        '@type':
+          type: string
+          description: |-
+            A URL/resource name that uniquely identifies the type of the serialized
+            protocol buffer message. This string must contain at least
+            one "/" character. The last segment of the URL's path must represent
+            the fully qualified name of the type (as in
+            `path/google.protobuf.Duration`). The name should be in a canonical form
+            (e.g., leading "." is not accepted).
+
+            In practice, teams usually precompile into the binary all types that they
+            expect it to use in the context of Any. However, for URLs which use the
+            scheme `http`, `https`, or no scheme, one can optionally set up a type
+            server that maps type URLs to message definitions as follows:
+
+            * If no scheme is provided, `https` is assumed.
+            * An HTTP GET on the URL must yield a [google.protobuf.Type][]
+              value in binary format, or produce an error.
+            * Applications are allowed to cache lookup results based on the
+              URL, or have them precompiled into a binary to avoid any
+              lookup. Therefore, binary compatibility needs to be preserved
+              on changes to types. (Use versioned type names to manage
+              breaking changes.)
+
+            Note: this functionality is not currently available in the official
+            protobuf release, and it is not used for type URLs beginning with
+            type.googleapis.com. As of May 2023, there are no widely used type server
+            implementations and no plans to implement one.
+
+            Schemes other than `http`, `https` (or the empty scheme) might be
+            used with implementation specific semantics.
+      additionalProperties:
+        type: object
+      description: |-
+        `Any` contains an arbitrary serialized protocol buffer message along with a
+        URL that describes the type of the serialized message.
+
+        Protobuf library provides support to pack/unpack Any values in the form
+        of utility functions or additional generated methods of the Any type.
+
+        Example 1: Pack and unpack a message in C++.
+
+            Foo foo = ...;
+            Any any;
+            any.PackFrom(foo);
+            ...
+            if (any.UnpackTo(&foo)) {
+              ...
+            }
+
+        Example 2: Pack and unpack a message in Java.
+
+            Foo foo = ...;
+            Any any = Any.pack(foo);
+            ...
+            if (any.is(Foo.class)) {
+              foo = any.unpack(Foo.class);
+            }
+            // or ...
+            if (any.isSameTypeAs(Foo.getDefaultInstance())) {
+              foo = any.unpack(Foo.getDefaultInstance());
+            }
+
+         Example 3: Pack and unpack a message in Python.
+
+            foo = Foo(...)
+            any = Any()
+            any.Pack(foo)
+            ...
+            if any.Is(Foo.DESCRIPTOR):
+              any.Unpack(foo)
+              ...
+
+         Example 4: Pack and unpack a message in Go
+
+             foo := &pb.Foo{...}
+             any, err := anypb.New(foo)
+             if err != nil {
+               ...
+             }
+             ...
+             foo := &pb.Foo{}
+             if err := any.UnmarshalTo(foo); err != nil {
+               ...
+             }
+
+        The pack methods provided by protobuf library will by default use
+        'type.googleapis.com/full.type.name' as the type URL and the unpack
+        methods only use the fully qualified type name after the last '/'
+        in the type URL, for example "foo.bar.com/x/y.z" will yield type
+        name "y.z".
+
+        JSON
+        ====
+        The JSON representation of an `Any` value uses the regular
+        representation of the deserialized, embedded message, with an
+        additional field `@type` which contains the type URL. Example:
+
+            package google.profile;
+            message Person {
+              string first_name = 1;
+              string last_name = 2;
+            }
+
+            {
+              "@type": "type.googleapis.com/google.profile.Person",
+              "firstName": <string>,
+              "lastName": <string>
+            }
+
+        If the embedded message type is well-known and has a custom JSON
+        representation, that representation will be embedded adding a field
+        `value` which holds the custom JSON in addition to the `@type`
+        field. Example (for message [google.protobuf.Duration][]):
+
+            {
+              "@type": "type.googleapis.com/google.protobuf.Duration",
+              "value": "1.212s"
+            }
+    pushv1PushResponse:
+      type: object
+    querierv1ProfileTypesResponse:
+      type: object
+      properties:
+        profileTypes:
+          type: array
+          items:
+            $ref: '#/components/schemas/v1ProfileType'
+    querierv1SeriesResponse:
+      type: object
+      properties:
+        labelsSet:
+          type: array
+          items:
+            $ref: '#/components/schemas/v1Labels'
+    rpcStatus:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+        details:
+          type: array
+          items:
+            $ref: '#/components/schemas/protobufAny'
+    segmentwriterv1PushResponse:
+      type: object
+    typesv1Location:
+      type: object
+      properties:
+        name:
+          type: string
+    v1AdHocProfilesGetResponse:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        uploadedAt:
+          title: timestamp in milliseconds
+          type: string
+          format: int64
+        profileType:
+          type: string
+        profileTypes:
+          type: array
+          description: |-
+            Some profiles formats (like pprof) can contain multiple profile (sample) types inside. One of these can be passed
+            in the Get request using the profile_type field.
+          items:
+            type: string
+        flamebearerProfile:
+          type: string
+    v1AdHocProfilesListResponse:
+      type: object
+      properties:
+        profiles:
+          type: array
+          items:
+            $ref: '#/components/schemas/v1AdHocProfilesProfileMetadata'
+    v1AdHocProfilesProfileMetadata:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        uploadedAt:
+          title: timestamp in milliseconds
+          type: string
+          format: int64
+    v1AddBlockResponse:
+      type: object
+    v1AnalyzeQueryResponse:
+      type: object
+      properties:
+        queryScopes:
+          title: detailed view of what the query will require
+          type: array
+          items:
+            $ref: '#/components/schemas/v1QueryScope'
+        queryImpact:
+          $ref: '#/components/schemas/v1QueryImpact'
+    v1BlockCompaction:
+      type: object
+      properties:
+        level:
+          type: integer
+          format: int32
+        sources:
+          type: array
+          items:
+            type: string
+        parents:
+          type: array
+          items:
+            type: string
+    v1BlockHints:
+      type: object
+      properties:
+        ulids:
+          title: The ULID of blocks to query
+          type: array
+          items:
+            type: string
+        deduplication:
+          type: boolean
+          description: "When all blocks are compacted, there is no effect of the replication\
+            \ factor, hence we do not need to run deduplication."
+    v1BlockInfo:
+      type: object
+      properties:
+        ulid:
+          type: string
+        minTime:
+          type: string
+          format: int64
+        maxTime:
+          type: string
+          format: int64
+        compaction:
+          $ref: '#/components/schemas/v1BlockCompaction'
+        labels:
+          type: array
+          items:
+            $ref: '#/components/schemas/v1LabelPair'
+    v1BlockMeta:
+      type: object
+      properties:
+        formatVersion:
+          type: string
+          format: uint64
+        id:
+          type: string
+        minTime:
+          type: string
+          format: int64
+        maxTime:
+          type: string
+          format: int64
+        shard:
+          type: integer
+          format: int64
+        compactionLevel:
+          type: integer
+          format: int64
+        tenantId:
+          type: string
+          description: Optional. Empty if compaction level is 0.
+        datasets:
+          type: array
+          items:
+            $ref: '#/components/schemas/v1Dataset'
+        size:
+          type: string
+          format: uint64
+    v1BlockMetadataResponse:
+      type: object
+      properties:
+        blocks:
+          title: Blocks that are present on the instance for the start to end period
+          type: array
+          items:
+            $ref: '#/components/schemas/v1BlockInfo'
+    v1BlockStats:
+      type: object
+      properties:
+        seriesCount:
+          type: string
+          format: uint64
+        profileCount:
+          type: string
+          format: uint64
+        sampleCount:
+          type: string
+          format: uint64
+        indexBytes:
+          type: string
+          format: uint64
+        profileBytes:
+          type: string
+          format: uint64
+        symbolBytes:
+          type: string
+          format: uint64
+    v1CommitAuthor:
+      type: object
+      properties:
+        login:
+          title: the author login
+          type: string
+        avatarURL:
+          title: the author avatar URL
+          type: string
+    v1CommitInfo:
+      type: object
+      properties:
+        message:
+          title: the commit message
+          type: string
+        author:
+          $ref: '#/components/schemas/v1CommitAuthor'
+        date:
+          title: the commit date
+          type: string
+        sha:
+          title: the commit sha
+          type: string
+        URL:
+          title: the full URL to the commit
+          type: string
+    v1CompactionJob:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Unique name of the job.
+        options:
+          $ref: '#/components/schemas/v1CompactionOptions'
+        blocks:
+          type: array
+          description: List of the input blocks.
+          items:
+            $ref: '#/components/schemas/v1BlockMeta'
+        status:
+          $ref: '#/components/schemas/v1CompactionJobStatus'
+        raftLogIndex:
+          type: string
+          description: Fencing token.
+          format: uint64
+        shard:
+          type: integer
+          description: Shard the blocks belong to.
+          format: int64
+        tenantId:
+          type: string
+          description: "Optional, empty for compaction level 0."
+        compactionLevel:
+          type: integer
+          format: int64
+      description: One compaction job may result in multiple output blocks.
+    v1CompactionJobStatus:
+      type: object
+      properties:
+        jobName:
+          type: string
+        status:
+          $ref: '#/components/schemas/v1CompactionStatus'
+        completedJob:
+          $ref: '#/components/schemas/v1CompletedJob'
+        raftLogIndex:
+          type: string
+          description: Fencing token.
+          format: uint64
+        shard:
+          type: integer
+          description: Shard the blocks belong to.
+          format: int64
+        tenantId:
+          type: string
+          description: "Optional, empty for compaction level 0."
+    v1CompactionOptions:
+      type: object
+      properties:
+        statusUpdateIntervalSeconds:
+          type: string
+          description: |-
+            How often the compaction worker should update
+            the job status. If overdue, the job ownership
+            is revoked.
+          format: uint64
+      description: |-
+        Compaction planner should instruct the compactor
+         worker how to compact the blocks:
+          - Limits and tenant overrides.
+          - Feature flags.
+    v1CompactionStatus:
+      type: string
+      default: COMPACTION_STATUS_UNSPECIFIED
+      enum:
+      - COMPACTION_STATUS_UNSPECIFIED
+      - COMPACTION_STATUS_IN_PROGRESS
+      - COMPACTION_STATUS_SUCCESS
+      - COMPACTION_STATUS_FAILURE
+      - COMPACTION_STATUS_CANCELLED
+    v1CompletedJob:
+      type: object
+      properties:
+        blocks:
+          type: array
+          items:
+            $ref: '#/components/schemas/v1BlockMeta'
+    v1Dataset:
+      type: object
+      properties:
+        labels:
+          type: array
+          items:
+            $ref: '#/components/schemas/v1Labels'
+        tenantId:
+          type: string
+        name:
+          type: string
+        minTime:
+          type: string
+          format: int64
+        maxTime:
+          type: string
+          format: int64
+        tableOfContents:
+          type: array
+          description: |-
+            Table of contents lists data sections within the tenant
+            service region. The offsets are absolute.
+
+            The interpretation of the table of contents is specific
+            to the metadata format version. By default, the sections are:
+             - 0: profiles.parquet
+             - 1: index.tsdb
+             - 2: symbols.symdb
+          items:
+            type: string
+            format: uint64
+        size:
+          type: string
+          description: Size of the section in bytes.
+          format: uint64
+        profileTypes:
+          type: array
+          description: |-
+            TODO: delete
+            Profile types present in the tenant service data.
+          items:
+            type: string
+    v1Diagnostics:
+      type: object
+      description: "Diagnostic messages, events, statistics, analytics, etc."
+    v1DiffResponse:
+      type: object
+      properties:
+        flamegraph:
+          $ref: '#/components/schemas/v1FlameGraphDiff'
+    v1FlameGraph:
+      type: object
+      properties:
+        names:
+          type: array
+          items:
+            type: string
+        levels:
+          type: array
+          items:
+            $ref: '#/components/schemas/v1Level'
+        total:
+          type: string
+          format: int64
+        maxSelf:
+          type: string
+          format: int64
+    v1FlameGraphDiff:
+      type: object
+      properties:
+        names:
+          type: array
+          items:
+            type: string
+        levels:
+          type: array
+          items:
+            $ref: '#/components/schemas/v1Level'
+        total:
+          type: string
+          format: int64
+        maxSelf:
+          type: string
+          format: int64
+        leftTicks:
+          type: string
+          format: int64
+        rightTicks:
+          type: string
+          format: int64
+    v1FlushResponse:
+      type: object
+    v1Function:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique nonzero id for the function.
+          format: uint64
+        name:
+          type: string
+          description: |-
+            Name of the function, in human-readable form if available.
+
+            Index into string table
+          format: int64
+        systemName:
+          type: string
+          description: |-
+            Name of the function, as identified by the system.
+            For instance, it can be a C++ mangled name.
+
+            Index into string table
+          format: int64
+        filename:
+          type: string
+          description: |-
+            Source file containing the function.
+
+            Index into string table
+          format: int64
+        startLine:
+          type: string
+          description: Line number in source file.
+          format: int64
+    v1GetBlockStatsResponse:
+      type: object
+      properties:
+        blockStats:
+          type: array
+          items:
+            $ref: '#/components/schemas/v1BlockStats'
+    v1GetBuildInfoData:
+      type: object
+      properties:
+        version:
+          type: string
+        revision:
+          type: string
+        branch:
+          type: string
+        buildUser:
+          type: string
+        buildDate:
+          type: string
+        goVersion:
+          type: string
+    v1GetBuildInfoResponse:
+      type: object
+      properties:
+        status:
+          type: string
+        data:
+          $ref: '#/components/schemas/v1GetBuildInfoData'
+    v1GetCommitResponse:
+      type: object
+      properties:
+        message:
+          title: the commit message
+          type: string
+        author:
+          $ref: '#/components/schemas/v1CommitAuthor'
+        date:
+          title: the commit date
+          type: string
+        sha:
+          title: the commit sha
+          type: string
+        URL:
+          title: the full URL to the commit
+          type: string
+    v1GetCommitsResponse:
+      type: object
+      properties:
+        commits:
+          type: array
+          items:
+            $ref: '#/components/schemas/v1CommitInfo'
+    v1GetCompactionResponse:
+      type: object
+      properties:
+        compactionJobs:
+          title: A list of all compaction jobs
+          type: array
+          items:
+            $ref: '#/components/schemas/v1CompactionJob'
+    v1GetFileResponse:
+      type: object
+      properties:
+        content:
+          title: base64 content of the file
+          type: string
+        URL:
+          title: the full URL to the file
+          type: string
+    v1GetProfileStatsResponse:
+      type: object
+      properties:
+        dataIngested:
+          type: boolean
+          description: Whether we received any data at any time in the past.
+        oldestProfileTime:
+          type: string
+          description: Milliseconds since epoch.
+          format: int64
+        newestProfileTime:
+          type: string
+          description: Milliseconds since epoch.
+          format: int64
+    v1GetSettingsResponse:
+      type: object
+      properties:
+        settings:
+          type: array
+          items:
+            $ref: '#/components/schemas/v1Setting'
+    v1GithubAppResponse:
+      type: object
+      properties:
+        clientID:
+          type: string
+    v1GithubLoginResponse:
+      type: object
+      properties:
+        cookie:
+          type: string
+    v1GithubRefreshResponse:
+      type: object
+      properties:
+        cookie:
+          type: string
+    v1GoPGO:
+      type: object
+      properties:
+        keepLocations:
+          type: integer
+          description: Specifies the number of leaf locations to keep.
+          format: int64
+        aggregateCallees:
+          type: boolean
+          description: |-
+            Aggregate callees causes the leaf location line number to be ignored,
+            thus aggregating all callee samples (but not callers).
+    v1Hints:
+      title: Hints are used to propagate information about querying
+      type: object
+      properties:
+        block:
+          $ref: '#/components/schemas/v1BlockHints'
+    v1InvokeOptions:
+      type: object
+      description: |-
+        Query workers might not have access to the tenant
+         overrides, therefore all the necessary options should
+         be listed in the request explicitly.
+    v1InvokeResponse:
+      type: object
+      properties:
+        reports:
+          type: array
+          items:
+            $ref: '#/components/schemas/v1Report'
+        diagnostics:
+          $ref: '#/components/schemas/v1Diagnostics'
+    v1LabelNamesQuery:
+      type: object
+    v1LabelNamesReport:
+      type: object
+      properties:
+        query:
+          $ref: '#/components/schemas/v1LabelNamesQuery'
+        labelNames:
+          type: array
+          items:
+            type: string
+    v1LabelNamesResponse:
+      type: object
+      properties:
+        names:
+          type: array
+          items:
+            type: string
+    v1LabelPair:
+      type: object
+      properties:
+        name:
+          type: string
+        value:
+          type: string
+    v1LabelValuesQuery:
+      type: object
+      properties:
+        labelName:
+          type: string
+    v1LabelValuesReport:
+      type: object
+      properties:
+        query:
+          $ref: '#/components/schemas/v1LabelValuesQuery'
+        labelValues:
+          type: array
+          items:
+            type: string
+    v1LabelValuesResponse:
+      type: object
+      properties:
+        names:
+          type: array
+          items:
+            type: string
+    v1Labels:
+      type: object
+      properties:
+        labels:
+          title: LabelPair is the key value pairs to identify the corresponding profile
+          type: array
+          items:
+            $ref: '#/components/schemas/v1LabelPair'
+    v1Level:
+      type: object
+      properties:
+        values:
+          type: array
+          items:
+            type: string
+            format: int64
+    v1Line:
+      type: object
+      properties:
+        functionId:
+          type: string
+          description: The id of the corresponding profile.Function for this line.
+          format: uint64
+        line:
+          type: string
+          description: Line number in source code.
+          format: int64
+    v1Mapping:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique nonzero id for the mapping.
+          format: uint64
+        memoryStart:
+          type: string
+          description: Address at which the binary (or DLL) is loaded into memory.
+          format: uint64
+        memoryLimit:
+          type: string
+          description: The limit of the address range occupied by this mapping.
+          format: uint64
+        fileOffset:
+          type: string
+          description: Offset in the binary that corresponds to the first mapped address.
+          format: uint64
+        filename:
+          type: string
+          description: |-
+            The object this entry is loaded from.  This can be a filename on
+            disk for the main binary and shared libraries, or virtual
+            abstractions like "[vdso]".
+
+            Index into string table
+          format: int64
+        buildId:
+          type: string
+          description: |-
+            A string that uniquely identifies a particular program version
+            with high probability. E.g., for binaries generated by GNU tools,
+            it could be the contents of the .note.gnu.build-id field.
+
+            Index into string table
+          format: int64
+        hasFunctions:
+          type: boolean
+          description: The following fields indicate the resolution of symbolic info.
+        hasFilenames:
+          type: boolean
+        hasLineNumbers:
+          type: boolean
+        hasInlineFrames:
+          type: boolean
+    v1MergeProfilesLabelsResponse:
+      type: object
+      properties:
+        selectedProfiles:
+          $ref: '#/components/schemas/v1ProfileSets'
+        series:
+          title: The list of series for the profile with their respective value
+          type: array
+          items:
+            $ref: '#/components/schemas/v1Series'
+    v1MergeProfilesPprofResponse:
+      type: object
+      properties:
+        selectedProfiles:
+          $ref: '#/components/schemas/v1ProfileSets'
+        result:
+          pattern: "^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$"
+          type: string
+          description: The merge result in the pprof format.
+          format: byte
+    v1MergeProfilesStacktracesResponse:
+      type: object
+      properties:
+        selectedProfiles:
+          $ref: '#/components/schemas/v1ProfileSets'
+        result:
+          $ref: '#/components/schemas/v1MergeProfilesStacktracesResult'
+    v1MergeProfilesStacktracesResult:
+      type: object
+      properties:
+        format:
+          $ref: '#/components/schemas/v1StacktracesMergeFormat'
+        stacktraces:
+          title: The list of stracktraces with their respective value
+          type: array
+          items:
+            $ref: '#/components/schemas/v1StacktraceSample'
+        functionNames:
+          type: array
+          items:
+            type: string
+        treeBytes:
+          pattern: "^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$"
+          type: string
+          description: Merge result marshaled to pyroscope tree bytes.
+          format: byte
+    v1MergeSpanProfileResponse:
+      type: object
+      properties:
+        selectedProfiles:
+          $ref: '#/components/schemas/v1ProfileSets'
+        result:
+          $ref: '#/components/schemas/v1MergeSpanProfileResult'
+    v1MergeSpanProfileResult:
+      type: object
+      properties:
+        treeBytes:
+          pattern: "^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$"
+          type: string
+          format: byte
+    v1Point:
+      type: object
+      properties:
+        value:
+          type: number
+          format: double
+        timestamp:
+          title: Milliseconds unix timestamp
+          type: string
+          format: int64
+    v1PollCompactionJobsResponse:
+      type: object
+      properties:
+        compactionJobs:
+          type: array
+          items:
+            $ref: '#/components/schemas/v1CompactionJob'
+    v1PprofQuery:
+      type: object
+      properties:
+        maxNodes:
+          type: string
+          description: "TODO(kolesnikovae): Go PGO options."
+          format: int64
+    v1PprofReport:
+      type: object
+      properties:
+        query:
+          $ref: '#/components/schemas/v1PprofQuery'
+        pprof:
+          pattern: "^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$"
+          type: string
+          format: byte
+    v1ProfileFormat:
+      type: string
+      default: PROFILE_FORMAT_UNSPECIFIED
+      enum:
+      - PROFILE_FORMAT_UNSPECIFIED
+      - PROFILE_FORMAT_FLAMEGRAPH
+      - PROFILE_FORMAT_TREE
+    v1ProfileSets:
+      type: object
+      properties:
+        labelsSets:
+          type: array
+          description: "DEPRECATED: Use fingerprints instead."
+          items:
+            $ref: '#/components/schemas/v1Labels'
+        profiles:
+          type: array
+          items:
+            $ref: '#/components/schemas/v1SeriesProfile'
+        fingerprints:
+          type: array
+          items:
+            type: string
+            format: uint64
+    v1ProfileType:
+      type: object
+      properties:
+        ID:
+          type: string
+        name:
+          type: string
+        sampleType:
+          type: string
+        sampleUnit:
+          type: string
+        periodType:
+          type: string
+        periodUnit:
+          type: string
+    v1Query:
+      type: object
+      properties:
+        queryType:
+          $ref: '#/components/schemas/v1QueryType'
+        labelNames:
+          $ref: '#/components/schemas/v1LabelNamesQuery'
+        labelValues:
+          $ref: '#/components/schemas/v1LabelValuesQuery'
+        seriesLabels:
+          $ref: '#/components/schemas/v1SeriesLabelsQuery'
+        timeSeries:
+          $ref: '#/components/schemas/v1TimeSeriesQuery'
+        tree:
+          $ref: '#/components/schemas/v1TreeQuery'
+        pprof:
+          $ref: '#/components/schemas/v1PprofQuery'
+    v1QueryImpact:
+      type: object
+      properties:
+        totalBytesInTimeRange:
+          type: string
+          format: uint64
+        totalQueriedSeries:
+          type: string
+          format: uint64
+        deduplicationNeeded:
+          type: boolean
+    v1QueryMetadataResponse:
+      type: object
+      properties:
+        blocks:
+          type: array
+          items:
+            $ref: '#/components/schemas/v1BlockMeta'
+    v1QueryPlan:
+      type: object
+      properties:
+        graph:
+          type: array
+          description: |-
+            Each node is encoded with 3 values:
+             - node type: 0 - read, 1 - merge;
+             - range offset;
+             - range length.
+          items:
+            type: integer
+            format: int64
+        blocks:
+          type: array
+          description: |-
+            The blocks matching the query.
+
+            TODO: Use opaque byte array to avoid unnecessary
+             proto encoding/decoding overhead in transient nodes.
+             Graph nodes reference ranges, thus each range could
+             be a blob of bytes:
+             repeated bytes block_ranges = 2;
+          items:
+            $ref: '#/components/schemas/v1BlockMeta'
+      description: |-
+        Query plan is represented by a DAG, where each node
+        might be either "merge" or "read" (leaves). Each node
+        references a range: merge nodes refer to other nodes,
+        while read nodes refer to the blocks.
+    v1QueryResponse:
+      type: object
+      properties:
+        reports:
+          type: array
+          items:
+            $ref: '#/components/schemas/v1Report'
+    v1QueryScope:
+      type: object
+      properties:
+        componentType:
+          title: "a descriptive high level name of the component processing one part\
+            \ of the query (e.g., \"short term storage\")"
+          type: string
+        componentCount:
+          title: how many components of this type will process the query (indicator
+            of read-path replication)
+          type: string
+          format: uint64
+        blockCount:
+          type: string
+          format: uint64
+        seriesCount:
+          type: string
+          format: uint64
+        profileCount:
+          type: string
+          format: uint64
+        sampleCount:
+          type: string
+          format: uint64
+        indexBytes:
+          type: string
+          format: uint64
+        profileBytes:
+          type: string
+          format: uint64
+        symbolBytes:
+          type: string
+          format: uint64
+    v1QueryType:
+      type: string
+      default: QUERY_UNSPECIFIED
+      enum:
+      - QUERY_UNSPECIFIED
+      - QUERY_LABEL_NAMES
+      - QUERY_LABEL_VALUES
+      - QUERY_SERIES_LABELS
+      - QUERY_TIME_SERIES
+      - QUERY_TREE
+      - QUERY_PPROF
+    v1RawProfileSeries:
+      title: RawProfileSeries represents the pprof profile and its associated labels
+      type: object
+      properties:
+        labels:
+          title: LabelPair is the key value pairs to identify the corresponding profile
+          type: array
+          items:
+            $ref: '#/components/schemas/v1LabelPair'
+        samples:
+          title: samples are the set of profile bytes
+          type: array
+          items:
+            $ref: '#/components/schemas/v1RawSample'
+    v1RawSample:
+      title: RawSample is the set of bytes that correspond to a pprof profile
+      type: object
+      properties:
+        rawProfile:
+          title: raw_profile is the set of bytes of the pprof profile
+          pattern: "^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$"
+          type: string
+          format: byte
+        ID:
+          title: unique ID of the profile
+          type: string
+    v1ReadIndexResponse:
+      type: object
+      properties:
+        readIndex:
+          type: string
+          format: uint64
+    v1Report:
+      type: object
+      properties:
+        reportType:
+          $ref: '#/components/schemas/v1ReportType'
+        labelNames:
+          $ref: '#/components/schemas/v1LabelNamesReport'
+        labelValues:
+          $ref: '#/components/schemas/v1LabelValuesReport'
+        seriesLabels:
+          $ref: '#/components/schemas/v1SeriesLabelsReport'
+        timeSeries:
+          $ref: '#/components/schemas/v1TimeSeriesReport'
+        tree:
+          $ref: '#/components/schemas/v1TreeReport'
+        pprof:
+          $ref: '#/components/schemas/v1PprofReport'
+    v1ReportType:
+      type: string
+      default: REPORT_UNSPECIFIED
+      enum:
+      - REPORT_UNSPECIFIED
+      - REPORT_LABEL_NAMES
+      - REPORT_LABEL_VALUES
+      - REPORT_SERIES_LABELS
+      - REPORT_TIME_SERIES
+      - REPORT_TREE
+      - REPORT_PPROF
+    v1Sample:
+      type: object
+      properties:
+        locationId:
+          type: array
+          description: |-
+            The ids recorded here correspond to a Profile.location.id.
+            The leaf is at location_id[0].
+          items:
+            type: string
+            format: uint64
+        value:
+          type: array
+          description: |-
+            The type and unit of each value is defined by the corresponding
+            entry in Profile.sample_type. All samples must have the same
+            number of values, the same as the length of Profile.sample_type.
+            When aggregating multiple samples into a single sample, the
+            result has a list of values that is the element-wise sum of the
+            lists of the originals.
+          items:
+            type: string
+            format: int64
+        label:
+          title: |-
+            label includes additional context for this sample. It can include
+            things like a thread id, allocation size, etc
+          type: array
+          items:
+            $ref: '#/components/schemas/googlev1Label'
+      description: |-
+        Each Sample records values encountered in some program
+        context. The program context is typically a stack trace, perhaps
+        augmented with auxiliary information like the thread-id, some
+        indicator of a higher level request being handled etc.
+    v1SelectMergeSpanProfileResponse:
+      type: object
+      properties:
+        flamegraph:
+          $ref: '#/components/schemas/v1FlameGraph'
+        tree:
+          pattern: "^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$"
+          type: string
+          description: Pyroscope tree bytes.
+          format: byte
+    v1SelectMergeStacktracesRequest:
+      type: object
+      properties:
+        profileTypeID:
+          type: string
+        labelSelector:
+          type: string
+        start:
+          type: string
+          description: Milliseconds since epoch.
+          format: int64
+        end:
+          type: string
+          description: Milliseconds since epoch.
+          format: int64
+        maxNodes:
+          title: Limit the nodes returned to only show the node with the max_node's
+            biggest total
+          type: string
+          format: int64
+        format:
+          $ref: '#/components/schemas/v1ProfileFormat'
+    v1SelectMergeStacktracesResponse:
+      type: object
+      properties:
+        flamegraph:
+          $ref: '#/components/schemas/v1FlameGraph'
+        tree:
+          pattern: "^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$"
+          type: string
+          description: Pyroscope tree bytes.
+          format: byte
+    v1SelectProfilesRequest:
+      type: object
+      properties:
+        labelSelector:
+          type: string
+        type:
+          $ref: '#/components/schemas/v1ProfileType'
+        start:
+          type: string
+          description: Milliseconds since epoch.
+          format: int64
+        end:
+          type: string
+          description: Milliseconds since epoch.
+          format: int64
+        hints:
+          $ref: '#/components/schemas/v1Hints'
+        aggregation:
+          $ref: '#/components/schemas/v1TimeSeriesAggregationType'
+    v1SelectSeriesResponse:
+      type: object
+      properties:
+        series:
+          type: array
+          items:
+            $ref: '#/components/schemas/v1Series'
+    v1SelectSpanProfileRequest:
+      type: object
+      properties:
+        labelSelector:
+          type: string
+        type:
+          $ref: '#/components/schemas/v1ProfileType'
+        start:
+          type: string
+          description: Milliseconds since epoch.
+          format: int64
+        end:
+          type: string
+          description: Milliseconds since epoch.
+          format: int64
+        spanSelector:
+          type: array
+          description: List of span identifiers.
+          items:
+            type: string
+        hints:
+          $ref: '#/components/schemas/v1Hints'
+    v1Series:
+      type: object
+      properties:
+        labels:
+          type: array
+          items:
+            $ref: '#/components/schemas/v1LabelPair'
+        points:
+          type: array
+          items:
+            $ref: '#/components/schemas/v1Point'
+    v1SeriesLabelsQuery:
+      type: object
+      properties:
+        labelNames:
+          type: array
+          items:
+            type: string
+    v1SeriesLabelsReport:
+      type: object
+      properties:
+        query:
+          $ref: '#/components/schemas/v1SeriesLabelsQuery'
+        seriesLabels:
+          type: array
+          items:
+            $ref: '#/components/schemas/v1Labels'
+    v1SeriesProfile:
+      type: object
+      properties:
+        labelIndex:
+          title: The labels index of the series
+          type: integer
+          format: int32
+        timestamp:
+          title: timestamp in milliseconds
+          type: string
+          format: int64
+    v1SetSettingsResponse:
+      type: object
+      properties:
+        setting:
+          $ref: '#/components/schemas/v1Setting'
+    v1Setting:
+      type: object
+      properties:
+        name:
+          type: string
+        value:
+          type: string
+        modifiedAt:
+          type: string
+          format: int64
+    v1StackTraceSelector:
+      type: object
+      properties:
+        callSite:
+          type: array
+          description: |-
+            Stack trace of the call site. Root at call_site[0].
+            Only stack traces having the prefix provided will be selected.
+            If empty, the filter is ignored.
+          items:
+            $ref: '#/components/schemas/typesv1Location'
+        goPgo:
+          $ref: '#/components/schemas/v1GoPGO'
+      description: StackTraceSelector is used for filtering stack traces by locations.
+    v1StacktraceSample:
+      type: object
+      properties:
+        functionIds:
+          type: array
+          items:
+            type: integer
+            format: int32
+        value:
+          type: string
+          format: int64
+    v1StacktracesMergeFormat:
+      type: string
+      default: MERGE_FORMAT_UNSPECIFIED
+      enum:
+      - MERGE_FORMAT_UNSPECIFIED
+      - MERGE_FORMAT_STACKTRACES
+      - MERGE_FORMAT_TREE
+    v1TimeSeriesAggregationType:
+      type: string
+      default: TIME_SERIES_AGGREGATION_TYPE_SUM
+      enum:
+      - TIME_SERIES_AGGREGATION_TYPE_SUM
+      - TIME_SERIES_AGGREGATION_TYPE_AVERAGE
+    v1TimeSeriesQuery:
+      type: object
+      properties:
+        step:
+          type: number
+          format: double
+        groupBy:
+          type: array
+          items:
+            type: string
+    v1TimeSeriesReport:
+      type: object
+      properties:
+        query:
+          $ref: '#/components/schemas/v1TimeSeriesQuery'
+        timeSeries:
+          type: array
+          items:
+            $ref: '#/components/schemas/v1Series'
+    v1TreeQuery:
+      type: object
+      properties:
+        maxNodes:
+          type: string
+          format: int64
+    v1TreeReport:
+      type: object
+      properties:
+        query:
+          $ref: '#/components/schemas/v1TreeQuery'
+        tree:
+          pattern: "^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$"
+          type: string
+          format: byte
+    v1ValueType:
+      type: object
+      properties:
+        type:
+          type: string
+          description: Index into string table.
+          format: int64
+        unit:
+          type: string
+          description: Index into string table.
+          format: int64
+      description: ValueType describes the semantics and measurement units of a value.
+    v1VersionResponse:
+      type: object
+      properties:
+        QuerierAPI:
+          type: string
+          format: uint64
+x-original-swagger-version: "2.0"
