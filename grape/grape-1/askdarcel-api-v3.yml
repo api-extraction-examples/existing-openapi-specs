@@ -1,0 +1,1147 @@
+openapi: 3.0.1
+info:
+  title: API V1
+  version: v1
+servers:
+  - url: /
+paths:
+  /categories:
+    get:
+      tags:
+        - categories
+      summary: Retrieves all categories
+      responses:
+        "200":
+          description: categories found
+          content:
+            application/json:
+              example:
+                categories: []
+  /categories/featured:
+    get:
+      tags:
+        - categories
+      summary: Gets featured categories
+      responses:
+        "200":
+          description: categories found
+          content:
+            application/json:
+              example:
+                categories: []
+  /resources:
+    get:
+      tags:
+        - resources
+      summary: Retrieves resources by category_id and lat/long
+      parameters:
+        - name: category_id
+          in: query
+          required: true
+          schema:
+            type: integer
+        - name: lat
+          in: query
+          schema:
+            type: number
+        - name: long
+          in: query
+          schema:
+            type: number
+      responses:
+        "200":
+          description: resources found
+          content:
+            application/json:
+              example:
+                resources:
+                  - updated_at: "2021-08-12T03:11:24.138Z"
+                    alternate_name: null
+                    certified: false
+                    email: null
+                    id: 68
+                    legal_status: null
+                    long_description: null
+                    name: Greenfelder and Sons
+                    short_description: null
+                    status: approved
+                    verified_at: null
+                    website: null
+                    certified_at: null
+                    featured: null
+                    source_attribution: ask_darcel
+                    services: []
+                    schedule:
+                      id: 88
+                      schedule_days:
+                        - id: 602
+                          day: Monday
+                          opens_at: 0
+                          closes_at: 200
+                          open_time: null
+                          open_day: null
+                          close_time: null
+                          close_day: null
+                        - id: 603
+                          day: Monday
+                          opens_at: 1730
+                          closes_at: 1900
+                          open_time: null
+                          open_day: null
+                          close_time: null
+                          close_day: null
+                        - id: 604
+                          day: Tuesday
+                          opens_at: 800
+                          closes_at: 2300
+                          open_time: null
+                          open_day: null
+                          close_time: null
+                          close_day: null
+                        - id: 605
+                          day: Wednesday
+                          opens_at: 600
+                          closes_at: 2330
+                          open_time: null
+                          open_day: null
+                          close_time: null
+                          close_day: null
+                        - id: 606
+                          day: Thursday
+                          opens_at: 115
+                          closes_at: 245
+                          open_time: null
+                          open_day: null
+                          close_time: null
+                          close_day: null
+                        - id: 607
+                          day: Thursday
+                          opens_at: 400
+                          closes_at: 1130
+                          open_time: null
+                          open_day: null
+                          close_time: null
+                          close_day: null
+                        - id: 608
+                          day: Saturday
+                          opens_at: 1615
+                          closes_at: 145
+                          open_time: null
+                          open_day: null
+                          close_time: null
+                          close_day: null
+                        - id: 609
+                          day: Sunday
+                          opens_at: 800
+                          closes_at: 2330
+                          open_time: null
+                          open_day: null
+                          close_time: null
+                          close_day: null
+                      hours_known: true
+                    phones:
+                      - id: 68
+                        number: (607) 856-0170
+                        extension: null
+                        service_type: Business
+                        country_code: US
+                    addresses:
+                      - id: 83
+                        attention: Erasmo Huel
+                        name: null
+                        address_1: 797 France Stravenue
+                        address_2: Apt. 575
+                        address_3: null
+                        address_4: null
+                        city: Wadeport
+                        state_province: Virginia
+                        postal_code: "71509"
+                        latitude: "10.0"
+                        longitude: "0.0"
+                      - id: 84
+                        attention: Nida Rowe
+                        name: null
+                        address_1: 44710 Ebert Roads
+                        address_2: Apt. 540
+                        address_3: null
+                        address_4: null
+                        city: North Joaquinatown
+                        state_province: California
+                        postal_code: "34342"
+                        latitude: "37.7839000813174"
+                        longitude: "-122.395651984309"
+                    notes:
+                      - id: 88
+                        note: Voluptate rerum similique. Nesciunt qui iusto. Id iste voluptatem.
+                    categories:
+                      - name: Smith, Mante and Glover
+                        id: 6
+                        top_level: false
+                        featured: false
+                  - updated_at: "2021-08-12T03:11:24.229Z"
+                    alternate_name: null
+                    certified: false
+                    email: null
+                    id: 69
+                    legal_status: null
+                    long_description: null
+                    name: Satterfield LLC
+                    short_description: null
+                    status: approved
+                    verified_at: null
+                    website: null
+                    certified_at: null
+                    featured: null
+                    source_attribution: ask_darcel
+                    services: []
+                    schedule:
+                      id: 89
+                      schedule_days:
+                        - id: 610
+                          day: Monday
+                          opens_at: 230
+                          closes_at: 1100
+                          open_time: null
+                          open_day: null
+                          close_time: null
+                          close_day: null
+                        - id: 611
+                          day: Monday
+                          opens_at: 1215
+                          closes_at: 2215
+                          open_time: null
+                          open_day: null
+                          close_time: null
+                          close_day: null
+                        - id: 612
+                          day: Tuesday
+                          opens_at: 1845
+                          closes_at: 215
+                          open_time: null
+                          open_day: null
+                          close_time: null
+                          close_day: null
+                        - id: 613
+                          day: Wednesday
+                          opens_at: 145
+                          closes_at: 1445
+                          open_time: null
+                          open_day: null
+                          close_time: null
+                          close_day: null
+                        - id: 614
+                          day: Wednesday
+                          opens_at: 1500
+                          closes_at: 2300
+                          open_time: null
+                          open_day: null
+                          close_time: null
+                          close_day: null
+                        - id: 615
+                          day: Thursday
+                          opens_at: 830
+                          closes_at: 1945
+                          open_time: null
+                          open_day: null
+                          close_time: null
+                          close_day: null
+                        - id: 616
+                          day: Friday
+                          opens_at: 745
+                          closes_at: 2245
+                          open_time: null
+                          open_day: null
+                          close_time: null
+                          close_day: null
+                        - id: 617
+                          day: Saturday
+                          opens_at: 900
+                          closes_at: 2200
+                          open_time: null
+                          open_day: null
+                          close_time: null
+                          close_day: null
+                      hours_known: true
+                    phones:
+                      - id: 69
+                        number: (727) 774-2412
+                        extension: "8589"
+                        service_type: Business
+                        country_code: US
+                    addresses:
+                      - id: 85
+                        attention: Julius Corwin
+                        name: null
+                        address_1: 7393 Melida Causeway
+                        address_2: Suite 133
+                        address_3: null
+                        address_4: null
+                        city: Phillisville
+                        state_province: Nebraska
+                        postal_code: "97805"
+                        latitude: "50.0"
+                        longitude: "0.0"
+                      - id: 86
+                        attention: Dr. Kurtis Koch
+                        name: null
+                        address_1: 322 Reichel Parkway
+                        address_2: Apt. 409
+                        address_3: null
+                        address_4: null
+                        city: Blockville
+                        state_province: Utah
+                        postal_code: "17087"
+                        latitude: "37.7865210989902"
+                        longitude: "-122.392406732259"
+                    notes:
+                      - id: 89
+                        note: Nisi repellat ut. Architecto et quisquam. Voluptatem nulla itaque.
+                    categories:
+                      - name: Smith, Mante and Glover
+                        id: 6
+                        top_level: false
+                        featured: false
+                  - updated_at: "2021-08-12T03:11:24.352Z"
+                    alternate_name: null
+                    certified: false
+                    email: null
+                    id: 70
+                    legal_status: null
+                    long_description: null
+                    name: Lindgren-Feest
+                    short_description: null
+                    status: approved
+                    verified_at: null
+                    website: null
+                    certified_at: null
+                    featured: null
+                    source_attribution: ask_darcel
+                    services: []
+                    schedule:
+                      id: 90
+                      schedule_days:
+                        - id: 618
+                          day: Monday
+                          opens_at: 800
+                          closes_at: 1430
+                          open_time: null
+                          open_day: null
+                          close_time: null
+                          close_day: null
+                        - id: 619
+                          day: Tuesday
+                          opens_at: 830
+                          closes_at: 1800
+                          open_time: null
+                          open_day: null
+                          close_time: null
+                          close_day: null
+                        - id: 620
+                          day: Wednesday
+                          opens_at: 815
+                          closes_at: 1415
+                          open_time: null
+                          open_day: null
+                          close_time: null
+                          close_day: null
+                        - id: 621
+                          day: Thursday
+                          opens_at: 800
+                          closes_at: 1415
+                          open_time: null
+                          open_day: null
+                          close_time: null
+                          close_day: null
+                        - id: 622
+                          day: Friday
+                          opens_at: 830
+                          closes_at: 1800
+                          open_time: null
+                          open_day: null
+                          close_time: null
+                          close_day: null
+                        - id: 623
+                          day: Friday
+                          opens_at: 2030
+                          closes_at: 330
+                          open_time: null
+                          open_day: null
+                          close_time: null
+                          close_day: null
+                        - id: 624
+                          day: Saturday
+                          opens_at: 215
+                          closes_at: 400
+                          open_time: null
+                          open_day: null
+                          close_time: null
+                          close_day: null
+                        - id: 625
+                          day: Saturday
+                          opens_at: 1215
+                          closes_at: 1830
+                          open_time: null
+                          open_day: null
+                          close_time: null
+                          close_day: null
+                        - id: 626
+                          day: Sunday
+                          opens_at: 1200
+                          closes_at: 1300
+                          open_time: null
+                          open_day: null
+                          close_time: null
+                          close_day: null
+                        - id: 627
+                          day: Sunday
+                          opens_at: 2000
+                          closes_at: 2245
+                          open_time: null
+                          open_day: null
+                          close_time: null
+                          close_day: null
+                      hours_known: true
+                    phones:
+                      - id: 70
+                        number: (850) 530-5728
+                        extension: null
+                        service_type: Business
+                        country_code: US
+                    addresses:
+                      - id: 87
+                        attention: Stefania Reichert
+                        name: null
+                        address_1: 764 Hermiston Drive
+                        address_2: Suite 419
+                        address_3: null
+                        address_4: null
+                        city: Hahnville
+                        state_province: Delaware
+                        postal_code: "81428"
+                        latitude: "100.0"
+                        longitude: "0.0"
+                      - id: 88
+                        attention: Gregorio Botsford
+                        name: null
+                        address_1: 8007 Usha Ways
+                        address_2: Suite 906
+                        address_3: null
+                        address_4: null
+                        city: Hoppefurt
+                        state_province: Oregon
+                        postal_code: "76448"
+                        latitude: "37.7935549732314"
+                        longitude: "-122.39264281976"
+                    notes:
+                      - id: 90
+                        note: Placeat quia ut. Sunt aut accusantium. Dolores et mollitia.
+                    categories:
+                      - name: Smith, Mante and Glover
+                        id: 6
+                        top_level: false
+                        featured: false
+                  - updated_at: "2021-08-12T03:11:24.352Z"
+                    alternate_name: null
+                    certified: false
+                    email: null
+                    id: 70
+                    legal_status: null
+                    long_description: null
+                    name: Lindgren-Feest
+                    short_description: null
+                    status: approved
+                    verified_at: null
+                    website: null
+                    certified_at: null
+                    featured: null
+                    source_attribution: ask_darcel
+                    services: []
+                    schedule:
+                      id: 90
+                      schedule_days:
+                        - id: 618
+                          day: Monday
+                          opens_at: 800
+                          closes_at: 1430
+                          open_time: null
+                          open_day: null
+                          close_time: null
+                          close_day: null
+                        - id: 619
+                          day: Tuesday
+                          opens_at: 830
+                          closes_at: 1800
+                          open_time: null
+                          open_day: null
+                          close_time: null
+                          close_day: null
+                        - id: 620
+                          day: Wednesday
+                          opens_at: 815
+                          closes_at: 1415
+                          open_time: null
+                          open_day: null
+                          close_time: null
+                          close_day: null
+                        - id: 621
+                          day: Thursday
+                          opens_at: 800
+                          closes_at: 1415
+                          open_time: null
+                          open_day: null
+                          close_time: null
+                          close_day: null
+                        - id: 622
+                          day: Friday
+                          opens_at: 830
+                          closes_at: 1800
+                          open_time: null
+                          open_day: null
+                          close_time: null
+                          close_day: null
+                        - id: 623
+                          day: Friday
+                          opens_at: 2030
+                          closes_at: 330
+                          open_time: null
+                          open_day: null
+                          close_time: null
+                          close_day: null
+                        - id: 624
+                          day: Saturday
+                          opens_at: 215
+                          closes_at: 400
+                          open_time: null
+                          open_day: null
+                          close_time: null
+                          close_day: null
+                        - id: 625
+                          day: Saturday
+                          opens_at: 1215
+                          closes_at: 1830
+                          open_time: null
+                          open_day: null
+                          close_time: null
+                          close_day: null
+                        - id: 626
+                          day: Sunday
+                          opens_at: 1200
+                          closes_at: 1300
+                          open_time: null
+                          open_day: null
+                          close_time: null
+                          close_day: null
+                        - id: 627
+                          day: Sunday
+                          opens_at: 2000
+                          closes_at: 2245
+                          open_time: null
+                          open_day: null
+                          close_time: null
+                          close_day: null
+                      hours_known: true
+                    phones:
+                      - id: 70
+                        number: (850) 530-5728
+                        extension: null
+                        service_type: Business
+                        country_code: US
+                    addresses:
+                      - id: 88
+                        attention: Gregorio Botsford
+                        name: null
+                        address_1: 8007 Usha Ways
+                        address_2: Suite 906
+                        address_3: null
+                        address_4: null
+                        city: Hoppefurt
+                        state_province: Oregon
+                        postal_code: "76448"
+                        latitude: "37.7935549732314"
+                        longitude: "-122.39264281976"
+                      - id: 87
+                        attention: Stefania Reichert
+                        name: null
+                        address_1: 764 Hermiston Drive
+                        address_2: Suite 419
+                        address_3: null
+                        address_4: null
+                        city: Hahnville
+                        state_province: Delaware
+                        postal_code: "81428"
+                        latitude: "100.0"
+                        longitude: "0.0"
+                    notes:
+                      - id: 90
+                        note: Placeat quia ut. Sunt aut accusantium. Dolores et mollitia.
+                    categories:
+                      - name: Smith, Mante and Glover
+                        id: 6
+                        top_level: false
+                        featured: false
+                  - updated_at: "2021-08-12T03:11:24.229Z"
+                    alternate_name: null
+                    certified: false
+                    email: null
+                    id: 69
+                    legal_status: null
+                    long_description: null
+                    name: Satterfield LLC
+                    short_description: null
+                    status: approved
+                    verified_at: null
+                    website: null
+                    certified_at: null
+                    featured: null
+                    source_attribution: ask_darcel
+                    services: []
+                    schedule:
+                      id: 89
+                      schedule_days:
+                        - id: 610
+                          day: Monday
+                          opens_at: 230
+                          closes_at: 1100
+                          open_time: null
+                          open_day: null
+                          close_time: null
+                          close_day: null
+                        - id: 611
+                          day: Monday
+                          opens_at: 1215
+                          closes_at: 2215
+                          open_time: null
+                          open_day: null
+                          close_time: null
+                          close_day: null
+                        - id: 612
+                          day: Tuesday
+                          opens_at: 1845
+                          closes_at: 215
+                          open_time: null
+                          open_day: null
+                          close_time: null
+                          close_day: null
+                        - id: 613
+                          day: Wednesday
+                          opens_at: 145
+                          closes_at: 1445
+                          open_time: null
+                          open_day: null
+                          close_time: null
+                          close_day: null
+                        - id: 614
+                          day: Wednesday
+                          opens_at: 1500
+                          closes_at: 2300
+                          open_time: null
+                          open_day: null
+                          close_time: null
+                          close_day: null
+                        - id: 615
+                          day: Thursday
+                          opens_at: 830
+                          closes_at: 1945
+                          open_time: null
+                          open_day: null
+                          close_time: null
+                          close_day: null
+                        - id: 616
+                          day: Friday
+                          opens_at: 745
+                          closes_at: 2245
+                          open_time: null
+                          open_day: null
+                          close_time: null
+                          close_day: null
+                        - id: 617
+                          day: Saturday
+                          opens_at: 900
+                          closes_at: 2200
+                          open_time: null
+                          open_day: null
+                          close_time: null
+                          close_day: null
+                      hours_known: true
+                    phones:
+                      - id: 69
+                        number: (727) 774-2412
+                        extension: "8589"
+                        service_type: Business
+                        country_code: US
+                    addresses:
+                      - id: 86
+                        attention: Dr. Kurtis Koch
+                        name: null
+                        address_1: 322 Reichel Parkway
+                        address_2: Apt. 409
+                        address_3: null
+                        address_4: null
+                        city: Blockville
+                        state_province: Utah
+                        postal_code: "17087"
+                        latitude: "37.7865210989902"
+                        longitude: "-122.392406732259"
+                      - id: 85
+                        attention: Julius Corwin
+                        name: null
+                        address_1: 7393 Melida Causeway
+                        address_2: Suite 133
+                        address_3: null
+                        address_4: null
+                        city: Phillisville
+                        state_province: Nebraska
+                        postal_code: "97805"
+                        latitude: "50.0"
+                        longitude: "0.0"
+                    notes:
+                      - id: 89
+                        note: Nisi repellat ut. Architecto et quisquam. Voluptatem nulla itaque.
+                    categories:
+                      - name: Smith, Mante and Glover
+                        id: 6
+                        top_level: false
+                        featured: false
+                  - updated_at: "2021-08-12T03:11:24.138Z"
+                    alternate_name: null
+                    certified: false
+                    email: null
+                    id: 68
+                    legal_status: null
+                    long_description: null
+                    name: Greenfelder and Sons
+                    short_description: null
+                    status: approved
+                    verified_at: null
+                    website: null
+                    certified_at: null
+                    featured: null
+                    source_attribution: ask_darcel
+                    services: []
+                    schedule:
+                      id: 88
+                      schedule_days:
+                        - id: 602
+                          day: Monday
+                          opens_at: 0
+                          closes_at: 200
+                          open_time: null
+                          open_day: null
+                          close_time: null
+                          close_day: null
+                        - id: 603
+                          day: Monday
+                          opens_at: 1730
+                          closes_at: 1900
+                          open_time: null
+                          open_day: null
+                          close_time: null
+                          close_day: null
+                        - id: 604
+                          day: Tuesday
+                          opens_at: 800
+                          closes_at: 2300
+                          open_time: null
+                          open_day: null
+                          close_time: null
+                          close_day: null
+                        - id: 605
+                          day: Wednesday
+                          opens_at: 600
+                          closes_at: 2330
+                          open_time: null
+                          open_day: null
+                          close_time: null
+                          close_day: null
+                        - id: 606
+                          day: Thursday
+                          opens_at: 115
+                          closes_at: 245
+                          open_time: null
+                          open_day: null
+                          close_time: null
+                          close_day: null
+                        - id: 607
+                          day: Thursday
+                          opens_at: 400
+                          closes_at: 1130
+                          open_time: null
+                          open_day: null
+                          close_time: null
+                          close_day: null
+                        - id: 608
+                          day: Saturday
+                          opens_at: 1615
+                          closes_at: 145
+                          open_time: null
+                          open_day: null
+                          close_time: null
+                          close_day: null
+                        - id: 609
+                          day: Sunday
+                          opens_at: 800
+                          closes_at: 2330
+                          open_time: null
+                          open_day: null
+                          close_time: null
+                          close_day: null
+                      hours_known: true
+                    phones:
+                      - id: 68
+                        number: (607) 856-0170
+                        extension: null
+                        service_type: Business
+                        country_code: US
+                    addresses:
+                      - id: 84
+                        attention: Nida Rowe
+                        name: null
+                        address_1: 44710 Ebert Roads
+                        address_2: Apt. 540
+                        address_3: null
+                        address_4: null
+                        city: North Joaquinatown
+                        state_province: California
+                        postal_code: "34342"
+                        latitude: "37.7839000813174"
+                        longitude: "-122.395651984309"
+                      - id: 83
+                        attention: Erasmo Huel
+                        name: null
+                        address_1: 797 France Stravenue
+                        address_2: Apt. 575
+                        address_3: null
+                        address_4: null
+                        city: Wadeport
+                        state_province: Virginia
+                        postal_code: "71509"
+                        latitude: "10.0"
+                        longitude: "0.0"
+                    notes:
+                      - id: 88
+                        note: Voluptate rerum similique. Nesciunt qui iusto. Id iste voluptatem.
+                    categories:
+                      - name: Smith, Mante and Glover
+                        id: 6
+                        top_level: false
+                        featured: false
+  /resources/{id}:
+    get:
+      tags:
+        - resources
+      summary: Retrieves resources by id
+      parameters:
+        - name: id
+          in: path
+          description: Resource ID
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: resource not found
+          content:
+            application/json:
+              example:
+                resource:
+                  updated_at: "2021-08-12T03:11:28.151Z"
+                  alternate_name: null
+                  certified: false
+                  email: null
+                  id: 94
+                  legal_status: null
+                  long_description: null
+                  name: b
+                  short_description: null
+                  status: approved
+                  verified_at: null
+                  website: null
+                  certified_at: null
+                  featured: null
+                  source_attribution: ask_darcel
+                  services: []
+                  schedule:
+                    id: 121
+                    schedule_days:
+                      - id: 843
+                        day: Wednesday
+                        opens_at: 600
+                        closes_at: 2000
+                        open_time: null
+                        open_day: null
+                        close_time: null
+                        close_day: null
+                      - id: 844
+                        day: Friday
+                        opens_at: 800
+                        closes_at: 1730
+                        open_time: null
+                        open_day: null
+                        close_time: null
+                        close_day: null
+                      - id: 845
+                        day: Saturday
+                        opens_at: 745
+                        closes_at: 1715
+                        open_time: null
+                        open_day: null
+                        close_time: null
+                        close_day: null
+                    hours_known: true
+                  phones:
+                    - id: 94
+                      number: (361) 760-8197
+                      extension: "2677"
+                      service_type: Business
+                      country_code: US
+                  addresses:
+                    - id: 112
+                      attention: Mavis Morar
+                      name: null
+                      address_1: 912 Ned Ramp
+                      address_2: Apt. 444
+                      address_3: null
+                      address_4: null
+                      city: Smithland
+                      state_province: Minnesota
+                      postal_code: 47086-0163
+                      latitude: "37.7857573442712"
+                      longitude: "-122.390473670061"
+                  notes:
+                    - id: 121
+                      note: Rem voluptates omnis. Iste accusamus ea. Sapiente officia dolorem.
+                  categories: []
+  /services/{id}:
+    get:
+      tags:
+        - services
+      summary: Retrieves a service by id
+      parameters:
+        - name: id
+          in: path
+          description: Service ID
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: service found
+          content:
+            application/json:
+              example:
+                service:
+                  updated_at: "2021-08-12T03:11:28.607Z"
+                  alternate_name: null
+                  application_process: null
+                  certified: false
+                  eligibility: null
+                  email: null
+                  fee: null
+                  id: 30
+                  interpretation_services: null
+                  long_description: null
+                  name: Schoen-Beier
+                  required_documents: null
+                  url: null
+                  verified_at: null
+                  wait_time: null
+                  certified_at: null
+                  featured: null
+                  source_attribution: ask_darcel
+                  schedule:
+                    id: 126
+                    schedule_days:
+                      - id: 875
+                        day: Tuesday
+                        opens_at: 800
+                        closes_at: 2100
+                        open_time: null
+                        open_day: null
+                        close_time: null
+                        close_day: null
+                      - id: 876
+                        day: Wednesday
+                        opens_at: 1400
+                        closes_at: 230
+                        open_time: null
+                        open_day: null
+                        close_time: null
+                        close_day: null
+                      - id: 877
+                        day: Thursday
+                        opens_at: 615
+                        closes_at: 1930
+                        open_time: null
+                        open_day: null
+                        close_time: null
+                        close_day: null
+                      - id: 878
+                        day: Saturday
+                        opens_at: 715
+                        closes_at: 1515
+                        open_time: null
+                        open_day: null
+                        close_time: null
+                        close_day: null
+                    hours_known: true
+                  notes:
+                    - id: 126
+                      note: Modi odit non. Aut eligendi autem. Sed quam et.
+                  categories: []
+                  addresses: []
+                  eligibilities: []
+                  resource:
+                    updated_at: "2021-08-12T03:11:28.609Z"
+                    alternate_name: null
+                    certified: false
+                    email: null
+                    id: 96
+                    legal_status: null
+                    long_description: null
+                    name: a
+                    short_description: null
+                    status: approved
+                    verified_at: null
+                    website: null
+                    certified_at: null
+                    featured: null
+                    source_attribution: ask_darcel
+                    services:
+                      - updated_at: "2021-08-12T03:11:28.607Z"
+                        alternate_name: null
+                        application_process: null
+                        certified: false
+                        eligibility: null
+                        email: null
+                        fee: null
+                        id: 30
+                        interpretation_services: null
+                        long_description: null
+                        name: Schoen-Beier
+                        required_documents: null
+                        url: null
+                        verified_at: null
+                        wait_time: null
+                        certified_at: null
+                        featured: null
+                        source_attribution: ask_darcel
+                        schedule:
+                          id: 126
+                          schedule_days:
+                            - id: 875
+                              day: Tuesday
+                              opens_at: 800
+                              closes_at: 2100
+                              open_time: null
+                              open_day: null
+                              close_time: null
+                              close_day: null
+                            - id: 876
+                              day: Wednesday
+                              opens_at: 1400
+                              closes_at: 230
+                              open_time: null
+                              open_day: null
+                              close_time: null
+                              close_day: null
+                            - id: 877
+                              day: Thursday
+                              opens_at: 615
+                              closes_at: 1930
+                              open_time: null
+                              open_day: null
+                              close_time: null
+                              close_day: null
+                            - id: 878
+                              day: Saturday
+                              opens_at: 715
+                              closes_at: 1515
+                              open_time: null
+                              open_day: null
+                              close_time: null
+                              close_day: null
+                          hours_known: true
+                        notes:
+                          - id: 126
+                            note: Modi odit non. Aut eligendi autem. Sed quam et.
+                        categories: []
+                        addresses: []
+                        eligibilities: []
+                    schedule:
+                      id: 125
+                      schedule_days:
+                        - id: 869
+                          day: Monday
+                          opens_at: 1600
+                          closes_at: 330
+                          open_time: null
+                          open_day: null
+                          close_time: null
+                          close_day: null
+                        - id: 870
+                          day: Tuesday
+                          opens_at: 700
+                          closes_at: 1530
+                          open_time: null
+                          open_day: null
+                          close_time: null
+                          close_day: null
+                        - id: 871
+                          day: Thursday
+                          opens_at: 2145
+                          closes_at: 245
+                          open_time: null
+                          open_day: null
+                          close_time: null
+                          close_day: null
+                        - id: 872
+                          day: Friday
+                          opens_at: 700
+                          closes_at: 1830
+                          open_time: null
+                          open_day: null
+                          close_time: null
+                          close_day: null
+                        - id: 873
+                          day: Saturday
+                          opens_at: 545
+                          closes_at: 1115
+                          open_time: null
+                          open_day: null
+                          close_time: null
+                          close_day: null
+                        - id: 874
+                          day: Saturday
+                          opens_at: 1615
+                          closes_at: 2200
+                          open_time: null
+                          open_day: null
+                          close_time: null
+                          close_day: null
+                      hours_known: true
+                    phones:
+                      - id: 96
+                        number: (612) 682-0653
+                        extension: null
+                        service_type: Business
+                        country_code: US
+                    addresses:
+                      - id: 114
+                        attention: Bradley Okuneva
+                        name: null
+                        address_1: 15645 Ondricka Rue
+                        address_2: Apt. 582
+                        address_3: null
+                        address_4: null
+                        city: West Ronport
+                        state_province: Nevada
+                        postal_code: "00301"
+                        latitude: "37.794857763216"
+                        longitude: "-122.40323214604"
+                    notes:
+                      - id: 125
+                        note: Tenetur dolores nemo. Est corporis nam. Et aliquam quibusdam.
+                    categories: []
+                  program: null
+components: {}
+x-original-swagger-version: "2.0"

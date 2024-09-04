@@ -1,0 +1,295 @@
+openapi: 3.0.1
+info:
+  title: API title
+  version: 0.0.1
+servers:
+  - url: //moji.playplay.io/
+tags:
+  - name: status
+    description: Operations about statuses
+  - name: teams
+    description: Operations about teams
+  - name: users
+    description: Operations about users
+  - name: subscriptions
+    description: Operations about subscriptions
+  - name: credit_cards
+    description: Operations about credit_cards
+  - name: slack
+    description: Operations about slacks
+paths:
+  /api/status:
+    get:
+      tags:
+        - status
+      description: Get system status.
+      operationId: getApiStatus
+      responses:
+        "200":
+          description: Get system status.
+          content: {}
+  /api/teams:
+    get:
+      tags:
+        - teams
+      description: Get all the teams.
+      operationId: getApiTeams
+      parameters:
+        - name: active
+          in: query
+          description: Return active teams only.
+          schema:
+            type: boolean
+        - name: offset
+          in: query
+          description: Offset from which to retrieve.
+          schema:
+            type: integer
+            format: int32
+        - name: size
+          in: query
+          description: Number of items to retrieve for this page or from the current offset.
+          schema:
+            type: integer
+            format: int32
+        - name: cursor
+          in: query
+          description: Cursor for pagination.
+          schema:
+            type: string
+        - name: total_count
+          in: query
+          description: Include total count in the response.
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Get all the teams.
+          content: {}
+    post:
+      tags:
+        - teams
+      description: Create a team using an OAuth token.
+      operationId: postApiTeams
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+                - code
+              type: object
+              properties:
+                code:
+                  type: string
+        required: true
+      responses:
+        "201":
+          description: Create a team using an OAuth token.
+          content: {}
+  /api/teams/{id}:
+    get:
+      tags:
+        - teams
+      description: Get a team.
+      operationId: getApiTeamsId
+      parameters:
+        - name: id
+          in: path
+          description: Team ID.
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Get a team.
+          content: {}
+  /api/users/{id}:
+    put:
+      tags:
+        - users
+      description: Connect a user to Slack.
+      operationId: putApiUsersId
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+                - code
+              type: object
+              properties:
+                code:
+                  type: string
+        required: true
+      responses:
+        "200":
+          description: Connect a user to Slack.
+          content: {}
+  /api/subscriptions:
+    post:
+      tags:
+        - subscriptions
+      description: Subscribe to slack-moji.
+      operationId: postApiSubscriptions
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+                - stripe_email
+                - stripe_token
+                - stripe_token_type
+                - team_id
+              type: object
+              properties:
+                stripe_token:
+                  type: string
+                stripe_token_type:
+                  type: string
+                stripe_email:
+                  type: string
+                team_id:
+                  type: string
+        required: true
+      responses:
+        "201":
+          description: Subscribe to slack-moji.
+          content: {}
+  /api/credit_cards:
+    post:
+      tags:
+        - credit_cards
+      description: Updates a credit card.
+      operationId: postApiCreditCards
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+                - stripe_token
+                - team_id
+              type: object
+              properties:
+                stripe_token:
+                  type: string
+                stripe_token_type:
+                  type: string
+                stripe_email:
+                  type: string
+                team_id:
+                  type: string
+        required: true
+      responses:
+        "201":
+          description: Updates a credit card.
+          content: {}
+  /api/slack/action:
+    post:
+      tags:
+        - slack
+      description: Respond to interactive slack buttons and actions.
+      operationId: postApiSlackAction
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+                - payload
+                - payload[actions][value]
+                - payload[callback_id]
+                - payload[channel][id]
+                - payload[message][text]
+                - payload[message][ts]
+                - payload[message][type]
+                - payload[message][user]
+                - payload[team][id]
+                - payload[token]
+                - payload[user][id]
+              type: object
+              properties:
+                payload: {}
+                payload[token]:
+                  type: string
+                payload[callback_id]:
+                  type: string
+                payload[type]:
+                  type: string
+                payload[trigger_id]:
+                  type: string
+                payload[response_url]:
+                  type: string
+                payload[channel][id]:
+                  type: string
+                payload[channel][name]:
+                  type: string
+                payload[user][id]:
+                  type: string
+                payload[user][name]:
+                  type: string
+                payload[team][id]:
+                  type: string
+                payload[team][domain]:
+                  type: string
+                payload[actions][value]:
+                  type: array
+                  items:
+                    type: string
+                payload[message][type]:
+                  type: string
+                payload[message][user]:
+                  type: string
+                payload[message][ts]:
+                  type: string
+                payload[message][text]:
+                  type: string
+        required: true
+      responses:
+        "201":
+          description: Respond to interactive slack buttons and actions.
+          content: {}
+  /api/slack/command:
+    post:
+      tags:
+        - slack
+      description: Respond to slash commands.
+      operationId: postApiSlackCommand
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+                - channel_id
+                - channel_name
+                - command
+                - team_id
+                - text
+                - token
+                - user_id
+              type: object
+              properties:
+                command:
+                  type: string
+                text:
+                  type: string
+                token:
+                  type: string
+                user_id:
+                  type: string
+                channel_id:
+                  type: string
+                channel_name:
+                  type: string
+                team_id:
+                  type: string
+        required: true
+      responses:
+        "201":
+          description: Respond to slash commands.
+          content: {}
+components: {}
+x-original-swagger-version: "2.0"
