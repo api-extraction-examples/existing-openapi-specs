@@ -1,0 +1,3534 @@
+openapi: 3.0.1
+info:
+  title: Simple Server
+  description: |
+    # API spec for Simple Server
+    ## Sync APIs
+    This API spec documents the endpoints that the devices (that are offline to varying levels) will use to sync data. The sync end points will send and receive bulk (a list of) entities. Both sending and receiving can be batched with configurable batch-sizes to accommodate low network bandwidth situations.
+
+    ## Nesting resources
+    The APIs have been designed to provide an optimal balance between accuracy and simplicity. Some of the APIs (patients) will be nested, and some other (blood pressures) will be flat.
+
+    ## Sync Mechanism
+    Refer to the [related ADR](https://github.com/simpledotorg/simple-server/blob/master/doc/arch/001-synchronization.md).
+
+    ## API Authentication
+    There are two types of authentication available to access different parts of the Simple API.
+    - User Authentication - For medical professionals using the Simple App. Grants access to most of the Simple API
+      to read and write data for communities of patients.
+    - Patient authentication - For individual patients. Grants access to read a patient's own data.
+
+    ### User Authentication
+
+    A Simple client can make authenticated requests to the Simple API on behalf of a medical professional with the
+    following three required credentials:
+    - API Access Token
+    - User ID
+    - Facility ID
+
+    In order to obtain these credentials, a Simple client can authenticate a user with the following steps. The
+    client will need the user's registered phone number to perform the authentication.
+    1. Submit the users phone number to the [`POST /v4/users/find` endpoint](#tag/User/paths/~1users~1find/post). If
+    a user exists with this phone number, the response will return their id.
+    2. Submit the user's id retreived in the previous step, along with the user's password to the
+    [`POST v4/users/activate` endpoint](#tag/User/paths/~1users~1activate/post).
+    This will validate the user's password, and trigger an OTP to be sent to the user's phone number.
+    3. Submit the user's id, their password, and the OTP (received after the previous step) to the
+    [`POST v3/login` endpoint](#tag/User-Login/paths/~1login/post). If the submitted otp and password are valid,
+    this will return an access token that can be used to authenticate the user. The access token will remain valid
+    until the user signs into another device.
+
+    On successful authentication, the client will receive a payload containing an API access token and some user
+    information.
+    The following headers need to be attached to subsequent requests as shown below.
+    - `Authorization: Bearer <access token>`
+    - `X-User-Id: <user ID>`
+    - `X-Facility-Id: <facility ID>` This is the id for either the registration facility of the user, or another
+    facility in their facility group.
+
+    ### Patient Authentication
+    A Simple client can make authenticated requests to the Simple API on behalf of a patient with the following
+    credentials:
+    - API Access Token
+    - Patient ID
+
+    In order to obtain these credentials, a Simple client can authenticate a patient with the following steps. The
+    client will need the patient's BP Passport UUID to perform the authentication.
+    1. Submit the patient's BP Passport UUID to the [`POST /v4/patients/activate` endpoint](#tag/Patient/paths/~1patient~1activate/post).
+       This will trigger an OTP message to be sent to the patient's registered phone number.
+    2. Submit the patient's BP Passport UUID and OTP (received after the previous step) to the [`POST /v4/patients/login` endpoint](#tag/Patient/paths/~1patient~1login/post)
+
+    On successful authentication, the client will receive a payload containing an API access token and a patient ID.
+    Both of these data points need to be attached to subsequent requests as request headers as shown below.
+    - `Authorization: Bearer <access token>`
+    - `X-Patient-Id: <patient ID>`
+
+    The API access token will remain valid until the patient signs into another device.
+
+    The comprehensive list of authentication mechanisms used is provided below. It lists the specific details of
+    using access tokens and other request headers to authenticate with the API.
+  contact:
+    email: eng-backend@resolvetosavelives.org
+  license:
+    name: MIT
+    url: https://github.com/simpledotorg/simple-server/blob/master/LICENSE
+  version: "5.0"
+  x-logo:
+    url: /assets/rtsl_logo-90ad9b477469fd15ef3b36063601e9857417cb3e336d8408226260297fa4fed9.png
+    backgroundColor: '#FFFFFF'
+servers:
+  - url: /
+paths:
+  /api/v3/analytics/user_analytics:
+    get:
+      tags:
+        - analytics
+      summary: Sends JSON containing analytics for User
+      parameters:
+        - name: HTTP_X_USER_ID
+          in: header
+          schema: {}
+        - name: HTTP_X_FACILITY_ID
+          in: header
+          schema: {}
+      responses:
+        "200":
+          description: JSON received
+          content: {}
+        "403":
+          description: user is not allowed to sync
+          content: {}
+      security:
+        - access_token: []
+          user_id: []
+          facility_id: []
+  /api/v3/analytics/user_analytics.html:
+    get:
+      tags:
+        - analytics
+      summary: Sends a static HTML containing analytics for user
+      parameters:
+        - name: HTTP_X_USER_ID
+          in: header
+          schema: {}
+        - name: HTTP_X_FACILITY_ID
+          in: header
+          schema: {}
+      responses:
+        "200":
+          description: HTML received
+          content: {}
+        "403":
+          description: user is not allowed to sync
+          content: {}
+      security:
+        - access_token: []
+          user_id: []
+          facility_id: []
+  /api/v3/appointments/sync:
+    get:
+      tags:
+        - Appointments
+      summary: Syncs appointment data from server to device.
+      parameters:
+        - name: HTTP_X_USER_ID
+          in: header
+          schema: {}
+        - name: HTTP_X_FACILITY_ID
+          in: header
+          schema: {}
+        - name: process_token
+          in: query
+          description: Token containing all the information needed to process batch requests from the user
+          schema:
+            type: string
+            format: byte
+        - name: limit
+          in: query
+          description: Number of record to retrieve (a.k.a batch-size)
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: appointments received
+          content:
+            application/json:
+              schema:
+                required:
+                  - appointments
+                  - process_token
+                type: object
+                properties:
+                  appointments:
+                    $ref: '#/components/schemas/appointments'
+                  process_token:
+                    $ref: '#/components/schemas/process_token'
+        "403":
+          description: user is not allowed to sync
+          content: {}
+      security:
+        - access_token: []
+          user_id: []
+          facility_id: []
+    post:
+      tags:
+        - Appointments
+      summary: Syncs appointment data from device to server.
+      parameters:
+        - name: HTTP_X_USER_ID
+          in: header
+          schema: {}
+        - name: HTTP_X_FACILITY_ID
+          in: header
+          schema: {}
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+                - appointments
+              type: object
+              properties:
+                appointments:
+                  $ref: '#/components/schemas/appointments'
+        required: false
+      responses:
+        "200":
+          description: some, or no errors were found
+          content: {}
+        "403":
+          description: user is not allowed to sync
+          content: {}
+      security:
+        - access_token: []
+          user_id: []
+          facility_id: []
+      x-codegen-request-body-name: appointments
+  /api/v3/blood_pressures/sync:
+    get:
+      tags:
+        - Blood Pressure
+      summary: Syncs blood pressure data from server to device.
+      parameters:
+        - name: HTTP_X_USER_ID
+          in: header
+          schema: {}
+        - name: HTTP_X_FACILITY_ID
+          in: header
+          schema: {}
+        - name: process_token
+          in: query
+          description: Token containing all the information needed to process batch requests from the user
+          schema:
+            type: string
+            format: byte
+        - name: limit
+          in: query
+          description: Number of record to retrieve (a.k.a batch-size)
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: blood pressures received
+          content:
+            application/json:
+              schema:
+                required:
+                  - blood_pressures
+                  - process_token
+                type: object
+                properties:
+                  blood_pressures:
+                    $ref: '#/components/schemas/blood_pressures'
+                  process_token:
+                    $ref: '#/components/schemas/process_token'
+        "403":
+          description: user is not allowed to sync
+          content: {}
+      security:
+        - access_token: []
+          user_id: []
+          facility_id: []
+    post:
+      tags:
+        - Blood Pressure
+      summary: Syncs blood pressure data from device to server.
+      parameters:
+        - name: HTTP_X_USER_ID
+          in: header
+          schema: {}
+        - name: HTTP_X_FACILITY_ID
+          in: header
+          schema: {}
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+                - blood_pressures
+              type: object
+              properties:
+                blood_pressures:
+                  $ref: '#/components/schemas/blood_pressures'
+        required: false
+      responses:
+        "200":
+          description: some, or no errors were found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errors:
+                    $ref: '#/components/schemas/errors'
+        "403":
+          description: user is not allowed to sync
+          content: {}
+      security:
+        - access_token: []
+          user_id: []
+          facility_id: []
+      x-codegen-request-body-name: blood_pressures
+  /api/v3/blood_sugars/sync:
+    get:
+      tags:
+        - Blood Sugar
+      summary: Syncs blood sugar data from server to device.
+      parameters:
+        - name: HTTP_X_USER_ID
+          in: header
+          schema: {}
+        - name: HTTP_X_FACILITY_ID
+          in: header
+          schema: {}
+        - name: process_token
+          in: query
+          description: Token containing all the information needed to process batch requests from the user
+          schema:
+            type: string
+            format: byte
+        - name: limit
+          in: query
+          description: Number of record to retrieve (a.k.a batch-size)
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: blood sugar received
+          content:
+            application/json:
+              schema:
+                required:
+                  - blood_sugars
+                  - process_token
+                type: object
+                properties:
+                  blood_sugars:
+                    $ref: '#/components/schemas/blood_sugars'
+                  process_token:
+                    $ref: '#/components/schemas/process_token'
+        "403":
+          description: user is not allowed to sync
+          content: {}
+      security:
+        - access_token: []
+          user_id: []
+          facility_id: []
+    post:
+      tags:
+        - Blood Sugar
+      summary: Syncs blood sugar data from device to server.
+      parameters:
+        - name: HTTP_X_USER_ID
+          in: header
+          schema: {}
+        - name: HTTP_X_FACILITY_ID
+          in: header
+          schema: {}
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+                - blood_sugars
+              type: object
+              properties:
+                blood_sugars:
+                  $ref: '#/components/schemas/blood_sugars'
+        required: false
+      responses:
+        "200":
+          description: some, or no errors were found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errors:
+                    $ref: '#/components/schemas/errors'
+        "403":
+          description: user is not allowed to sync
+          content: {}
+      security:
+        - access_token: []
+          user_id: []
+          facility_id: []
+      x-codegen-request-body-name: blood_sugars
+  /api/v3/encounters/sync:
+    get:
+      tags:
+        - Encounters
+      summary: Syncs encounters data from server to device.
+      parameters:
+        - name: HTTP_X_USER_ID
+          in: header
+          schema: {}
+        - name: HTTP_X_FACILITY_ID
+          in: header
+          schema: {}
+        - name: process_token
+          in: query
+          description: Token containing all the information needed to process batch requests from the user
+          schema:
+            type: string
+            format: byte
+        - name: limit
+          in: query
+          description: Number of record to retrieve (a.k.a batch-size)
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: encounters received
+          content:
+            application/json:
+              schema:
+                required:
+                  - encounters
+                  - process_token
+                type: object
+                properties:
+                  encounters:
+                    $ref: '#/components/schemas/encounters'
+                  process_token:
+                    $ref: '#/components/schemas/process_token'
+        "403":
+          description: user is not allowed to sync
+          content: {}
+      security:
+        - access_token: []
+          user_id: []
+          facility_id: []
+    post:
+      tags:
+        - Encounters
+      summary: Syncs encounters data from device to server.
+      parameters:
+        - name: HTTP_X_USER_ID
+          in: header
+          schema: {}
+        - name: HTTP_X_FACILITY_ID
+          in: header
+          schema: {}
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+                - encounters
+              type: object
+              properties:
+                encounters:
+                  $ref: '#/components/schemas/encounters'
+        required: false
+      responses:
+        "200":
+          description: some, or no errors were found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errors:
+                    $ref: '#/components/schemas/errors'
+        "403":
+          description: user is not allowed to sync
+          content: {}
+      security:
+        - access_token: []
+          user_id: []
+          facility_id: []
+      x-codegen-request-body-name: encounters
+  /api/v3/facilities/sync:
+    get:
+      tags:
+        - facility
+      summary: Syncs facilities data from server to device.
+      parameters:
+        - name: HTTP_X_USER_ID
+          in: header
+          schema: {}
+        - name: HTTP_X_FACILITY_ID
+          in: header
+          schema: {}
+        - name: process_token
+          in: query
+          description: Token containing all the information needed to process batch requests from the user
+          schema:
+            type: string
+            format: byte
+        - name: limit
+          in: query
+          description: Number of record to retrieve (a.k.a batch-size)
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: facilities received
+          content:
+            application/json:
+              schema:
+                required:
+                  - facilities
+                  - process_token
+                type: object
+                properties:
+                  facilities:
+                    $ref: '#/components/schemas/facilities'
+                  process_token:
+                    $ref: '#/components/schemas/process_token'
+      security:
+        - access_token: []
+          user_id: []
+          facility_id: []
+  /api/v3/help.html:
+    get:
+      tags:
+        - help
+      summary: Sends a static HTML containing help documentation
+      responses:
+        "200":
+          description: HTML received
+          content: {}
+  /api/v3/login:
+    post:
+      tags:
+        - User Login
+      summary: Login in valid user
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+                - user
+              type: object
+              properties:
+                user:
+                  $ref: '#/components/schemas/login_user'
+        required: false
+      responses:
+        "200":
+          description: user is logged in
+          content:
+            application/json:
+              schema:
+                required:
+                  - access_token
+                  - user
+                type: object
+                properties:
+                  access_token:
+                    $ref: '#/components/schemas/non_empty_string'
+                  user:
+                    $ref: '#/components/schemas/user'
+        "401":
+          description: user is not logged in with otp
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    description: Id of the record with errors
+                    format: uuid
+                  schema:
+                    type: array
+                    description: List of json schema error strings describing validation errors
+                    items:
+                      type: string
+                  field_with_error:
+                    type: array
+                    items:
+                      type: string
+      x-codegen-request-body-name: user
+  /api/v3/medical_histories/sync:
+    get:
+      tags:
+        - Medical History
+      summary: Syncs medical_history data from server to device.
+      parameters:
+        - name: HTTP_X_USER_ID
+          in: header
+          schema: {}
+        - name: HTTP_X_FACILITY_ID
+          in: header
+          schema: {}
+        - name: process_token
+          in: query
+          description: Token containing all the information needed to process batch requests from the user
+          schema:
+            type: string
+            format: byte
+        - name: limit
+          in: query
+          description: Number of record to retrieve (a.k.a batch-size)
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: medical_histories received
+          content:
+            application/json:
+              schema:
+                required:
+                  - medical_histories
+                  - process_token
+                type: object
+                properties:
+                  medical_histories:
+                    $ref: '#/components/schemas/medical_histories'
+                  process_token:
+                    $ref: '#/components/schemas/process_token'
+        "403":
+          description: user is not allowed to sync
+          content: {}
+      security:
+        - access_token: []
+          user_id: []
+          facility_id: []
+    post:
+      tags:
+        - Medical History
+      summary: Syncs medical_history data from device to server.
+      parameters:
+        - name: HTTP_X_USER_ID
+          in: header
+          schema: {}
+        - name: HTTP_X_FACILITY_ID
+          in: header
+          schema: {}
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+                - medical_histories
+              type: object
+              properties:
+                medical_histories:
+                  $ref: '#/components/schemas/medical_histories'
+        required: false
+      responses:
+        "200":
+          description: some, or no errors were found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errors:
+                    $ref: '#/components/schemas/errors'
+        "403":
+          description: user is not allowed to sync
+          content: {}
+      security:
+        - access_token: []
+          user_id: []
+          facility_id: []
+      x-codegen-request-body-name: medical_histories
+  /api/v3/patients/sync:
+    get:
+      tags:
+        - patient
+      summary: Syncs patient, address and phone number data from server to device.
+      parameters:
+        - name: HTTP_X_USER_ID
+          in: header
+          schema: {}
+        - name: HTTP_X_FACILITY_ID
+          in: header
+          schema: {}
+        - name: process_token
+          in: query
+          description: Token containing all the information needed to process batch requests from the user
+          schema:
+            type: string
+            format: byte
+        - name: limit
+          in: query
+          description: Number of record to retrieve (a.k.a batch-size)
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: patients received
+          content:
+            application/json:
+              schema:
+                required:
+                  - patients
+                  - process_token
+                type: object
+                properties:
+                  patients:
+                    $ref: '#/components/schemas/nested_patients'
+                  process_token:
+                    $ref: '#/components/schemas/process_token'
+        "403":
+          description: user is not allowed to sync
+          content: {}
+      security:
+        - access_token: []
+          user_id: []
+          facility_id: []
+    post:
+      tags:
+        - patient
+      summary: Syncs patient, address and phone number data from device to server.
+      parameters:
+        - name: HTTP_X_USER_ID
+          in: header
+          schema: {}
+        - name: HTTP_X_FACILITY_ID
+          in: header
+          schema: {}
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+                - patients
+              type: object
+              properties:
+                patients:
+                  $ref: '#/components/schemas/nested_patients'
+        required: false
+      responses:
+        "200":
+          description: some, or no errors were found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errors:
+                    $ref: '#/components/schemas/errors'
+        "403":
+          description: user is not allowed to sync
+          content: {}
+      security:
+        - access_token: []
+          user_id: []
+          facility_id: []
+      x-codegen-request-body-name: patients
+  /api/v3/prescription_drugs/sync:
+    get:
+      tags:
+        - Prescription Drug
+      summary: Syncs prescription drugs data from server to device.
+      parameters:
+        - name: HTTP_X_USER_ID
+          in: header
+          schema: {}
+        - name: HTTP_X_FACILITY_ID
+          in: header
+          schema: {}
+        - name: process_token
+          in: query
+          description: Token containing all the information needed to process batch requests from the user
+          schema:
+            type: string
+            format: byte
+        - name: limit
+          in: query
+          description: Number of record to retrieve (a.k.a batch-size)
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: prescription drugs received
+          content:
+            application/json:
+              schema:
+                required:
+                  - prescription_drugs
+                  - process_token
+                type: object
+                properties:
+                  prescription_drugs:
+                    $ref: '#/components/schemas/prescription_drugs'
+                  process_token:
+                    $ref: '#/components/schemas/process_token'
+        "403":
+          description: user is not allowed to sync
+          content: {}
+      security:
+        - access_token: []
+          user_id: []
+          facility_id: []
+    post:
+      tags:
+        - Prescription Drug
+      summary: Syncs prescription drugs data from device to server.
+      parameters:
+        - name: HTTP_X_USER_ID
+          in: header
+          schema: {}
+        - name: HTTP_X_FACILITY_ID
+          in: header
+          schema: {}
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+                - prescription_drugs
+              type: object
+              properties:
+                prescription_drugs:
+                  $ref: '#/components/schemas/prescription_drugs'
+        required: false
+      responses:
+        "200":
+          description: some, or no errors were found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errors:
+                    $ref: '#/components/schemas/errors'
+        "403":
+          description: user is not allowed to sync
+          content: {}
+      security:
+        - access_token: []
+          user_id: []
+          facility_id: []
+      x-codegen-request-body-name: prescription_drugs
+  /api/v3/protocols/sync:
+    get:
+      tags:
+        - protocol
+      summary: Syncs protocols and protocol drugs data from server to device.
+      parameters:
+        - name: process_token
+          in: query
+          description: Token containing all the information needed to process batch requests from the user
+          schema:
+            type: string
+            format: byte
+        - name: limit
+          in: query
+          description: Number of record to retrieve (a.k.a batch-size)
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: protocols received
+          content:
+            application/json:
+              schema:
+                required:
+                  - process_token
+                  - protocols
+                type: object
+                properties:
+                  protocols:
+                    $ref: '#/components/schemas/protocols'
+                  process_token:
+                    $ref: '#/components/schemas/process_token'
+  /api/v3/users/find:
+    get:
+      tags:
+        - User
+      summary: Find a existing user
+      parameters:
+        - name: phone_number
+          in: query
+          schema:
+            type: string
+        - name: id
+          in: query
+          description: User UUID
+          schema:
+            type: string
+      responses:
+        "200":
+          description: user is found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/user'
+        "404":
+          description: user is not found
+          content: {}
+  /api/v3/users/register:
+    post:
+      tags:
+        - User
+      summary: Register a new user
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+                - user
+              type: object
+              properties:
+                user:
+                  $ref: '#/components/schemas/user'
+        required: false
+      responses:
+        "200":
+          description: user is registered
+          content:
+            application/json:
+              schema:
+                required:
+                  - access_token
+                  - user
+                type: object
+                properties:
+                  access_token:
+                    $ref: '#/components/schemas/non_empty_string'
+                  user:
+                    $ref: '#/components/schemas/user'
+        "400":
+          description: returns bad request if phone number already exists
+          content: {}
+        "404":
+          description: returns not found if  facility id is not known
+          content: {}
+      x-codegen-request-body-name: user
+  /api/v3/users/{id}/request_otp:
+    post:
+      tags:
+        - User
+      summary: Request OTP for login
+      parameters:
+        - name: id
+          in: path
+          description: User UUID
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: user otp is reset and new otp is sent as an sms
+          content: {}
+        "404":
+          description: user is not found
+          content: {}
+  /api/v3/users/me/reset_password:
+    post:
+      tags:
+        - User
+      summary: Request for reset password
+      parameters:
+        - name: HTTP_X_USER_ID
+          in: header
+          schema: {}
+        - name: HTTP_X_FACILITY_ID
+          in: header
+          schema: {}
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+                - password_digest
+              type: object
+              properties:
+                password_digest:
+                  $ref: '#/components/schemas/bcrypt_password'
+        required: false
+      responses:
+        "200":
+          description: user password reset request is received
+          content:
+            application/json:
+              schema:
+                required:
+                  - access_token
+                  - user
+                type: object
+                properties:
+                  access_token:
+                    $ref: '#/components/schemas/non_empty_string'
+                  user:
+                    $ref: '#/components/schemas/user'
+        "401":
+          description: authentication failed
+          content: {}
+      security:
+        - access_token: []
+          user_id: []
+          facility_id: []
+      x-codegen-request-body-name: password_digest
+  /api/v4/analytics/overdue_list.csv:
+    get:
+      tags:
+        - analytics
+      summary: Downloads a CSV with the facility's overdue list
+      parameters:
+        - name: HTTP_X_USER_ID
+          in: header
+          schema: {}
+        - name: HTTP_X_FACILITY_ID
+          in: header
+          schema: {}
+      responses:
+        "200":
+          description: CSV downloaded
+          content: {}
+        "403":
+          description: user is not allowed to sync
+          content: {}
+      security:
+        - access_token: []
+          user_id: []
+          facility_id: []
+  /api/v4/blood_sugars/sync:
+    get:
+      tags:
+        - Blood Sugar
+      summary: Syncs blood sugar data from server to device.
+      parameters:
+        - name: HTTP_X_USER_ID
+          in: header
+          schema: {}
+        - name: HTTP_X_FACILITY_ID
+          in: header
+          schema: {}
+        - name: process_token
+          in: query
+          description: Token containing all the information needed to process batch requests from the user
+          schema:
+            type: string
+            format: byte
+        - name: limit
+          in: query
+          description: Number of record to retrieve (a.k.a batch-size)
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: blood sugar received
+          content:
+            application/json:
+              schema:
+                required:
+                  - blood_sugars
+                  - process_token
+                type: object
+                properties:
+                  blood_sugars:
+                    $ref: '#/components/schemas/blood_sugars'
+                  process_token:
+                    $ref: '#/components/schemas/process_token'
+        "403":
+          description: user is not allowed to sync
+          content: {}
+      security:
+        - access_token: []
+          user_id: []
+          facility_id: []
+    post:
+      tags:
+        - Blood Sugar
+      summary: Syncs blood sugar data from device to server.
+      parameters:
+        - name: HTTP_X_USER_ID
+          in: header
+          schema: {}
+        - name: HTTP_X_FACILITY_ID
+          in: header
+          schema: {}
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+                - blood_sugars
+              type: object
+              properties:
+                blood_sugars:
+                  $ref: '#/components/schemas/blood_sugars'
+        required: false
+      responses:
+        "200":
+          description: some, or no errors were found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errors:
+                    $ref: '#/components/schemas/errors'
+        "403":
+          description: user is not allowed to sync
+          content: {}
+      security:
+        - access_token: []
+          user_id: []
+          facility_id: []
+      x-codegen-request-body-name: blood_sugars
+  /api/v4/call_results/sync:
+    get:
+      tags:
+        - Call Result
+      summary: Syncs call results data from server to device.
+      parameters:
+        - name: HTTP_X_USER_ID
+          in: header
+          schema: {}
+        - name: HTTP_X_FACILITY_ID
+          in: header
+          schema: {}
+        - name: process_token
+          in: query
+          description: Token containing all the information needed to process batch requests from the user
+          schema:
+            type: string
+            format: byte
+        - name: limit
+          in: query
+          description: Number of record to retrieve (a.k.a batch-size)
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: call result received
+          content:
+            application/json:
+              schema:
+                required:
+                  - call_results
+                  - process_token
+                type: object
+                properties:
+                  call_results:
+                    $ref: '#/components/schemas/call_results'
+                  process_token:
+                    $ref: '#/components/schemas/process_token'
+        "403":
+          description: user is not allowed to sync
+          content: {}
+      security:
+        - access_token: []
+          user_id: []
+          facility_id: []
+    post:
+      tags:
+        - Call Result
+      summary: Syncs call_result data from device to server.
+      parameters:
+        - name: HTTP_X_USER_ID
+          in: header
+          schema: {}
+        - name: HTTP_X_FACILITY_ID
+          in: header
+          schema: {}
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+                - call_results
+              type: object
+              properties:
+                call_results:
+                  $ref: '#/components/schemas/call_results'
+        required: false
+      responses:
+        "200":
+          description: some, or no errors were found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errors:
+                    $ref: '#/components/schemas/errors'
+        "403":
+          description: user is not allowed to sync
+          content: {}
+      security:
+        - access_token: []
+          user_id: []
+          facility_id: []
+      x-codegen-request-body-name: call_results
+  /api/v4/drug_stocks:
+    get:
+      tags:
+        - Drug stock
+      summary: Request the drug stock report for a given month at your facility
+      parameters:
+        - name: HTTP_X_USER_ID
+          in: header
+          schema: {}
+        - name: HTTP_X_FACILITY_ID
+          in: header
+          schema: {}
+        - name: date
+          in: query
+          description: Any date in the requested month in YYYY-MM-DD format - eg. 2021-10-29
+          schema: {}
+      responses:
+        "200":
+          description: Drug stocks are returned
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  month:
+                    $ref: '#/components/schemas/month'
+                  facility_id:
+                    $ref: '#/components/schemas/uuid'
+                  drug_stock_form_url:
+                    $ref: '#/components/schemas/non_empty_string'
+                  drug_stocks:
+                    type: array
+                    description: List of drug stocks
+                    items:
+                      $ref: '#/components/schemas/drug_stock'
+      security:
+        - access_token: []
+          user_id: []
+          facility_id: []
+  /api/v4/facility_teleconsultations/{facility_id}:
+    get:
+      tags:
+        - Teleconsultation
+      summary: Fetch a facility's teleconsultation phone number
+      parameters:
+        - name: HTTP_X_USER_ID
+          in: header
+          schema: {}
+        - name: HTTP_X_FACILITY_ID
+          in: header
+          schema: {}
+        - name: facility_id
+          in: path
+          description: Facility UUID
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Teleconsultation phone number is returned
+          content:
+            application/json:
+              schema:
+                required:
+                  - teleconsultation_phone_numbers
+                type: object
+                properties:
+                  teleconsultation_phone_numbers:
+                    type: array
+                    items:
+                      required:
+                        - phone_number
+                      type: object
+                      properties:
+                        phone_number:
+                          type: string
+        "401":
+          description: User not authorized
+          content: {}
+      security:
+        - access_token: []
+          user_id: []
+          facility_id: []
+  /api/v4/medications/sync:
+    get:
+      tags:
+        - Medication
+      summary: Syncs medication data from server to device.
+      parameters:
+        - name: HTTP_X_FACILITY_ID
+          in: header
+          schema: {}
+        - name: process_token
+          in: query
+          description: Token containing all the information needed to process batch requests from the user
+          schema:
+            type: string
+            format: byte
+        - name: limit
+          in: query
+          description: Number of record to retrieve (a.k.a batch-size)
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: returns medications
+          content:
+            application/json:
+              schema:
+                required:
+                  - medications
+                  - process_token
+                type: object
+                properties:
+                  medications:
+                    $ref: '#/components/schemas/medications'
+                  process_token:
+                    $ref: '#/components/schemas/process_token'
+  /api/v4/patient/activate:
+    post:
+      tags:
+        - Patient
+      summary: Request an OTP to be sent to a patient
+      requestBody:
+        description: Patient's BP Passport UUID
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                passport_id:
+                  $ref: '#/components/schemas/uuid'
+        required: false
+      responses:
+        "200":
+          description: Patient is found and an OTP is sent to their phone
+          content: {}
+        "404":
+          description: Incorrect passport id
+          content: {}
+      x-codegen-request-body-name: request_body
+  /api/v4/patient/login:
+    post:
+      tags:
+        - Patient
+      summary: Log in a patient with BP Passport UUID and OTP
+      requestBody:
+        description: Patient's BP Passport UUID and OTP
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                passport_id:
+                  $ref: '#/components/schemas/uuid'
+                otp:
+                  $ref: '#/components/schemas/non_empty_string'
+        required: false
+      responses:
+        "200":
+          description: Correct OTP is submitted and API credentials are returned
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  patient:
+                    $ref: '#/components/schemas/login_patient'
+        "401":
+          description: Incorrect BP Passport UUID or OTP
+          content: {}
+      x-codegen-request-body-name: request_body
+  /api/v4/patient:
+    get:
+      tags:
+        - Patient
+      summary: Fetch patient information
+      parameters:
+        - name: HTTP_X_PATIENT_ID
+          in: header
+          schema: {}
+      responses:
+        "200":
+          description: Patient information is returned
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  patient:
+                    $ref: '#/components/schemas/patient'
+        "401":
+          description: Invalid patient ID header
+          content: {}
+      security:
+        - access_token: []
+          patient_id: []
+  /api/v4/patients/lookup:
+    post:
+      tags:
+        - Patient
+      summary: Lookup a patient all their records synchronously given their full business identifier
+      parameters:
+        - name: HTTP_X_USER_ID
+          in: header
+          schema: {}
+        - name: HTTP_X_FACILITY_ID
+          in: header
+          schema: {}
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+                - identifier
+              type: object
+              properties:
+                identifier:
+                  type: string
+                  description: Full identifier string of the BP Passport, or other supported identifier type
+        required: false
+      responses:
+        "200":
+          description: patient lookup successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  patients:
+                    $ref: '#/components/schemas/lookup_patients'
+        "404":
+          description: No patients found with this identifier
+          content: {}
+      security:
+        - access_token: []
+          user_id: []
+          facility_id: []
+      x-codegen-request-body-name: body
+  /api/v4/questionnaire_responses/sync:
+    get:
+      tags:
+        - Questionnaire Responses
+      summary: Syncs Questionnaire Responses from Server to Device
+      parameters:
+        - name: HTTP_X_USER_ID
+          in: header
+          schema: {}
+        - name: HTTP_X_FACILITY_ID
+          in: header
+          schema: {}
+        - name: process_token
+          in: query
+          description: Token containing all the information needed to process batch requests from the user
+          schema:
+            type: string
+            format: byte
+        - name: limit
+          in: query
+          description: Number of record to retrieve (a.k.a batch-size)
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: questionnaire responses synced to user device
+          content:
+            application/json:
+              schema:
+                required:
+                  - process_token
+                  - questionnaire_responses
+                type: object
+                properties:
+                  questionnaire_responses:
+                    $ref: '#/components/schemas/questionnaire_responses'
+                  process_token:
+                    $ref: '#/components/schemas/process_token'
+        "403":
+          description: user is not allowed to sync
+          content: {}
+      security:
+        - access_token: []
+          user_id: []
+          facility_id: []
+    post:
+      tags:
+        - Questionnaire Responses
+      summary: Syncs Questionnaire Responses from Device to Server
+      parameters:
+        - name: HTTP_X_USER_ID
+          in: header
+          schema: {}
+        - name: HTTP_X_FACILITY_ID
+          in: header
+          schema: {}
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+                - questionnaire_responses
+              type: object
+              properties:
+                questionnaire_responses:
+                  $ref: '#/components/schemas/questionnaire_responses'
+        required: false
+      responses:
+        "200":
+          description: some, or no errors were found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errors:
+                    $ref: '#/components/schemas/errors'
+        "403":
+          description: user is not allowed to sync
+          content: {}
+      security:
+        - access_token: []
+          user_id: []
+          facility_id: []
+      x-codegen-request-body-name: questionnaire_responses
+  /api/v4/questionnaires/sync:
+    get:
+      tags:
+        - Questionnaires
+      summary: Syncs Questionnaires from Server to Device
+      parameters:
+        - name: HTTP_X_USER_ID
+          in: header
+          schema: {}
+        - name: HTTP_X_FACILITY_ID
+          in: header
+          schema: {}
+        - name: Accept-Language
+          in: header
+          schema:
+            type: string
+        - name: dsl_version
+          in: query
+          description: The version of layout supported by client.
+          required: true
+          schema:
+            type: string
+        - name: process_token
+          in: query
+          description: Token containing all the information needed to process batch requests from the user
+          schema:
+            type: string
+            format: byte
+        - name: limit
+          in: query
+          description: Number of record to retrieve (a.k.a batch-size)
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Questionnaires Synced to user device
+          content:
+            application/json:
+              schema:
+                required:
+                  - process_token
+                  - questionnaires
+                type: object
+                properties:
+                  questionnaires:
+                    $ref: '#/components/schemas/questionnaires'
+                  process_token:
+                    $ref: '#/components/schemas/process_token'
+        "403":
+          description: user is not allowed to sync
+          content: {}
+      security:
+        - access_token: []
+          user_id: []
+          facility_id: []
+  /api/v4/states:
+    get:
+      tags:
+        - States
+      summary: Lists available state names
+      responses:
+        "200":
+          description: returns state names
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  states:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        name:
+                          type: string
+                description: List of available state names
+  /api/v4/facility_medical_officers/sync:
+    get:
+      tags:
+        - Teleconsult MOs
+      summary: Syncs Teleconsultation MOs data from server to device.
+      parameters:
+        - name: HTTP_X_USER_ID
+          in: header
+          schema: {}
+        - name: HTTP_X_FACILITY_ID
+          in: header
+          schema: {}
+      responses:
+        "200":
+          description: facility teleconsult MOs received
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  facility_medical_officers:
+                    $ref: '#/components/schemas/facility_medical_officers'
+        "403":
+          description: user is not allowed to sync
+          content: {}
+      security:
+        - access_token: []
+          user_id: []
+          facility_id: []
+  /api/v4/teleconsultations/sync:
+    post:
+      tags:
+        - Teleconsultations
+      summary: Syncs Teleconsultations from device to server.
+      parameters:
+        - name: HTTP_X_USER_ID
+          in: header
+          schema: {}
+        - name: HTTP_X_FACILITY_ID
+          in: header
+          schema: {}
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+                - teleconsultations
+              type: object
+              properties:
+                teleconsultations:
+                  $ref: '#/components/schemas/teleconsultations'
+        required: false
+      responses:
+        "200":
+          description: teleconsultations created
+          content: {}
+        "403":
+          description: user is not allowed to sync
+          content: {}
+      security:
+        - access_token: []
+          user_id: []
+          facility_id: []
+      x-codegen-request-body-name: teleconsultations
+  /api/v4/users/find:
+    post:
+      tags:
+        - User
+      summary: Find a existing user
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+                - phone_number
+              type: object
+              properties:
+                phone_number:
+                  $ref: '#/components/schemas/non_empty_string'
+        required: false
+      responses:
+        "200":
+          description: user is found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  user:
+                    $ref: '#/components/schemas/find_user'
+        "404":
+          description: user is not found
+          content: {}
+      x-codegen-request-body-name: phone_number
+  /api/v4/users/activate:
+    post:
+      tags:
+        - User
+      summary: Authenticate user, request OTP, and get user information
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+                - user
+              type: object
+              properties:
+                user:
+                  $ref: '#/components/schemas/activate_user'
+        required: false
+      responses:
+        "200":
+          description: user otp is reset and new otp is sent as an sms
+          content:
+            application/json:
+              schema:
+                required:
+                  - user
+                type: object
+                properties:
+                  user:
+                    $ref: '#/components/schemas/user'
+        "401":
+          description: incorrect user id or password, authentication failed
+          content:
+            application/json:
+              schema:
+                required:
+                  - errors
+                type: object
+                properties:
+                  errors:
+                    type: object
+                    properties:
+                      user:
+                        type: array
+                        description: List of descriptive error strings
+                        items:
+                          type: string
+      x-codegen-request-body-name: user
+  /api/v4/users/me/:
+    get:
+      tags:
+        - User
+      summary: Fetch user information
+      parameters:
+        - name: HTTP_X_USER_ID
+          in: header
+          required: true
+          schema: {}
+        - name: HTTP_X_FACILITY_ID
+          in: header
+          required: true
+          schema: {}
+      responses:
+        "200":
+          description: returns user information
+          content:
+            application/json:
+              schema:
+                required:
+                  - user
+                type: object
+                properties:
+                  user:
+                    $ref: '#/components/schemas/user'
+        "401":
+          description: authentication failed
+          content: {}
+      security:
+        - access_token: []
+          user_id: []
+          facility_id: []
+components:
+  schemas:
+    error:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Id of the record with errors
+          format: uuid
+        schema:
+          type: array
+          description: List of json schema error strings describing validation errors
+          items:
+            type: string
+        field_with_error:
+          type: array
+          items:
+            type: string
+    errors:
+      type: array
+      items:
+        $ref: '#/components/schemas/error'
+    process_token:
+      type: string
+      description: Token containing all the information needed to process batch requests from the user
+      format: byte
+    timestamp:
+      type: string
+      description: Timestamp with millisecond precision.
+      format: date-time
+    uuid:
+      pattern: '[0-9a-fA-F]{8}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{12}'
+      type: string
+      format: uuid
+    nullable_uuid:
+      pattern: '[0-9a-fA-F]{8}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{12}'
+      type: object
+      format: uuid
+    non_empty_string:
+      minLength: 1
+      type: string
+      description: This string should not be empty.
+    nullable_timestamp:
+      type: object
+      description: Timestamp with millisecond precision.
+      format: date-time
+    bcrypt_password:
+      pattern: ^\$[0-9a-z]{2}\$[0-9]{2}\$[A-Za-z0-9\.\/]{53}$
+      type: string
+      description: Bcrypt password digest
+    patient:
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/uuid'
+        full_name:
+          $ref: '#/components/schemas/non_empty_string'
+        gender:
+          type: string
+          enum:
+            - male
+            - female
+            - transgender
+        status:
+          type: string
+          enum:
+            - active
+            - dead
+            - migrated
+            - unresponsive
+            - inactive
+        recorded_at:
+          $ref: '#/components/schemas/timestamp'
+        reminder_consent:
+          type: string
+          enum:
+            - granted
+            - denied
+        address:
+          type: object
+          properties:
+            id:
+              $ref: '#/components/schemas/uuid'
+        registration_facility:
+          type: object
+          properties:
+            id:
+              $ref: '#/components/schemas/uuid'
+            name:
+              $ref: '#/components/schemas/non_empty_string'
+        medical_history:
+          type: object
+          properties:
+            chronic_kidney_disease:
+              type: string
+              enum:
+                - yes
+                - no
+                - unknown
+            diabetes:
+              type: string
+              enum:
+                - yes
+                - no
+                - unknown
+            hypertension:
+              type: string
+              enum:
+                - yes
+                - no
+                - unknown
+            prior_heart_attack:
+              type: string
+              enum:
+                - yes
+                - no
+                - unknown
+            prior_stroke:
+              type: string
+              enum:
+                - yes
+                - no
+                - unknown
+    address:
+      required:
+        - created_at
+        - id
+        - updated_at
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/uuid'
+        deleted_at:
+          $ref: '#/components/schemas/nullable_timestamp'
+        created_at:
+          $ref: '#/components/schemas/timestamp'
+        updated_at:
+          $ref: '#/components/schemas/timestamp'
+    phone_number:
+      required:
+        - created_at
+        - id
+        - number
+        - updated_at
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/uuid'
+        number:
+          $ref: '#/components/schemas/non_empty_string'
+        phone_type:
+          type: string
+          enum:
+            - mobile
+            - landline
+        active:
+          type: boolean
+        deleted_at:
+          $ref: '#/components/schemas/nullable_timestamp'
+        created_at:
+          $ref: '#/components/schemas/timestamp'
+        updated_at:
+          $ref: '#/components/schemas/timestamp'
+    phone_numbers:
+      type: array
+      items:
+        $ref: '#/components/schemas/phone_number'
+    nested_patient:
+      required:
+        - created_at
+        - full_name
+        - gender
+        - id
+        - status
+        - updated_at
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/uuid'
+        gender:
+          type: string
+          enum:
+            - male
+            - female
+            - transgender
+        full_name:
+          $ref: '#/components/schemas/non_empty_string'
+        status:
+          type: string
+          enum:
+            - active
+            - dead
+            - migrated
+            - unresponsive
+            - inactive
+        age_updated_at:
+          $ref: '#/components/schemas/nullable_timestamp'
+        deleted_at:
+          $ref: '#/components/schemas/nullable_timestamp'
+        created_at:
+          $ref: '#/components/schemas/timestamp'
+        updated_at:
+          $ref: '#/components/schemas/timestamp'
+        recorded_at:
+          $ref: '#/components/schemas/timestamp'
+        registration_facility_id:
+          $ref: '#/components/schemas/nullable_uuid'
+        assigned_facility_id:
+          $ref: '#/components/schemas/nullable_uuid'
+        reminder_consent:
+          type: string
+          enum:
+            - granted
+            - denied
+        eligible_for_reassignment:
+          type: string
+          enum:
+            - yes
+            - no
+            - unknown
+        address:
+          $ref: '#/components/schemas/address'
+        phone_numbers:
+          $ref: '#/components/schemas/phone_numbers'
+        business_identifiers:
+          $ref: '#/components/schemas/patient_business_identifiers'
+      description: Patient with address, phone numbers and business identifiers nested.
+    nested_patients:
+      type: array
+      items:
+        $ref: '#/components/schemas/nested_patient'
+    encounter:
+      required:
+        - created_at
+        - encountered_on
+        - id
+        - observations
+        - patient_id
+        - updated_at
+      type: object
+      properties:
+        id:
+          pattern: '[0-9a-fA-F]{8}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{12}'
+          type: string
+          description: This uuid is generated by hashing (SHA-1) the facility id, patient id, and encountered_on fields
+          format: uuid
+        deleted_at:
+          $ref: '#/components/schemas/nullable_timestamp'
+        created_at:
+          $ref: '#/components/schemas/timestamp'
+        updated_at:
+          $ref: '#/components/schemas/timestamp'
+        patient_id:
+          $ref: '#/components/schemas/uuid'
+        encountered_on:
+          type: string
+          format: date
+        notes:
+          type: string
+        observations:
+          required:
+            - blood_pressures
+          type: object
+          properties:
+            blood_pressures:
+              $ref: '#/components/schemas/blood_pressures'
+      description: 'Encounter with observations: blood_pressures'
+    encounters:
+      type: array
+      items:
+        $ref: '#/components/schemas/encounter'
+    blood_pressure:
+      required:
+        - created_at
+        - diastolic
+        - facility_id
+        - patient_id
+        - systolic
+        - updated_at
+        - user_id
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/uuid'
+        systolic:
+          type: integer
+        diastolic:
+          type: integer
+        deleted_at:
+          $ref: '#/components/schemas/nullable_timestamp'
+        created_at:
+          $ref: '#/components/schemas/timestamp'
+        updated_at:
+          $ref: '#/components/schemas/timestamp'
+        recorded_at:
+          $ref: '#/components/schemas/timestamp'
+        patient_id:
+          $ref: '#/components/schemas/uuid'
+        facility_id:
+          $ref: '#/components/schemas/uuid'
+        user_id:
+          $ref: '#/components/schemas/uuid'
+    blood_pressures:
+      type: array
+      items:
+        $ref: '#/components/schemas/blood_pressure'
+    facility:
+      required:
+        - country
+        - district
+        - facility_group_id
+        - id
+        - name
+        - protocol_id
+        - state
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/uuid'
+        deleted_at:
+          $ref: '#/components/schemas/nullable_timestamp'
+        created_at:
+          $ref: '#/components/schemas/timestamp'
+        updated_at:
+          $ref: '#/components/schemas/timestamp'
+        name:
+          $ref: '#/components/schemas/non_empty_string'
+        street_address:
+          type: string
+        village_or_colony:
+          type: string
+        district:
+          $ref: '#/components/schemas/non_empty_string'
+        state:
+          $ref: '#/components/schemas/non_empty_string'
+        country:
+          $ref: '#/components/schemas/non_empty_string'
+        pin:
+          type: string
+        facility_type:
+          type: string
+        facility_group_id:
+          $ref: '#/components/schemas/uuid'
+        protocol_id:
+          $ref: '#/components/schemas/uuid'
+        config:
+          type: object
+          properties:
+            enable_diabetes_management:
+              type: boolean
+            enable_teleconsultation:
+              type: boolean
+            enable_monthly_screening_reports:
+              type: boolean
+            enable_monthly_supplies_reports:
+              type: boolean
+    facilities:
+      type: array
+      items:
+        $ref: '#/components/schemas/facility'
+    protocol_drug:
+      required:
+        - dosage
+        - id
+        - name
+        - protocol_id
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/uuid'
+        deleted_at:
+          $ref: '#/components/schemas/nullable_timestamp'
+        created_at:
+          $ref: '#/components/schemas/timestamp'
+        updated_at:
+          $ref: '#/components/schemas/timestamp'
+        protocol_id:
+          $ref: '#/components/schemas/uuid'
+        rxnorm_code:
+          type: string
+        dosage:
+          type: string
+        name:
+          type: string
+    protocol_drugs:
+      type: array
+      items:
+        $ref: '#/components/schemas/protocol_drug'
+    protocol:
+      required:
+        - id
+        - name
+        - protocol_drugs
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/uuid'
+        deleted_at:
+          $ref: '#/components/schemas/nullable_timestamp'
+        created_at:
+          $ref: '#/components/schemas/timestamp'
+        updated_at:
+          $ref: '#/components/schemas/timestamp'
+        name:
+          type: string
+        follow_up_days:
+          type: integer
+        protocol_drugs:
+          $ref: '#/components/schemas/protocol_drugs'
+    protocols:
+      type: array
+      items:
+        $ref: '#/components/schemas/protocol'
+    prescription_drug:
+      required:
+        - created_at
+        - facility_id
+        - id
+        - is_deleted
+        - is_protocol_drug
+        - name
+        - patient_id
+        - updated_at
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/uuid'
+        deleted_at:
+          $ref: '#/components/schemas/nullable_timestamp'
+        created_at:
+          $ref: '#/components/schemas/timestamp'
+        updated_at:
+          $ref: '#/components/schemas/timestamp'
+        name:
+          $ref: '#/components/schemas/non_empty_string'
+        dosage:
+          type: string
+        rxnorm_code:
+          type: string
+        is_protocol_drug:
+          type: boolean
+        is_deleted:
+          type: boolean
+        patient_id:
+          $ref: '#/components/schemas/uuid'
+        facility_id:
+          $ref: '#/components/schemas/uuid'
+        teleconsultation_id:
+          $ref: '#/components/schemas/nullable_uuid'
+    prescription_drugs:
+      type: array
+      items:
+        $ref: '#/components/schemas/prescription_drug'
+    user:
+      required:
+        - created_at
+        - full_name
+        - id
+        - password_digest
+        - phone_number
+        - registration_facility_id
+        - updated_at
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/uuid'
+        deleted_at:
+          $ref: '#/components/schemas/nullable_timestamp'
+        created_at:
+          $ref: '#/components/schemas/timestamp'
+        updated_at:
+          $ref: '#/components/schemas/timestamp'
+        full_name:
+          $ref: '#/components/schemas/non_empty_string'
+        phone_number:
+          $ref: '#/components/schemas/non_empty_string'
+        password_digest:
+          $ref: '#/components/schemas/bcrypt_password'
+        registration_facility_id:
+          $ref: '#/components/schemas/uuid'
+        capabilities:
+          type: object
+          properties:
+            can_teleconsult:
+              type: string
+              enum:
+                - yes
+                - no
+        teleconsultation_phone_number:
+          $ref: '#/components/schemas/non_empty_string'
+    users:
+      type: array
+      items:
+        $ref: '#/components/schemas/user'
+    login_user:
+      required:
+        - otp
+        - password
+        - phone_number
+      type: object
+      properties:
+        phone_number:
+          $ref: '#/components/schemas/non_empty_string'
+        password:
+          $ref: '#/components/schemas/non_empty_string'
+        otp:
+          $ref: '#/components/schemas/non_empty_string'
+    communication:
+      required:
+        - appointment_id
+        - communication_result
+        - communication_type
+        - created_at
+        - id
+        - updated_at
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/uuid'
+        appointment_id:
+          $ref: '#/components/schemas/uuid'
+        communication_type:
+          type: string
+          enum:
+            - voip_call
+            - manual_call
+            - sms
+            - whatsapp
+        communication_result:
+          type: string
+          enum:
+            - unavailable
+            - unreachable
+            - successful
+            - unsuccessful
+            - in_progress
+            - unknown
+        deleted_at:
+          $ref: '#/components/schemas/nullable_timestamp'
+        created_at:
+          $ref: '#/components/schemas/timestamp'
+        updated_at:
+          $ref: '#/components/schemas/timestamp'
+    communications:
+      type: array
+      items:
+        $ref: '#/components/schemas/communication'
+    appointment:
+      required:
+        - appointment_type
+        - created_at
+        - facility_id
+        - id
+        - patient_id
+        - scheduled_date
+        - status
+        - updated_at
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/uuid'
+        patient_id:
+          $ref: '#/components/schemas/uuid'
+        facility_id:
+          $ref: '#/components/schemas/uuid'
+        creation_facility_id:
+          $ref: '#/components/schemas/uuid'
+        scheduled_date:
+          type: string
+          format: date
+        status:
+          type: string
+          enum:
+            - scheduled
+            - cancelled
+            - visited
+        appointment_type:
+          type: string
+          enum:
+            - manual
+            - automatic
+        deleted_at:
+          $ref: '#/components/schemas/nullable_timestamp'
+        created_at:
+          $ref: '#/components/schemas/timestamp'
+        updated_at:
+          $ref: '#/components/schemas/timestamp'
+    appointments:
+      type: array
+      items:
+        $ref: '#/components/schemas/appointment'
+    medical_history:
+      required:
+        - chronic_kidney_disease
+        - created_at
+        - diabetes
+        - diagnosed_with_hypertension
+        - id
+        - patient_id
+        - prior_heart_attack
+        - prior_stroke
+        - receiving_treatment_for_hypertension
+        - updated_at
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/uuid'
+        patient_id:
+          $ref: '#/components/schemas/uuid'
+        prior_heart_attack:
+          type: string
+          enum:
+            - yes
+            - no
+            - unknown
+        prior_stroke:
+          type: string
+          enum:
+            - yes
+            - no
+            - unknown
+        chronic_kidney_disease:
+          type: string
+          enum:
+            - yes
+            - no
+            - unknown
+        receiving_treatment_for_hypertension:
+          type: string
+          enum:
+            - yes
+            - no
+            - unknown
+        receiving_treatment_for_diabetes:
+          type: string
+          enum:
+            - yes
+            - no
+            - unknown
+        diabetes:
+          type: string
+          enum:
+            - yes
+            - no
+            - unknown
+        hypertension:
+          type: string
+          enum:
+            - yes
+            - no
+            - unknown
+        diagnosed_with_hypertension:
+          type: string
+          enum:
+            - yes
+            - no
+            - unknown
+        deleted_at:
+          $ref: '#/components/schemas/nullable_timestamp'
+        created_at:
+          $ref: '#/components/schemas/timestamp'
+        updated_at:
+          $ref: '#/components/schemas/timestamp'
+    medical_histories:
+      type: array
+      items:
+        $ref: '#/components/schemas/medical_history'
+    patient_business_identifier:
+      required:
+        - created_at
+        - id
+        - identifier_type
+        - updated_at
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/uuid'
+        identifier_type:
+          type: string
+          enum:
+            - simple_bp_passport
+            - bangladesh_national_id
+            - sri_lanka_national_id
+            - sri_lanka_personal_health_number
+            - ethiopia_medical_record
+            - india_national_health_id
+            - external_import_id
+        metadata_version:
+          type: string
+        metadata:
+          type: string
+        deleted_at:
+          $ref: '#/components/schemas/nullable_timestamp'
+        created_at:
+          $ref: '#/components/schemas/timestamp'
+        updated_at:
+          $ref: '#/components/schemas/timestamp'
+    patient_business_identifiers:
+      type: array
+      items:
+        $ref: '#/components/schemas/patient_business_identifier'
+    blood_sugar:
+      required:
+        - blood_sugar_type
+        - blood_sugar_value
+        - created_at
+        - facility_id
+        - id
+        - patient_id
+        - updated_at
+        - user_id
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/uuid'
+        blood_sugar_type:
+          type: string
+          enum:
+            - random
+            - post_prandial
+            - fasting
+            - hba1c
+        blood_sugar_value:
+          type: number
+        deleted_at:
+          $ref: '#/components/schemas/nullable_timestamp'
+        created_at:
+          $ref: '#/components/schemas/timestamp'
+        updated_at:
+          $ref: '#/components/schemas/timestamp'
+        recorded_at:
+          $ref: '#/components/schemas/timestamp'
+        patient_id:
+          $ref: '#/components/schemas/uuid'
+        facility_id:
+          $ref: '#/components/schemas/uuid'
+        user_id:
+          $ref: '#/components/schemas/uuid'
+    blood_sugars:
+      type: array
+      items:
+        $ref: '#/components/schemas/blood_sugar'
+    activate_user:
+      required:
+        - id
+        - password
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/uuid'
+        password:
+          $ref: '#/components/schemas/non_empty_string'
+    app_user_capabilities:
+      type: object
+      properties:
+        can_teleconsult:
+          type: string
+          enum:
+            - yes
+            - no
+    call_result:
+      required:
+        - appointment_id
+        - created_at
+        - id
+        - result_type
+        - updated_at
+        - user_id
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/uuid'
+        user_id:
+          $ref: '#/components/schemas/uuid'
+        patient_id:
+          $ref: '#/components/schemas/nullable_uuid'
+        facility_id:
+          $ref: '#/components/schemas/nullable_uuid'
+        appointment_id:
+          $ref: '#/components/schemas/uuid'
+        result_type:
+          type: string
+          enum:
+            - agreed_to_visit
+            - remind_to_call_later
+            - removed_from_overdue_list
+        deleted_at:
+          $ref: '#/components/schemas/nullable_timestamp'
+        created_at:
+          $ref: '#/components/schemas/timestamp'
+        updated_at:
+          $ref: '#/components/schemas/timestamp'
+    call_results:
+      type: array
+      items:
+        $ref: '#/components/schemas/call_result'
+    drug_stock:
+      required:
+        - in_stock
+        - protocol_drug_id
+        - received
+      type: object
+      properties:
+        protocol_drug_id:
+          $ref: '#/components/schemas/uuid'
+        in_stock:
+          type: integer
+        received:
+          type: integer
+    facility_medical_officer:
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/uuid'
+        facility_id:
+          $ref: '#/components/schemas/uuid'
+        created_at:
+          $ref: '#/components/schemas/timestamp'
+        updated_at:
+          $ref: '#/components/schemas/timestamp'
+        deleted_at:
+          $ref: '#/components/schemas/nullable_timestamp'
+    facility_medical_officers:
+      type: array
+      items:
+        $ref: '#/components/schemas/facility_medical_officer'
+    find_user:
+      required:
+        - id
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/uuid'
+    login_patient:
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/uuid'
+        access_token:
+          $ref: '#/components/schemas/non_empty_string'
+        passport:
+          type: object
+          properties:
+            id:
+              $ref: '#/components/schemas/uuid'
+            shortcode:
+              $ref: '#/components/schemas/non_empty_string'
+    lookup_patient:
+      required:
+        - appointments
+        - blood_pressures
+        - blood_sugars
+        - medical_history
+        - prescription_drugs
+        - retention
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/uuid'
+        gender:
+          type: string
+          enum:
+            - male
+            - female
+            - transgender
+        full_name:
+          $ref: '#/components/schemas/non_empty_string'
+        status:
+          type: string
+          enum:
+            - active
+            - dead
+            - migrated
+            - unresponsive
+            - inactive
+        age_updated_at:
+          $ref: '#/components/schemas/nullable_timestamp'
+        deleted_at:
+          $ref: '#/components/schemas/nullable_timestamp'
+        created_at:
+          $ref: '#/components/schemas/timestamp'
+        updated_at:
+          $ref: '#/components/schemas/timestamp'
+        recorded_at:
+          $ref: '#/components/schemas/timestamp'
+        registration_facility_id:
+          $ref: '#/components/schemas/nullable_uuid'
+        assigned_facility_id:
+          $ref: '#/components/schemas/nullable_uuid'
+        reminder_consent:
+          type: string
+          enum:
+            - granted
+            - denied
+        eligible_for_reassignment:
+          type: string
+          enum:
+            - yes
+            - no
+            - unknown
+        address:
+          $ref: '#/components/schemas/address'
+        phone_numbers:
+          $ref: '#/components/schemas/phone_numbers'
+        business_identifiers:
+          $ref: '#/components/schemas/patient_business_identifiers'
+        appointments:
+          $ref: '#/components/schemas/appointments'
+        blood_pressures:
+          $ref: '#/components/schemas/blood_pressures'
+        blood_sugars:
+          $ref: '#/components/schemas/blood_sugars'
+        medical_history:
+          $ref: '#/components/schemas/nullable_medical_history'
+        prescription_drugs:
+          $ref: '#/components/schemas/prescription_drugs'
+        retention:
+          type: object
+          properties:
+            type:
+              type: string
+              description: This enum might have more values in the future.
+              enum:
+                - temporary
+                - permanent
+            duration_seconds:
+              type: integer
+              description: This key is only present in the response when the retention type is temporary.
+      description: Sync a single patient to a device
+    lookup_patients:
+      type: array
+      items:
+        $ref: '#/components/schemas/lookup_patient'
+    nullable_medical_history:
+      required:
+        - chronic_kidney_disease
+        - created_at
+        - diabetes
+        - diagnosed_with_hypertension
+        - id
+        - patient_id
+        - prior_heart_attack
+        - prior_stroke
+        - receiving_treatment_for_hypertension
+        - updated_at
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/uuid'
+        patient_id:
+          $ref: '#/components/schemas/uuid'
+        prior_heart_attack:
+          type: string
+          enum:
+            - yes
+            - no
+            - unknown
+        prior_stroke:
+          type: string
+          enum:
+            - yes
+            - no
+            - unknown
+        chronic_kidney_disease:
+          type: string
+          enum:
+            - yes
+            - no
+            - unknown
+        receiving_treatment_for_hypertension:
+          type: string
+          enum:
+            - yes
+            - no
+            - unknown
+        receiving_treatment_for_diabetes:
+          type: string
+          enum:
+            - yes
+            - no
+            - unknown
+        diabetes:
+          type: string
+          enum:
+            - yes
+            - no
+            - unknown
+        hypertension:
+          type: string
+          enum:
+            - yes
+            - no
+            - unknown
+        diagnosed_with_hypertension:
+          type: string
+          enum:
+            - yes
+            - no
+            - unknown
+        deleted_at:
+          $ref: '#/components/schemas/nullable_timestamp'
+        created_at:
+          $ref: '#/components/schemas/timestamp'
+        updated_at:
+          $ref: '#/components/schemas/timestamp'
+    medical_officer:
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/uuid'
+        full_name:
+          $ref: '#/components/schemas/non_empty_string'
+        teleconsultation_phone_number:
+          $ref: '#/components/schemas/non_empty_string'
+    medication:
+      required:
+        - created_at
+        - id
+        - name
+        - updated_at
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/uuid'
+        name:
+          $ref: '#/components/schemas/non_empty_string'
+        created_at:
+          $ref: '#/components/schemas/timestamp'
+        updated_at:
+          $ref: '#/components/schemas/timestamp'
+        deleted_at:
+          $ref: '#/components/schemas/nullable_timestamp'
+    medications:
+      type: array
+      items:
+        $ref: '#/components/schemas/medication'
+    month:
+      pattern: '[1-9]{1}[0-9]{1}\-[0-9]{2}'
+      type: string
+    questionnaire:
+      required:
+        - id
+        - layout
+        - questionnaire_type
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/uuid'
+        questionnaire_type:
+          type: string
+          enum:
+            - monthly_screening_reports
+            - monthly_supplies_reports
+            - drug_stock_reports
+        layout:
+          type: object
+        deleted_at:
+          $ref: '#/components/schemas/nullable_timestamp'
+    questionnaires:
+      type: array
+      items:
+        $ref: '#/components/schemas/questionnaire'
+    questionnaire_response:
+      required:
+        - content
+        - created_at
+        - facility_id
+        - id
+        - last_updated_by_user_id
+        - questionnaire_id
+        - questionnaire_type
+        - updated_at
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/uuid'
+        questionnaire_id:
+          $ref: '#/components/schemas/uuid'
+        questionnaire_type:
+          type: string
+          enum:
+            - monthly_screening_reports
+            - monthly_supplies_reports
+            - drug_stock_reports
+        facility_id:
+          $ref: '#/components/schemas/uuid'
+        last_updated_by_user_id:
+          $ref: '#/components/schemas/nullable_uuid'
+        content:
+          type: object
+          properties: {}
+          example:
+            month_date: "2023-08-01"
+            submitted: true
+            monthly_screening_report.diagnosed_cases_on_follow_up_htn.male: 180
+        created_at:
+          $ref: '#/components/schemas/timestamp'
+        updated_at:
+          $ref: '#/components/schemas/timestamp'
+        deleted_at:
+          $ref: '#/components/schemas/nullable_timestamp'
+    questionnaire_responses:
+      type: array
+      items:
+        $ref: '#/components/schemas/questionnaire_response'
+    questionnaire_view_group_dsl_1:
+      required:
+        - id
+        - item
+        - type
+        - view_type
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+            - group
+        id:
+          $ref: '#/components/schemas/uuid'
+        view_type:
+          type: string
+          enum:
+            - view_group
+        item:
+          type: array
+          items:
+            type: object
+      example:
+        type: group
+        id: 2e8ce537-616c-4c4c-a651-ad065d05f220
+        view_type: view_group
+        item:
+          - type: display
+            id: 1a1d5af5-af62-4097-8dfb-e7ca297f841a
+            text: Monthly OPD visits for adults >30 years old
+            view_type: sub_header
+          - id: 964f8d0f-ecaf-4b9e-87e8-62614ff5c7db
+            type: group
+            view_type: input_view_group
+            item:
+              - type: integer
+                id: 3bda5cb0-de8e-463e-9d7c-54a7215e4077
+                link_id: monthly_screening_report.outpatient_department_visits
+                text: Outpatient department visits
+                view_type: input_field
+                validations:
+                  min: 0
+                  max: 1000000
+          - type: display
+            id: 9a1a3cb4-33c1-4acd-a48a-e1fb31debd36
+            view_type: separator
+          - type: display
+            id: c2957249-a4d4-43ee-aade-0fb86a04c4ae
+            text: HTN & DM SCREENING
+            view_type: header
+          - type: display
+            id: 4e227bc7-1d01-48e2-8186-e5de2109e509
+            text: Total BP Checks done
+            view_type: sub_header
+          - type: group
+            id: b39903c9-04e2-4fd8-9218-6ff5e5cf6466
+            view_type: input_view_group
+            item:
+              - type: integer
+                id: 41c2c2fa-2bb2-4b0c-9a89-7d5c11bd4a9b
+                link_id: monthly_screening_report.blood_pressure_checks_male
+                text: Male
+                view_type: input_field
+                validations:
+                  min: 0
+                  max: 1000000
+              - type: integer
+                id: 1e999e55-5839-4f6b-9f5e-118b6c5f5728
+                link_id: monthly_screening_report.blood_pressure_checks_female
+                text: Female
+                view_type: input_field
+                validations:
+                  min: 0
+                  max: 1000000
+          - type: display
+            id: c0777808-7098-4a93-a40c-9860c716d9d3
+            view_type: line_separator
+    questionnaire_input_view_group_dsl_1:
+      required:
+        - id
+        - item
+        - type
+        - view_type
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+            - group
+        id:
+          $ref: '#/components/schemas/uuid'
+        view_type:
+          type: string
+          enum:
+            - input_view_group
+        item:
+          type: array
+          items:
+            type: object
+    questionnaire_display_dsl_1:
+      required:
+        - id
+        - text
+        - type
+        - view_type
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+            - display
+        id:
+          $ref: '#/components/schemas/uuid'
+        text:
+          type: string
+        view_type:
+          type: string
+          enum:
+            - header
+            - sub_header
+    questionnaire_line_break_dsl_1:
+      required:
+        - id
+        - type
+        - view_type
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+            - display
+        id:
+          $ref: '#/components/schemas/uuid'
+        view_type:
+          type: string
+          enum:
+            - separator
+            - line_separator
+    questionnaire_integer_input_dsl_1:
+      required:
+        - id
+        - link_id
+        - text
+        - type
+        - validations
+        - view_type
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+            - integer
+        id:
+          $ref: '#/components/schemas/uuid'
+        link_id:
+          type: string
+        text:
+          type: string
+        view_type:
+          type: string
+          enum:
+            - input_field
+        validations:
+          required:
+            - max
+            - min
+          type: object
+          properties:
+            min:
+              type: integer
+            max:
+              type: integer
+    questionnaire_view_group_dsl_1_1:
+      required:
+        - id
+        - item
+        - type
+        - view_type
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+            - group
+        id:
+          $ref: '#/components/schemas/uuid'
+        view_type:
+          type: string
+          enum:
+            - view_group
+        item:
+          type: array
+          items:
+            type: object
+      example:
+        id: 2e8ce537-616c-4c4c-a651-ad065d05f220
+        type: group
+        view_type: view_group
+        item:
+          - id: 7c660864-b50a-4b3c-b019-c37a3fba3b8e
+            type: display
+            view_type: paragraph
+            text: Enter the supplies left in stock at the end of every month
+          - id: 5f98dcc1-504b-473a-bff8-2f1576a85bca
+            type: group
+            view_type: unordered_list_view_group
+            item:
+              - id: ac2d9428-cd51-4dc0-9553-a2e7e4bc6edc
+                type: display
+                view_type: unordered_list_item
+                icon: check
+                icon_color: '#00B849'
+                text: Leave blank if you don't know an amount
+              - id: a2f709fd-b4e7-4f3c-aa0f-2369c179d351
+                type: display
+                view_type: unordered_list_item
+                icon: check
+                icon_color: '#00B849'
+                text: Enter "0" if stock is out
+          - id: c2957249-a4d4-43ee-aade-0fb86a04c4ae
+            type: display
+            text: EQUIPMENT
+            view_type: header
+          - id: 4e227bc7-1d01-48e2-8186-e5de2109e509
+            type: display
+            text: TOTAL available BP devices
+            view_type: sub_header
+          - id: b39903c9-04e2-4fd8-9218-6ff5e5cf6466
+            type: group
+            view_type: input_view_group
+            item:
+              - id: 41c2c2fa-2bb2-4b0c-9a89-7d5c11bd4a9b
+                type: integer
+                link_id: monthly_supplies_report.total_available_bp_devices
+                text: Stock on hand
+                view_type: input_field
+                validations:
+                  min: 0
+                  max: 1000000
+          - id: 9a1a3cb4-33c1-4acd-a48a-e1fb31debd36
+            type: display
+            view_type: separator
+          - id: b0003786-7310-44f5-9509-830d15f121f9
+            type: display
+            text: 'Enough drugs for next month: Losartan'
+            view_type: sub_header
+          - id: 74ff3a76-82e1-4770-8d22-bcdc8c2bc70f
+            type: group
+            view_type: radio_view_group
+            link_id: monthly_supplies_report.losartan_enough_for_next_month
+            item:
+              - id: df0eb090-2c6a-4e29-bb32-bcae6c6d7209
+                type: radio
+                view_type: radio_button
+                text: Yes
+              - id: 48b3a1d5-7769-4f6b-b417-590c143a2690
+                type: radio
+                view_type: radio_button
+                text: No
+          - id: c0777808-7098-4a93-a40c-9860c716d9d3
+            type: display
+            view_type: line_separator
+          - id: e751a383-c52e-40ad-aea1-7db138c9b734
+            type: display
+            text: Comments
+            view_type: sub_header
+          - id: d7283442-8929-4c18-b6c1-f7bfe83c0927
+            type: group
+            view_type: input_view_group
+            item:
+              - id: 5c3d4419-8591-43b5-93fb-12349caae93d
+                type: string
+                link_id: monthly_supplies_report.comments
+                text: ""
+                view_type: input_field
+                validations:
+                  max_char: 1000
+    questionnaire_display_dsl_1_1:
+      required:
+        - id
+        - text
+        - type
+        - view_type
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+            - display
+        id:
+          $ref: '#/components/schemas/uuid'
+        text:
+          type: string
+        view_type:
+          type: string
+          enum:
+            - header
+            - sub_header
+            - paragraph
+    questionnaire_unordered_list_view_group_dsl_1_1:
+      required:
+        - id
+        - item
+        - type
+        - view_type
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+            - group
+        id:
+          $ref: '#/components/schemas/uuid'
+        view_type:
+          type: string
+          enum:
+            - unordered_list_view_group
+        item:
+          type: array
+          items:
+            type: object
+    questionnaire_unordered_list_item_dsl_1_1:
+      required:
+        - icon
+        - icon_color
+        - id
+        - text
+        - type
+        - view_type
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+            - display
+        id:
+          $ref: '#/components/schemas/uuid'
+        view_type:
+          type: string
+          enum:
+            - unordered_list_item
+        icon:
+          type: string
+        icon_color:
+          type: string
+        text:
+          type: string
+    questionnaire_radio_view_group_dsl_1_1:
+      required:
+        - id
+        - item
+        - link_id
+        - type
+        - view_type
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+            - group
+        id:
+          $ref: '#/components/schemas/uuid'
+        view_type:
+          type: string
+          enum:
+            - radio_view_group
+        link_id:
+          type: string
+        item:
+          type: array
+          items:
+            type: object
+    questionnaire_radio_button_dsl_1_1:
+      required:
+        - id
+        - text
+        - type
+        - view_type
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+            - radio
+        id:
+          $ref: '#/components/schemas/uuid'
+        view_type:
+          type: string
+          enum:
+            - radio_button
+        text:
+          type: string
+    questionnaire_input_view_group_dsl_1_1:
+      required:
+        - id
+        - item
+        - type
+        - view_type
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+            - group
+        id:
+          $ref: '#/components/schemas/uuid'
+        view_type:
+          type: string
+          enum:
+            - input_view_group
+        item:
+          type: array
+          items:
+            type: object
+    questionnaire_string_input_dsl_1_1:
+      required:
+        - id
+        - link_id
+        - text
+        - type
+        - validations
+        - view_type
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+            - string
+        id:
+          $ref: '#/components/schemas/uuid'
+        link_id:
+          type: string
+        text:
+          type: string
+        view_type:
+          type: string
+          enum:
+            - input_field
+        validations:
+          required:
+            - max_char
+          type: object
+          properties:
+            max_char:
+              type: integer
+    questionnaire_view_group_dsl_1_2:
+      required:
+        - id
+        - item
+        - type
+        - view_type
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+            - group
+        id:
+          $ref: '#/components/schemas/uuid'
+        view_type:
+          type: string
+          enum:
+            - view_group
+        item:
+          type: array
+          items:
+            type: object
+      example:
+        id: 2e8ce537-616c-4c4c-a651-ad065d05f220
+        type: group
+        view_type: view_group
+        item:
+          - id: 7c660864-b50a-4b3c-b019-c37a3fba3b8e
+            type: display
+            view_type: paragraph
+            text: If you have more than 3 batches then add any additional batch stocks to batch 3 using the same date
+          - id: 5f98dcc1-504b-473a-bff8-2f1576a85bca
+            type: group
+            view_type: unordered_list_view_group
+            item:
+              - id: ac2d9428-cd51-4dc0-9553-a2e7e4bc6edc
+                type: display
+                view_type: unordered_list_item
+                icon: check
+                icon_color: '#00B849'
+                text: Leave blank if you don't know an amount
+              - id: a2f709fd-b4e7-4f3c-aa0f-2369c179d351
+                type: display
+                view_type: unordered_list_item
+                icon: check
+                icon_color: '#00B849'
+                text: Enter "0" if stock is out
+          - id: c2957249-a4d4-43ee-aade-0fb86a04c4ae
+            type: display
+            text: AMLODIPINE 5mg
+            view_type: header
+          - id: 4e227bc7-1d01-48e2-8186-e5de2109e509
+            type: display
+            text: Batch 1
+            view_type: sub_header
+          - id: b39903c9-04e2-4fd8-9218-6ff5e5cf6466
+            type: group
+            view_type: input_view_group
+            item:
+              - id: 41c2c2fa-2bb2-4b0c-9a89-7d5c11bd4a9b
+                type: integer
+                link_id: drug_stock_reports.amlodipinie_5mg_batch_1.stock
+                text: Stock on hand
+                view_type: input_field
+                validations:
+                  min: 0
+                  max: 1000000
+              - id: d894e593-e0ec-46b4-b21e-810a8210d987
+                type: date
+                link_id: drug_stock_reports.amlodipinie_5mg_batch_1.expiry_date
+                text: Expiry date
+                view_type: month_year_picker
+                view_format: MMM YYYY
+                validations:
+                  allowed_days_in_past: 180
+                  allowed_days_in_future: 3650
+          - id: 9a1a3cb4-33c1-4acd-a48a-e1fb31debd36
+            type: display
+            view_type: separator
+          - id: b0003786-7310-44f5-9509-830d15f121f9
+            type: display
+            text: 'Enough drugs for next month: Losartan'
+            view_type: sub_header
+          - id: 74ff3a76-82e1-4770-8d22-bcdc8c2bc70f
+            type: group
+            view_type: radio_view_group
+            link_id: monthly_supplies_report.losartan_enough_for_next_month
+            item:
+              - id: df0eb090-2c6a-4e29-bb32-bcae6c6d7209
+                type: radio
+                view_type: radio_button
+                text: Yes
+              - id: 48b3a1d5-7769-4f6b-b417-590c143a2690
+                type: radio
+                view_type: radio_button
+                text: No
+          - id: c0777808-7098-4a93-a40c-9860c716d9d3
+            type: display
+            view_type: line_separator
+          - id: e751a383-c52e-40ad-aea1-7db138c9b734
+            type: display
+            text: Comments
+            view_type: sub_header
+          - id: d7283442-8929-4c18-b6c1-f7bfe83c0927
+            type: group
+            view_type: input_view_group
+            item:
+              - id: 5c3d4419-8591-43b5-93fb-12349caae93d
+                type: string
+                link_id: monthly_supplies_report.comments
+                text: ""
+                view_type: input_field
+                validations:
+                  max_char: 1000
+    questionnaire_input_view_group_dsl_1_2:
+      required:
+        - id
+        - item
+        - type
+        - view_type
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+            - group
+        id:
+          $ref: '#/components/schemas/uuid'
+        view_type:
+          type: string
+          enum:
+            - input_view_group
+        item:
+          type: array
+          items:
+            type: object
+    questionnaire_date_input_dsl_1_2:
+      required:
+        - id
+        - link_id
+        - text
+        - type
+        - validations
+        - view_format
+        - view_type
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+            - date
+        id:
+          $ref: '#/components/schemas/uuid'
+        link_id:
+          type: string
+        text:
+          type: string
+        view_type:
+          type: string
+          enum:
+            - month_year_picker
+        view_format:
+          type: string
+          description: 'A pattern parseable by Kotlin''s DateTimeFormatter for rendering dates on Android apps. For ex: "MMM yyyy"'
+        validations:
+          required:
+            - allowed_days_in_future
+            - allowed_days_in_past
+          type: object
+          properties:
+            allowed_days_in_past:
+              type: integer
+              description: Maximum permissible days in the past from current date.
+            allowed_days_in_future:
+              type: integer
+              description: Maximum permissible days in the future from current date.
+    teleconsultation:
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/uuid'
+        patient_id:
+          $ref: '#/components/schemas/uuid'
+        medical_officer_id:
+          $ref: '#/components/schemas/uuid'
+        request:
+          type: object
+          properties:
+            requester_id:
+              $ref: '#/components/schemas/uuid'
+            facility_id:
+              $ref: '#/components/schemas/uuid'
+            requested_at:
+              $ref: '#/components/schemas/timestamp'
+        record:
+          type: object
+          properties:
+            recorded_at:
+              $ref: '#/components/schemas/timestamp'
+            teleconsultation_type:
+              type: string
+              enum:
+                - audio
+                - video
+                - message
+            patient_took_medicines:
+              type: string
+              enum:
+                - yes
+                - no
+            patient_consented:
+              type: string
+              enum:
+                - yes
+                - no
+        created_at:
+          $ref: '#/components/schemas/timestamp'
+        updated_at:
+          $ref: '#/components/schemas/timestamp'
+        deleted_at:
+          $ref: '#/components/schemas/nullable_timestamp'
+    teleconsultations:
+      type: array
+      items:
+        $ref: '#/components/schemas/teleconsultation'
+  securitySchemes:
+    user_id:
+      type: apiKey
+      name: X-USER-ID
+      in: header
+    facility_id:
+      type: apiKey
+      name: X-FACILITY-ID
+      in: header
+    patient_id:
+      type: apiKey
+      name: X-PATIENT-ID
+      in: header
+x-original-swagger-version: "2.0"
