@@ -1,0 +1,2378 @@
+openapi: 3.0.1
+info:
+  title: Murfin+ API
+  description: This is the Murfin+ API. For more information visit <a href="https://github.com/sardjv/murfin_method">github.com/sardjv/murfin_method</a>.
+  version: v1
+servers:
+  - url: /
+paths:
+  /api/v1/activities:
+    post:
+      tags:
+        - Activities
+      summary: create activity
+      description: Attribute <b>schedule_yaml</b> is <a href="https://github.com/seejohnrun/ice_cube">IceCube</a> schedule object serialized with _to_yaml_ method.
+      requestBody:
+        content:
+          application/vnd.api+json:
+            schema:
+              $ref: '#/components/schemas/activity_post_params'
+        required: false
+      responses:
+        "201":
+          description: Activity created
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/activity_response_with_relationships'
+        "422":
+          description: Unprocessable Entity
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/error_422'
+        "404":
+          description: Record not found
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/error_404'
+        "401":
+          description: Unauthorized
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/error_401'
+      security:
+        - JWT: []
+      x-codegen-request-body-name: activity
+  /api/v1/memberships:
+    post:
+      tags:
+        - Memberships
+      summary: create membership
+      description: Can use <strong>user_epr_uuid</strong> instead of <strong>user_id</strong>. Do not use both.
+      requestBody:
+        content:
+          application/vnd.api+json:
+            schema:
+              $ref: '#/components/schemas/membership_post_params'
+        required: false
+      responses:
+        "201":
+          description: Membership created
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/membership_response'
+        "401":
+          description: Unauthorized
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/error_401'
+        "400":
+          description: Bad Request
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/error_400'
+        "422":
+          description: Unprocessable Entity
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/error_422'
+        "404":
+          description: Record not found
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/error_404'
+      security:
+        - JWT: []
+      x-codegen-request-body-name: membership
+  /api/v1/memberships/{id}:
+    delete:
+      tags:
+        - Memberships
+      summary: destroy membership
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "204":
+          description: 'OK: No Content'
+          content: {}
+        "401":
+          description: Unauthorized
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/error_401'
+        "404":
+          description: Record not found
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/error_404'
+      security:
+        - JWT: []
+  /api/v1/plans:
+    get:
+      tags:
+        - Plans
+      summary: get plans
+      parameters:
+        - name: page[size]
+          in: query
+          schema:
+            type: integer
+        - name: page[number]
+          in: query
+          schema:
+            type: integer
+        - name: filter[user_id]
+          in: query
+          schema:
+            type: integer
+        - name: include
+          in: query
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Plans index
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/plans_response'
+        "401":
+          description: Unauthorized
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/error_401'
+      security:
+        - JWT: []
+    post:
+      tags:
+        - Plans
+      summary: create plan
+      requestBody:
+        content:
+          application/vnd.api+json:
+            schema:
+              $ref: '#/components/schemas/plan_post_params'
+        required: false
+      responses:
+        "201":
+          description: Plan created
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/plan_response'
+        "422":
+          description: Unprocessable Entity
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/error_422'
+      security:
+        - JWT: []
+      x-codegen-request-body-name: plan
+  /api/v1/plans/{id}:
+    get:
+      tags:
+        - Plans
+      summary: get plan
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: include
+          in: query
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Showing plan
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/plan_response_with_relationships'
+        "401":
+          description: Unauthorized
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/error_401'
+        "404":
+          description: Record not found
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/error_404'
+        "406":
+          description: Unsupported accept header
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/error_406'
+      security:
+        - JWT: []
+  /api/v1/tag_associations:
+    post:
+      tags:
+        - TagAssociations
+      summary: create tag association
+      description: Can use <strong>time_range_appointment_id</strong> instead of <strong>taggable_id</strong> and <strong>taggable_type</strong>. Do not use both.
+      requestBody:
+        content:
+          application/vnd.api+json:
+            schema:
+              $ref: '#/components/schemas/tag_association_post_params'
+        required: false
+      responses:
+        "201":
+          description: Tag Association created
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/tag_association_response'
+        "401":
+          description: Unauthorized
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/error_401'
+        "404":
+          description: Record not found
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/error_404'
+        "422":
+          description: Unprocessable Entity
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/error_422'
+      security:
+        - JWT: []
+      x-codegen-request-body-name: tag_association
+  /api/v1/tag_associations/{id}:
+    delete:
+      tags:
+        - TagAssociations
+      summary: destroys tag association
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "204":
+          description: 'OK: No Content'
+          content: {}
+        "401":
+          description: Unauthorized
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/error_401'
+        "404":
+          description: Record not found
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/error_404'
+      security:
+        - JWT: []
+  /api/v1/tag_types:
+    get:
+      tags:
+        - TagTypes
+      summary: get tag types
+      parameters:
+        - name: page[size]
+          in: query
+          schema:
+            type: integer
+        - name: page[number]
+          in: query
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Tag Types index
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/tag_types_response'
+        "401":
+          description: Unauthorized
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/error_401'
+      security:
+        - JWT: []
+    post:
+      tags:
+        - TagTypes
+      summary: create tag type
+      requestBody:
+        content:
+          application/vnd.api+json:
+            schema:
+              $ref: '#/components/schemas/tag_type_post_params'
+        required: false
+      responses:
+        "201":
+          description: Tag Type created
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/tag_type_post_params'
+        "401":
+          description: Unauthorized
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/error_401'
+        "422":
+          description: Unprocessable Entity
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/error_422'
+      security:
+        - JWT: []
+      x-codegen-request-body-name: tag_type
+  /api/v1/tag_types/{id}:
+    get:
+      tags:
+        - TagTypes
+      summary: get tag type
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Showing tag type
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/tag_type_response'
+        "401":
+          description: Unauthorized
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/error_401'
+        "404":
+          description: Record not found
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/error_404'
+        "406":
+          description: Unsupported accept header
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/error_406'
+      security:
+        - JWT: []
+    delete:
+      tags:
+        - TagTypes
+      summary: destroy tag type
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "204":
+          description: 'OK: No Content'
+          content: {}
+        "401":
+          description: Unauthorized
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/error_401'
+        "404":
+          description: Record not found
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/error_404'
+        "423":
+          description: 'Error: Locked Resource'
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/error_423'
+      security:
+        - JWT: []
+    patch:
+      tags:
+        - TagTypes
+      summary: update tag
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/vnd.api+json:
+            schema:
+              $ref: '#/components/schemas/tag_type_patch_params'
+        required: false
+      responses:
+        "200":
+          description: 'OK: Tag updated'
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/tag_type_patch_params'
+        "401":
+          description: Unauthorized
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/error_401'
+        "422":
+          description: Unprocessable Entity
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/error_422'
+      security:
+        - JWT: []
+      x-codegen-request-body-name: tag_type
+  /api/v1/tags:
+    get:
+      tags:
+        - Tags
+      summary: get tags
+      parameters:
+        - name: page[size]
+          in: query
+          schema:
+            type: integer
+        - name: page[number]
+          in: query
+          schema:
+            type: integer
+        - name: filter[name]
+          in: query
+          schema:
+            type: string
+        - name: filter[tag_type_id]
+          in: query
+          schema:
+            type: integer
+        - name: filter[parent_id]
+          in: query
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Tags index
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/tags_response'
+        "401":
+          description: Unauthorized
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/error_401'
+      security:
+        - JWT: []
+    post:
+      tags:
+        - Tags
+      summary: create tag
+      requestBody:
+        content:
+          application/vnd.api+json:
+            schema:
+              $ref: '#/components/schemas/tag_post_params'
+        required: false
+      responses:
+        "201":
+          description: Tag created
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/tag_post_params'
+        "401":
+          description: Unauthorized
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/error_401'
+        "422":
+          description: Unprocessable Entity
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/error_422'
+      security:
+        - JWT: []
+      x-codegen-request-body-name: tag
+  /api/v1/tags/{id}:
+    get:
+      tags:
+        - Tags
+      summary: get tag
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Showing tag type
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/tag_response'
+        "401":
+          description: Unauthorized
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/error_401'
+        "404":
+          description: Record not found
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/error_404'
+        "406":
+          description: Unsupported accept header
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/error_406'
+      security:
+        - JWT: []
+    delete:
+      tags:
+        - Tags
+      summary: destroys tag
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "204":
+          description: 'OK: No Content'
+          content: {}
+        "422":
+          description: Unprocessable Entity
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/error_422'
+        "401":
+          description: Unauthorized
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/error_401'
+        "404":
+          description: Record not found
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/error_404'
+      security:
+        - JWT: []
+    patch:
+      tags:
+        - Tags
+      summary: update tag
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/vnd.api+json:
+            schema:
+              $ref: '#/components/schemas/tag_patch_params'
+        required: false
+      responses:
+        "200":
+          description: 'OK: Tag updated'
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/tag_patch_params'
+        "401":
+          description: Unauthorized
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/error_401'
+      security:
+        - JWT: []
+      x-codegen-request-body-name: tag
+  /api/v1/time_ranges:
+    get:
+      tags:
+        - TimeRanges
+      summary: get time ranges
+      parameters:
+        - name: page[size]
+          in: query
+          schema:
+            type: integer
+        - name: page[number]
+          in: query
+          schema:
+            type: integer
+        - name: filter[appointment_id]
+          in: query
+          schema:
+            type: string
+        - name: filter[user_id]
+          in: query
+          schema:
+            type: integer
+        - name: filter[time_range_type_id]
+          in: query
+          schema:
+            type: integer
+        - name: include
+          in: query
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Time Ranges index
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/time_ranges_response'
+        "401":
+          description: Unauthorized
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/error_401'
+      security:
+        - JWT: []
+    post:
+      tags:
+        - TimeRanges
+      summary: create time range
+      description: Can use <strong>user_epr_uuid</strong> instead of <strong>user_id</strong>. Do not use both.
+      requestBody:
+        content:
+          application/vnd.api+json:
+            schema:
+              $ref: '#/components/schemas/time_range_post_params'
+        required: false
+      responses:
+        "201":
+          description: Time Range created
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/time_range_response_with_relationships'
+        "401":
+          description: Unauthorized
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/error_401'
+        "404":
+          description: Record not found
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/error_404'
+        "422":
+          description: Unprocessable Entity
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/error_422'
+        "400":
+          description: Bad Request
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/error_400'
+      security:
+        - JWT: []
+      x-codegen-request-body-name: time_range
+  /api/v1/time_ranges/{id}:
+    get:
+      tags:
+        - TimeRanges
+      summary: get time range
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: include
+          in: query
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Showing time range
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/time_range_response_with_relationships'
+        "401":
+          description: Unauthorized
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/error_401'
+        "404":
+          description: Record not found
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/error_404'
+        "406":
+          description: Unsupported accept header
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/error_406'
+      security:
+        - JWT: []
+  /api/v1/user_groups:
+    get:
+      tags:
+        - UserGroups
+      summary: get user groups
+      parameters:
+        - name: page[size]
+          in: query
+          schema:
+            type: integer
+        - name: page[number]
+          in: query
+          schema:
+            type: integer
+        - name: filter[name]
+          in: query
+          schema:
+            type: string
+        - name: filter[group_type_id]
+          in: query
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: User Groups index
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/user_groups_response'
+        "401":
+          description: Unauthorized
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/error_401'
+      security:
+        - JWT: []
+    post:
+      tags:
+        - UserGroups
+      summary: create user group
+      requestBody:
+        content:
+          application/vnd.api+json:
+            schema:
+              $ref: '#/components/schemas/user_group_post_params'
+        required: false
+      responses:
+        "201":
+          description: User Group created
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/user_group_post_params'
+        "401":
+          description: Unauthorized
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/error_401'
+        "422":
+          description: Unprocessable Entity
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/error_422'
+      security:
+        - JWT: []
+      x-codegen-request-body-name: user_group
+  /api/v1/user_groups/{id}:
+    get:
+      tags:
+        - UserGroups
+      summary: get user group
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Showing tag type
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/user_group_response'
+        "401":
+          description: Unauthorized
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/error_401'
+        "404":
+          description: Record not found
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/error_404'
+        "406":
+          description: Unsupported accept header
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/error_406'
+      security:
+        - JWT: []
+    delete:
+      tags:
+        - UserGroups
+      summary: destroy user group
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "204":
+          description: 'OK: No Content'
+          content: {}
+        "401":
+          description: Unauthorized
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/error_401'
+        "404":
+          description: Record not found
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/error_404'
+      security:
+        - JWT: []
+    patch:
+      tags:
+        - UserGroups
+      summary: update user group
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/vnd.api+json:
+            schema:
+              $ref: '#/components/schemas/user_group_patch_params'
+        required: false
+      responses:
+        "200":
+          description: 'OK: User Group updated'
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/user_group_patch_params'
+        "401":
+          description: Unauthorized
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/error_401'
+        "422":
+          description: Unprocessable Entity
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/error_422'
+      security:
+        - JWT: []
+      x-codegen-request-body-name: user_group
+  /api/v1/users:
+    get:
+      tags:
+        - Users
+      summary: get users
+      parameters:
+        - name: page[size]
+          in: query
+          schema:
+            type: integer
+        - name: page[number]
+          in: query
+          schema:
+            type: integer
+        - name: include
+          in: query
+          schema:
+            type: string
+        - name: filter[email]
+          in: query
+          schema:
+            type: string
+        - name: filter[epr_uuid]
+          in: query
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Users index
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/users_response'
+        "401":
+          description: Unauthorized
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/error_401'
+        "406":
+          description: Unsupported accept header
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/error_406'
+      security:
+        - JWT: []
+    post:
+      tags:
+        - Users
+      summary: create user
+      description: Any LDAP related params should be lowercase and use <i>ldap_</i> prefix, e.g. <i>ldap_samaccountname<i>
+      requestBody:
+        content:
+          application/vnd.api+json:
+            schema:
+              $ref: '#/components/schemas/user_post_params'
+        required: false
+      responses:
+        "201":
+          description: User created
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/user_response_with_relationships'
+        "422":
+          description: Unprocessable Entity
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/error_422'
+        "401":
+          description: Unauthorized
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/error_401'
+        "404":
+          description: Record not found
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/error_404'
+        "400":
+          description: Bad Request
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/error_400'
+      security:
+        - JWT: []
+      x-codegen-request-body-name: user
+  /api/v1/users/{id}:
+    get:
+      tags:
+        - Users
+      summary: get user
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: include
+          in: query
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Showing user
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/user_response_with_relationships'
+        "401":
+          description: Unauthorized
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/error_401'
+        "404":
+          description: Record not found
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/error_404'
+        "406":
+          description: Unsupported accept header
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/error_406'
+      security:
+        - JWT: []
+    delete:
+      tags:
+        - Users
+      summary: destroy user
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "204":
+          description: 'OK: No Content'
+          content: {}
+        "401":
+          description: Unauthorized
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/error_401'
+        "404":
+          description: Record not found
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/error_404'
+        "423":
+          description: 'Error: Record Locked'
+          content: {}
+      security:
+        - JWT: []
+    patch:
+      tags:
+        - Users
+      summary: update user
+      description: Any LDAP related params should be lowercase and use <i>ldap_</i> prefix, e.g. <i>ldap_samaccountname<i>
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/vnd.api+json:
+            schema:
+              $ref: '#/components/schemas/user_patch_params'
+        required: false
+      responses:
+        "200":
+          description: 'OK: User updated'
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/user_response_with_relationships'
+        "401":
+          description: Unauthorized
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/error_401'
+        "400":
+          description: 'Error: Bad Request'
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/error_400'
+        "403":
+          description: Forbidden
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/error_403'
+        "404":
+          description: Record not found
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/error_404'
+      security:
+        - JWT: []
+      x-codegen-request-body-name: user
+components:
+  schemas:
+    error_400:
+      type: object
+      properties:
+        error:
+          type: string
+          example: Bad Request
+    error_401:
+      type: object
+      properties:
+        error:
+          type: string
+          example: Unauthorized
+    error_403:
+      type: object
+      properties:
+        error:
+          type: string
+          example: Forbidden
+    error_404:
+      type: object
+      properties:
+        errors:
+          type: array
+          items:
+            type: object
+            properties:
+              title:
+                type: string
+                example: Record not found
+              detail:
+                type: string
+                example: The record identified by 123 could not be found.
+              code:
+                type: string
+                example: "404"
+              status:
+                type: string
+                example: "404"
+    error_406:
+      type: object
+      properties:
+        errors:
+          type: array
+          items:
+            type: object
+            properties:
+              title:
+                type: string
+                example: Not acceptable
+              detail:
+                type: string
+                example: All requests must use the 'application/vnd.api+json' Accept without media type parameters. This request specified 'application/json'.
+              code:
+                type: string
+                example: "406"
+              status:
+                type: string
+                example: "406"
+    error_415:
+      type: object
+      properties:
+        errors:
+          type: array
+          items:
+            type: object
+            properties:
+              title:
+                type: string
+                example: Unsupported media type
+              detail:
+                type: string
+                example: All requests that create or update must use the 'application/vnd.api+json' Content-Type. This request specified 'application/json'.
+              code:
+                type: string
+                example: "415"
+              status:
+                type: string
+                example: "415"
+    error_422:
+      type: object
+      properties:
+        error:
+          type: string
+          example: Invalid request
+    error_423:
+      type: object
+      properties:
+        error:
+          type: string
+          example: Record Locked
+    membership_attributes:
+      type: object
+      properties:
+        user_id:
+          type: integer
+          nullable: false
+          example: 1234
+        user_group_id:
+          type: integer
+          nullable: false
+          example: 13
+        role:
+          type: string
+          nullable: false
+          example: member
+    membership_attributes_with_user_epr_uuid:
+      type: object
+      properties:
+        user_id:
+          type: integer
+          nullable: false
+          example: 1234
+        user_group_id:
+          type: integer
+          nullable: false
+          example: 13
+        role:
+          type: string
+          nullable: false
+          example: member
+        user_epr_uuid:
+          type: string
+          nullable: false
+          example: "01234567890"
+    membership_response:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            id:
+              type: string
+              example: "123"
+            type:
+              type: string
+              example: memberships
+            attributes:
+              $ref: '#/components/schemas/membership_attributes'
+    membership_post_params:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            type:
+              type: string
+              example: memberships
+            attributes:
+              $ref: '#/components/schemas/membership_attributes_with_user_epr_uuid'
+    plan_attributes:
+      type: object
+      properties:
+        start_date:
+          type: string
+          nullable: false
+          example: "2021-01-01"
+        end_date:
+          type: string
+          nullable: false
+          example: "2021-12-31"
+        user_id:
+          type: integer
+          nullable: false
+          example: 321
+        contracted_minutes_per_week:
+          type: integer
+          nullable: false
+          example: 900
+    plan_post_params:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            type:
+              type: string
+              example: plans
+            attributes:
+              $ref: '#/components/schemas/plan_attributes'
+    plans_response:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+                example: "1"
+              type:
+                type: string
+                example: plans
+              link:
+                type: object
+                properties:
+                  self:
+                    type: string
+                    example: https://job-plan-stats.herokuapp.com/api/v1/plans/1
+              attributes:
+                $ref: '#/components/schemas/plan_attributes'
+        links:
+          type: object
+          properties:
+            first:
+              type: string
+              example: https://job-plan-stats.herokuapp.com/api/v1/plans?page[number]=1&page[size]=5
+            prev:
+              type: string
+              example: https://job-plan-stats.herokuapp.com/api/v1/plans?page[number]=1&page[size]=5
+            next:
+              type: string
+              example: https://job-plan-stats.herokuapp.com/api/v1/plans?page[number]=2&page[size]=5
+            last:
+              type: string
+              example: https://job-plan-stats.herokuapp.com/api/v1/plans?page[number]=5&page[size]=5
+    plan_response:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            id:
+              type: string
+              example: "1"
+            type:
+              type: string
+              example: plans
+            link:
+              type: object
+              properties:
+                self:
+                  type: string
+                  example: https://job-plan-stats.herokuapp.com/api/v1/plans/1
+            attributes:
+              $ref: '#/components/schemas/plan_attributes'
+    plan_response_with_relationships:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            id:
+              type: string
+              example: "1"
+            type:
+              type: string
+              example: plans
+            link:
+              type: object
+              properties:
+                self:
+                  type: string
+                  example: https://job-plan-stats.herokuapp.com/api/v1/plans/1
+            attributes:
+              $ref: '#/components/schemas/plan_attributes'
+            relationships:
+              type: object
+              properties:
+                activities:
+                  type: object
+                  properties:
+                    data:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          id:
+                            type: string
+                            example: "321"
+                          type:
+                            type: string
+                            example: activities
+    activity_attributes:
+      type: object
+      properties:
+        plan_id:
+          type: integer
+          nullable: false
+          example: 8765
+        minutes_per_week:
+          type: integer
+          nullable: false
+          example: 240
+    activity_attributes_with_schedule_yaml:
+      type: object
+      properties:
+        plan_id:
+          type: integer
+          nullable: false
+          example: 8765
+        minutes_per_week:
+          type: integer
+          nullable: false
+          example: 240
+        schedule_yaml:
+          type: string
+          nullable: false
+          example: |
+            ---
+            :start_time: 2021-03-29 08:00:00.000000000 +01:00
+            :end_time: 2021-03-29 12:00:00.000000000 +01:00
+            :rrules:
+            - :validations:
+                :day:
+                - 1
+              :rule_type: IceCube::WeeklyRule
+              :interval: 1
+              :week_start: 1
+            :rtimes: []
+            :extimes: []
+    activity_post_params:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            type:
+              type: string
+              example: activities
+            attributes:
+              $ref: '#/components/schemas/activity_attributes_with_schedule_yaml'
+            relationships:
+              type: object
+              properties:
+                tags:
+                  type: object
+                  properties:
+                    data:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          id:
+                            type: string
+                            example: "9001"
+                          type:
+                            type: string
+                            example: tags
+    activity_response:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            id:
+              type: string
+              example: "1"
+            type:
+              type: string
+              example: activities
+            link:
+              type: object
+              properties:
+                self:
+                  type: string
+                  example: https://job-plan-stats.herokuapp.com/api/v1/activities/1
+            attributes:
+              $ref: '#/components/schemas/activity_attributes'
+    activity_response_with_relationships:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            id:
+              type: string
+              example: "1"
+            type:
+              type: string
+              example: activities
+            link:
+              type: object
+              properties:
+                self:
+                  type: string
+                  example: https://job-plan-stats.herokuapp.com/api/v1/activities/1
+            attributes:
+              $ref: '#/components/schemas/activity_attributes'
+            relationships:
+              type: object
+              properties:
+                tags:
+                  type: object
+                  properties:
+                    data:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          id:
+                            type: string
+                            example: "9001"
+                          type:
+                            type: string
+                            example: tags
+    tag_attributes:
+      type: object
+      properties:
+        name:
+          type: string
+          nullable: false
+          example: Lorem
+        tag_type_id:
+          type: integer
+          nullable: false
+          example: 4567
+        parent_id:
+          type: integer
+          nullable: true
+          example: 98765
+        default_for_filter:
+          type: boolean
+          nullable: false
+          example: false
+    tags_response:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+                example: "1"
+              type:
+                type: string
+                example: tags
+              link:
+                type: object
+                properties:
+                  self:
+                    type: string
+                    example: https://job-plan-stats.herokuapp.com/api/v1/tags/1
+              attributes:
+                $ref: '#/components/schemas/tag_attributes'
+        links:
+          type: object
+          properties:
+            first:
+              type: string
+              example: https://job-plan-stats.herokuapp.com/api/v1/tags?page[number]=1&page[size]=5
+            prev:
+              type: string
+              example: https://job-plan-stats.herokuapp.com/api/v1/tags?page[number]=1&page[size]=5
+            next:
+              type: string
+              example: https://job-plan-stats.herokuapp.com/api/v1/tags?page[number]=2&page[size]=5
+            last:
+              type: string
+              example: https://job-plan-stats.herokuapp.com/api/v1/tags?page[number]=5&page[size]=5
+    tag_response:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            id:
+              type: string
+              example: "1"
+            type:
+              type: string
+              example: tags
+            link:
+              type: object
+              properties:
+                self:
+                  type: string
+                  example: https://job-plan-stats.herokuapp.com/api/v1/tags/1
+            attributes:
+              $ref: '#/components/schemas/tag_attributes'
+    tag_post_params:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            type:
+              type: string
+              example: tags
+            attributes:
+              $ref: '#/components/schemas/tag_attributes'
+    tag_patch_params:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            id:
+              type: string
+              example: "1"
+            type:
+              type: string
+              example: tags
+            attributes:
+              $ref: '#/components/schemas/tag_attributes'
+    tag_association_attributes:
+      type: object
+      properties:
+        tag_id:
+          type: integer
+          nullable: true
+          example: 100
+        tag_type_id:
+          type: integer
+          nullable: false
+          example: 200
+        taggable_id:
+          type: integer
+          nullable: false
+          example: 123
+        taggable_type:
+          type: string
+          nullable: false
+          example: TimeRange
+    tag_association_post_attributes:
+      type: object
+      properties:
+        tag_id:
+          type: integer
+          nullable: true
+          example: 100
+        taggable_id:
+          type: integer
+          nullable: false
+          example: 123
+        taggable_type:
+          type: string
+          nullable: false
+          example: TimeRange
+        time_range_appointment_id:
+          type: string
+          nullable: true
+          example: lorem123
+    tag_association_response:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            id:
+              type: string
+              example: "1"
+            type:
+              type: string
+              example: tag_associations
+            link:
+              type: object
+              properties:
+                self:
+                  type: string
+                  example: https://job-plan-stats.herokuapp.com/api/v1/tag_associations/1
+            attributes:
+              $ref: '#/components/schemas/tag_association_attributes'
+    tag_association_post_params:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            type:
+              type: string
+              example: tag_associations
+            attributes:
+              $ref: '#/components/schemas/tag_association_post_attributes'
+    tag_type_attributes:
+      type: object
+      properties:
+        name:
+          type: string
+          nullable: false
+          example: Ipsum
+        parent_id:
+          type: integer
+          nullable: true
+        active_for_activities_at:
+          type: string
+          nullable: true
+          example: "2021-01-28T12:30:00+00:00"
+        active_for_time_ranges_at:
+          type: string
+          nullable: true
+          example: "2021-01-29T09:00:00+00:00"
+    tag_types_response:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+                example: "1"
+              type:
+                type: string
+                example: tag_types
+              link:
+                type: object
+                properties:
+                  self:
+                    type: string
+                    example: https://job-plan-stats.herokuapp.com/api/v1/tag_types/1
+              attributes:
+                $ref: '#/components/schemas/tag_type_attributes'
+        links:
+          type: object
+          properties:
+            first:
+              type: string
+              example: https://job-plan-stats.herokuapp.com/api/v1/tag_types?page[number]=1&page[size]=5
+            prev:
+              type: string
+              example: https://job-plan-stats.herokuapp.com/api/v1/tag_types?page[number]=1&page[size]=5
+            next:
+              type: string
+              example: https://job-plan-stats.herokuapp.com/api/v1/tag_types?page[number]=2&page[size]=5
+            last:
+              type: string
+              example: https://job-plan-stats.herokuapp.com/api/v1/tag_types?page[number]=5&page[size]=5
+    tag_type_response:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            id:
+              type: string
+              example: "1"
+            type:
+              type: string
+              example: tag_types
+            link:
+              type: object
+              properties:
+                self:
+                  type: string
+                  example: https://job-plan-stats.herokuapp.com/api/v1/tag_types/1
+            attributes:
+              $ref: '#/components/schemas/tag_type_attributes'
+    tag_type_post_params:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            type:
+              type: string
+              example: tag_types
+            attributes:
+              $ref: '#/components/schemas/tag_type_attributes'
+    tag_type_patch_params:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            id:
+              type: string
+              example: "1"
+            type:
+              type: string
+              example: tag_types
+            attributes:
+              $ref: '#/components/schemas/tag_type_attributes'
+    time_range_attributes:
+      type: object
+      properties:
+        start_time:
+          type: string
+          nullable: false
+          example: "2021-01-22T09:00:00+00:00"
+        end_time:
+          type: string
+          nullable: false
+          example: "2021-01-22T09:45:00+00:00"
+        user_id:
+          type: integer
+          nullable: false
+          example: 123
+        minutes_worked:
+          type: integer
+          nullable: false
+          example: 45
+        time_range_type_id:
+          type: integer
+          nullable: false
+          example: 1
+        appointment_id:
+          type: string
+          nullable: true
+          example: "33445566"
+    time_range_attributes_with_user_epr_uuid:
+      type: object
+      properties:
+        start_time:
+          type: string
+          nullable: false
+          example: "2021-01-22T09:00:00+00:00"
+        end_time:
+          type: string
+          nullable: false
+          example: "2021-01-22T09:45:00+00:00"
+        user_id:
+          type: integer
+          nullable: false
+          example: 123
+        minutes_worked:
+          type: integer
+          nullable: false
+          example: 45
+        time_range_type_id:
+          type: integer
+          nullable: false
+          example: 1
+        appointment_id:
+          type: string
+          nullable: true
+          example: "33445566"
+        user_epr_uuid:
+          type: string
+          nullable: false
+          example: "01234567890"
+    time_ranges_response:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+                example: "1"
+              type:
+                type: string
+                example: time_ranges
+              link:
+                type: object
+                properties:
+                  self:
+                    type: string
+                    example: https://job-plan-stats.herokuapp.com/api/v1/time_ranges/1
+              attributes:
+                $ref: '#/components/schemas/time_range_attributes'
+        links:
+          type: object
+          properties:
+            first:
+              type: string
+              example: https://job-plan-stats.herokuapp.com/api/v1/time_ranges?page[number]=1&page[size]=5
+            prev:
+              type: string
+              example: https://job-plan-stats.herokuapp.com/api/v1/time_ranges?page[number]=1&page[size]=5
+            next:
+              type: string
+              example: https://job-plan-stats.herokuapp.com/api/v1/time_ranges?page[number]=2&page[size]=5
+            last:
+              type: string
+              example: https://job-plan-stats.herokuapp.com/api/v1/time_ranges?page[number]=5&page[size]=5
+    time_range_response:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            id:
+              type: string
+              example: "1"
+            type:
+              type: string
+              example: time_ranges
+            link:
+              type: object
+              properties:
+                self:
+                  type: string
+                  example: https://job-plan-stats.herokuapp.com/api/v1/time_ranges/1
+            attributes:
+              $ref: '#/components/schemas/time_range_attributes'
+    time_range_response_with_relationships:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            id:
+              type: string
+              example: "1"
+            type:
+              type: string
+              example: time_ranges
+            link:
+              type: object
+              properties:
+                self:
+                  type: string
+                  example: https://job-plan-stats.herokuapp.com/api/v1/time_ranges/1
+            attributes:
+              $ref: '#/components/schemas/time_range_attributes'
+            relationships:
+              type: object
+              properties:
+                tags:
+                  type: object
+                  properties:
+                    data:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          id:
+                            type: string
+                            example: "105"
+                          type:
+                            type: string
+                            example: tags
+    time_range_post_params:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            type:
+              type: string
+              example: time_ranges
+            attributes:
+              $ref: '#/components/schemas/time_range_attributes_with_user_epr_uuid'
+            relationships:
+              type: object
+              properties:
+                tags:
+                  type: object
+                  properties:
+                    data:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          id:
+                            type: string
+                            example: "105"
+                          type:
+                            type: string
+                            example: tags
+    user_attributes:
+      type: object
+      properties:
+        last_name:
+          type: string
+          nullable: true
+          example: Smith
+        first_name:
+          type: string
+          nullable: true
+          example: John
+        email:
+          type: string
+          nullable: false
+          example: john.smith@example.com
+        admin:
+          type: boolean
+          nullable: false
+          example: false
+        epr_uuid:
+          type: string
+          nullable: true
+          example: 435f9dfe-4e89-4b5a-b63e-9095327c3a6b
+        sign_in_count:
+          type: integer
+          nullable: true
+          example: 10
+        current_sign_in_at:
+          type: string
+          nullable: true
+          example: "2021-08-11T15:30:00+00:00"
+        last_sign_in_at:
+          type: string
+          nullable: true
+          example: "2021-08-10T11:15:00+00:00"
+        current_sign_in_auth_method:
+          type: string
+          nullable: true
+          example: form
+        last_sign_in_auth_method:
+          type: string
+          nullable: true
+          example: form
+        ldap_samaccountname:
+          type: string
+          nullable: true
+          example: smithjohn
+    user_updatable_attributes:
+      type: object
+      properties:
+        last_name:
+          type: string
+          nullable: true
+          example: Smith
+        first_name:
+          type: string
+          nullable: true
+          example: John
+        email:
+          type: string
+          nullable: false
+          example: john.smith@example.com
+        epr_uuid:
+          type: string
+          nullable: true
+          example: 435f9dfe-4e89-4b5a-b63e-9095327c3a6b
+        ldap_samaccountname:
+          type: string
+          nullable: true
+          example: smithjohn
+    user_attributes_with_password:
+      type: object
+      properties:
+        last_name:
+          type: string
+          nullable: true
+          example: Smith
+        first_name:
+          type: string
+          nullable: true
+          example: John
+        email:
+          type: string
+          nullable: false
+          example: john.smith@example.com
+        epr_uuid:
+          type: string
+          nullable: true
+          example: 435f9dfe-4e89-4b5a-b63e-9095327c3a6b
+        ldap_samaccountname:
+          type: string
+          nullable: true
+          example: smithjohn
+        password:
+          type: string
+          nullable: true
+          example: pA$$w0Rd
+    users_response:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+                example: "1"
+              type:
+                type: string
+                example: users
+              link:
+                type: object
+                properties:
+                  self:
+                    type: string
+                    example: https://job-plan-stats.herokuapp.com/api/v1/users/1
+              attributes:
+                $ref: '#/components/schemas/user_attributes'
+        links:
+          type: object
+          properties:
+            first:
+              type: string
+              example: https://job-plan-stats.herokuapp.com/api/v1/users?page[number]=1&page[size]=5
+            prev:
+              type: string
+              example: https://job-plan-stats.herokuapp.com/api/v1/users?page[number]=1&page[size]=5
+            next:
+              type: string
+              example: https://job-plan-stats.herokuapp.com/api/v1/users?page[number]=2&page[size]=5
+            last:
+              type: string
+              example: https://job-plan-stats.herokuapp.com/api/v1/users?page[number]=5&page[size]=5
+    user_response:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            id:
+              type: string
+              example: "1"
+            type:
+              type: string
+              example: users
+            link:
+              type: object
+              properties:
+                self:
+                  type: string
+                  example: https://job-plan-stats.herokuapp.com/api/v1/users/1
+            attributes:
+              $ref: '#/components/schemas/user_attributes'
+    user_response_with_relationships:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            id:
+              type: string
+              example: "1"
+            type:
+              type: string
+              example: users
+            link:
+              type: object
+              properties:
+                self:
+                  type: string
+                  example: https://job-plan-stats.herokuapp.com/api/v1/users/1
+            attributes:
+              $ref: '#/components/schemas/user_attributes'
+            relationships:
+              type: object
+              properties:
+                user_groups:
+                  type: object
+                  properties:
+                    data:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          id:
+                            type: string
+                            example: "303"
+                          type:
+                            type: string
+                            example: user_groups
+    user_post_params:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            type:
+              type: string
+              example: users
+            attributes:
+              $ref: '#/components/schemas/user_attributes_with_password'
+            relationships:
+              type: object
+              properties:
+                user_groups:
+                  type: object
+                  properties:
+                    data:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          id:
+                            type: string
+                            example: "303"
+                          type:
+                            type: string
+                            example: user_groups
+    user_patch_params:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            id:
+              type: string
+              example: "1"
+            type:
+              type: string
+              example: users
+            attributes:
+              $ref: '#/components/schemas/user_attributes_with_password'
+            relationships:
+              type: object
+              properties:
+                user_groups:
+                  type: object
+                  properties:
+                    data:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          id:
+                            type: string
+                            example: "303"
+                          type:
+                            type: string
+                            example: user_groups
+    user_patch_params_without_password:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            id:
+              type: string
+              example: "1"
+            type:
+              type: string
+              example: users
+            attributes:
+              $ref: '#/components/schemas/user_updatable_attributes'
+    user_group_attributes:
+      type: object
+      properties:
+        name:
+          type: string
+          nullable: false
+          example: Lorems
+        group_type_id:
+          type: integer
+          nullable: false
+          example: 2
+    user_groups_response:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+                example: "1"
+              type:
+                type: string
+                example: user_groups
+              link:
+                type: object
+                properties:
+                  self:
+                    type: string
+                    example: https://job-plan-stats.herokuapp.com/api/v1/user_groups/1
+              attributes:
+                $ref: '#/components/schemas/user_group_attributes'
+        links:
+          type: object
+          properties:
+            first:
+              type: string
+              example: https://job-plan-stats.herokuapp.com/api/v1/user_groups?page[number]=1&page[size]=5
+            prev:
+              type: string
+              example: https://job-plan-stats.herokuapp.com/api/v1/user_groups?page[number]=1&page[size]=5
+            next:
+              type: string
+              example: https://job-plan-stats.herokuapp.com/api/v1/user_groups?page[number]=2&page[size]=5
+            last:
+              type: string
+              example: https://job-plan-stats.herokuapp.com/api/v1/user_groups?page[number]=5&page[size]=5
+    user_group_response:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            id:
+              type: string
+              example: "1"
+            type:
+              type: string
+              example: user_groups
+            link:
+              type: object
+              properties:
+                self:
+                  type: string
+                  example: https://job-plan-stats.herokuapp.com/api/v1/user_groups/1
+            attributes:
+              $ref: '#/components/schemas/user_group_attributes'
+    user_group_post_params:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            type:
+              type: string
+              example: user_groups
+            attributes:
+              $ref: '#/components/schemas/user_group_attributes'
+    user_group_patch_params:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            id:
+              type: string
+              example: "10"
+            type:
+              type: string
+              example: user_groups
+            attributes:
+              $ref: '#/components/schemas/user_group_attributes'
+  securitySchemes:
+    JWT:
+      type: apiKey
+      description: The JSON Web Token from Auth0 for authentication.
+      name: Authorization
+      in: header
+x-original-swagger-version: "2.0"
