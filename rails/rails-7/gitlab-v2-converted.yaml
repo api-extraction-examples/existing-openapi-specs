@@ -4628,8 +4628,8 @@ paths:
         "404":
           description: Not Found
           content: {}
-  ? /api/v4/groups/{id}/-/packages/debian/dists/*distribution/{component}/debian-installer/binary-{architecture}/by-hash/SHA256/{file_sha256}
-  : get:
+  /api/v4/groups/{id}/-/packages/debian/dists/*distribution/{component}/debian-installer/binary-{architecture}/by-hash/SHA256/{file_sha256}:
+    get:
       tags:
         - debian_packages
       summary: The installer (udeb) binary files index by hash
@@ -26119,8 +26119,8 @@ paths:
         "404":
           description: Not Found
           content: {}
-  ? /api/v4/projects/{id}/packages/conan/v1/conans/{package_name}/{package_version}/{package_username}/{package_channel}/packages/{conan_package_reference}
-  : get:
+  /api/v4/projects/{id}/packages/conan/v1/conans/{package_name}/{package_version}/{package_username}/{package_channel}/packages/{conan_package_reference}:
+    get:
       tags:
         - conan_packages
       summary: Package Snapshot
@@ -26283,8 +26283,8 @@ paths:
         "404":
           description: Not Found
           content: {}
-  ? /api/v4/projects/{id}/packages/conan/v1/conans/{package_name}/{package_version}/{package_username}/{package_channel}/packages/{conan_package_reference}/digest
-  : get:
+  /api/v4/projects/{id}/packages/conan/v1/conans/{package_name}/{package_version}/{package_username}/{package_channel}/packages/{conan_package_reference}/digest:
+    get:
       tags:
         - conan_packages
       summary: Package Digest
@@ -26397,8 +26397,8 @@ paths:
         "404":
           description: Not Found
           content: {}
-  ? /api/v4/projects/{id}/packages/conan/v1/conans/{package_name}/{package_version}/{package_username}/{package_channel}/packages/{conan_package_reference}/download_urls
-  : get:
+  /api/v4/projects/{id}/packages/conan/v1/conans/{package_name}/{package_version}/{package_username}/{package_channel}/packages/{conan_package_reference}/download_urls:
+    get:
       tags:
         - conan_packages
       summary: Package Download Urls
@@ -26457,8 +26457,8 @@ paths:
         "404":
           description: Not Found
           content: {}
-  ? /api/v4/projects/{id}/packages/conan/v1/conans/{package_name}/{package_version}/{package_username}/{package_channel}/download_urls
-  : get:
+  /api/v4/projects/{id}/packages/conan/v1/conans/{package_name}/{package_version}/{package_username}/{package_channel}/download_urls:
+    get:
       tags:
         - conan_packages
       summary: Recipe Download Urls
@@ -26511,8 +26511,8 @@ paths:
         "404":
           description: Not Found
           content: {}
-  ? /api/v4/projects/{id}/packages/conan/v1/conans/{package_name}/{package_version}/{package_username}/{package_channel}/packages/{conan_package_reference}/upload_urls
-  : post:
+  /api/v4/projects/{id}/packages/conan/v1/conans/{package_name}/{package_version}/{package_username}/{package_channel}/packages/{conan_package_reference}/upload_urls:
+    post:
       tags:
         - conan_packages
       summary: Package Upload Urls
@@ -26625,8 +26625,8 @@ paths:
         "404":
           description: Not Found
           content: {}
-  ? /api/v4/projects/{id}/packages/conan/v1/files/{package_name}/{package_version}/{package_username}/{package_channel}/{recipe_revision}/export/{file_name}
-  : get:
+  /api/v4/projects/{id}/packages/conan/v1/files/{package_name}/{package_version}/{package_username}/{package_channel}/{recipe_revision}/export/{file_name}:
+    get:
       tags:
         - conan_packages
       summary: Download recipe files
@@ -26774,8 +26774,8 @@ paths:
           description: Not Found
           content: {}
       x-codegen-request-body-name: putApiV4ProjectsIdPackagesConanV1FilesPackageNamePackageVersionPackageUsernamePackageChannelRecipeRevisionExportFileName
-  ? /api/v4/projects/{id}/packages/conan/v1/files/{package_name}/{package_version}/{package_username}/{package_channel}/{recipe_revision}/export/{file_name}/authorize
-  : put:
+  /api/v4/projects/{id}/packages/conan/v1/files/{package_name}/{package_version}/{package_username}/{package_channel}/{recipe_revision}/export/{file_name}/authorize:
+    put:
       tags:
         - conan_packages
       summary: Workhorse authorize the conan recipe file
@@ -26847,8 +26847,8 @@ paths:
         "404":
           description: Not Found
           content: {}
-  ? /api/v4/projects/{id}/packages/conan/v1/files/{package_name}/{package_version}/{package_username}/{package_channel}/{recipe_revision}/package/{conan_package_reference}/{package_revision}/{file_name}
-  : get:
+  /api/v4/projects/{id}/packages/conan/v1/files/{package_name}/{package_version}/{package_username}/{package_channel}/{recipe_revision}/package/{conan_package_reference}/{package_revision}/{file_name}:
+    get:
       tags:
         - conan_packages
       summary: Download package files
@@ -27017,8 +27017,8 @@ paths:
           description: Not Found
           content: {}
       x-codegen-request-body-name: putApiV4ProjectsIdPackagesConanV1FilesPackageNamePackageVersionPackageUsernamePackageChannelRecipeRevisionPackageConanPackageReferencePackageRevisionFileName
-  ? /api/v4/projects/{id}/packages/conan/v1/files/{package_name}/{package_version}/{package_username}/{package_channel}/{recipe_revision}/package/{conan_package_reference}/{package_revision}/{file_name}/authorize
-  : put:
+  /api/v4/projects/{id}/packages/conan/v1/files/{package_name}/{package_version}/{package_username}/{package_channel}/{recipe_revision}/package/{conan_package_reference}/{package_revision}/{file_name}/authorize:
+    put:
       tags:
         - conan_packages
       summary: Workhorse authorize the conan package file
@@ -27261,8 +27261,8 @@ paths:
         "404":
           description: Not Found
           content: {}
-  ? /api/v4/projects/{id}/packages/debian/dists/*distribution/{component}/debian-installer/binary-{architecture}/by-hash/SHA256/{file_sha256}
-  : get:
+  /api/v4/projects/{id}/packages/debian/dists/*distribution/{component}/debian-installer/binary-{architecture}/by-hash/SHA256/{file_sha256}:
+    get:
       tags:
         - debian_packages
       summary: The installer (udeb) binary files index by hash
@@ -33645,8 +33645,8 @@ paths:
         "404":
           description: Not Found
           content: {}
-  ? /api/v4/packages/conan/v1/conans/{package_name}/{package_version}/{package_username}/{package_channel}/packages/{conan_package_reference}
-  : get:
+  /api/v4/packages/conan/v1/conans/{package_name}/{package_version}/{package_username}/{package_channel}/packages/{conan_package_reference}:
+    get:
       tags:
         - conan_packages
       summary: Package Snapshot
@@ -33791,8 +33791,8 @@ paths:
         "404":
           description: Not Found
           content: {}
-  ? /api/v4/packages/conan/v1/conans/{package_name}/{package_version}/{package_username}/{package_channel}/packages/{conan_package_reference}/digest
-  : get:
+  /api/v4/packages/conan/v1/conans/{package_name}/{package_version}/{package_username}/{package_channel}/packages/{conan_package_reference}/digest:
+    get:
       tags:
         - conan_packages
       summary: Package Digest
@@ -33893,8 +33893,8 @@ paths:
         "404":
           description: Not Found
           content: {}
-  ? /api/v4/packages/conan/v1/conans/{package_name}/{package_version}/{package_username}/{package_channel}/packages/{conan_package_reference}/download_urls
-  : get:
+  /api/v4/packages/conan/v1/conans/{package_name}/{package_version}/{package_username}/{package_channel}/packages/{conan_package_reference}/download_urls:
+    get:
       tags:
         - conan_packages
       summary: Package Download Urls
@@ -33995,8 +33995,8 @@ paths:
         "404":
           description: Not Found
           content: {}
-  ? /api/v4/packages/conan/v1/conans/{package_name}/{package_version}/{package_username}/{package_channel}/packages/{conan_package_reference}/upload_urls
-  : post:
+  /api/v4/packages/conan/v1/conans/{package_name}/{package_version}/{package_username}/{package_channel}/packages/{conan_package_reference}/upload_urls:
+    post:
       tags:
         - conan_packages
       summary: Package Upload Urls
@@ -34097,8 +34097,8 @@ paths:
         "404":
           description: Not Found
           content: {}
-  ? /api/v4/packages/conan/v1/files/{package_name}/{package_version}/{package_username}/{package_channel}/{recipe_revision}/export/{file_name}
-  : get:
+  /api/v4/packages/conan/v1/files/{package_name}/{package_version}/{package_username}/{package_channel}/{recipe_revision}/export/{file_name}:
+    get:
       tags:
         - conan_packages
       summary: Download recipe files
@@ -34234,8 +34234,8 @@ paths:
           description: Not Found
           content: {}
       x-codegen-request-body-name: putApiV4PackagesConanV1FilesPackageNamePackageVersionPackageUsernamePackageChannelRecipeRevisionExportFileName
-  ? /api/v4/packages/conan/v1/files/{package_name}/{package_version}/{package_username}/{package_channel}/{recipe_revision}/export/{file_name}/authorize
-  : put:
+  /api/v4/packages/conan/v1/files/{package_name}/{package_version}/{package_username}/{package_channel}/{recipe_revision}/export/{file_name}/authorize:
+    put:
       tags:
         - conan_packages
       summary: Workhorse authorize the conan recipe file
@@ -34301,8 +34301,8 @@ paths:
         "404":
           description: Not Found
           content: {}
-  ? /api/v4/packages/conan/v1/files/{package_name}/{package_version}/{package_username}/{package_channel}/{recipe_revision}/package/{conan_package_reference}/{package_revision}/{file_name}
-  : get:
+  /api/v4/packages/conan/v1/files/{package_name}/{package_version}/{package_username}/{package_channel}/{recipe_revision}/package/{conan_package_reference}/{package_revision}/{file_name}:
+    get:
       tags:
         - conan_packages
       summary: Download package files
@@ -34459,8 +34459,8 @@ paths:
           description: Not Found
           content: {}
       x-codegen-request-body-name: putApiV4PackagesConanV1FilesPackageNamePackageVersionPackageUsernamePackageChannelRecipeRevisionPackageConanPackageReferencePackageRevisionFileName
-  ? /api/v4/packages/conan/v1/files/{package_name}/{package_version}/{package_username}/{package_channel}/{recipe_revision}/package/{conan_package_reference}/{package_revision}/{file_name}/authorize
-  : put:
+  /api/v4/packages/conan/v1/files/{package_name}/{package_version}/{package_username}/{package_channel}/{recipe_revision}/package/{conan_package_reference}/{package_revision}/{file_name}/authorize:
+    put:
       tags:
         - conan_packages
       summary: Workhorse authorize the conan package file
