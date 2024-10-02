@@ -1,0 +1,15 @@
+openapi: 3.0.3
+info:
+  title: Manual WebGoat spec
+  description: Generated this manually
+  version: 1.0.0
+  contact: {}
+servers:
+- url: http://localhost:8080
+paths:
+  /WebGoat/:
+    get:
+      operationId: root_GET
+      responses:
+        default:
+          description: Default response
