@@ -1,0 +1,2668 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "version": "1.1.0"
+    },
+    "basePath": "/api",
+    "tags": [
+        {
+            "name": "assessments"
+        },
+        {
+            "name": "auditlog"
+        },
+        {
+            "name": "status"
+        },
+        {
+            "name": "users"
+        },
+        {
+            "name": "verifications"
+        },
+        {
+            "name": "vulnerabilities"
+        }
+    ],
+    "paths": {
+        "/assessments/create": {
+            "post": {
+                "tags": [
+                    "assessments"
+                ],
+                "summary": "Creates an Assessment Record and schedules it to an assessor or assessors.",
+                "description": "It can auto create user's and teams if they are not in the system. If a User's email address is not in the system it will create the account and send an email notification to the user to register with Faction.",
+                "operationId": "createAssessment",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "FACTION-API-KEY",
+                        "in": "header",
+                        "description": "Authentication Header",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "appid",
+                        "in": "formData",
+                        "description": "Application ID",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "start",
+                        "in": "formData",
+                        "description": "Assessment Start Date",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "end",
+                        "in": "formData",
+                        "description": "Assessment End Date",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "assessors",
+                        "in": "formData",
+                        "description": "Semicolon Delimted list of assessor user names",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "distro",
+                        "in": "formData",
+                        "description": "Semicolon Delimted distriburtion list",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "engagement_username",
+                        "in": "formData",
+                        "description": "Engagement User Name",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "remediation_username",
+                        "in": "formData",
+                        "description": "Remediation User Name",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "appName",
+                        "in": "formData",
+                        "description": "Application Name",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "type",
+                        "in": "formData",
+                        "description": "Assessment Type",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "scope",
+                        "in": "formData",
+                        "description": "Scope and credentials for the assessors",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "campaign",
+                        "in": "formData",
+                        "description": "Assessment Campaign Name",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "auto_create_campaigns",
+                        "in": "formData",
+                        "description": "Option to auto create a campaign if it does not exist",
+                        "required": true,
+                        "type": "boolean"
+                    }
+                ],
+                "responses": {
+                    "401": {
+                        "description": "Not Authorized"
+                    },
+                    "400": {
+                        "description": "Bad Request."
+                    },
+                    "200": {
+                        "description": "Post Successful."
+                    }
+                }
+            }
+        },
+        "/assessments/vulns/{aid}": {
+            "get": {
+                "tags": [
+                    "assessments"
+                ],
+                "summary": "Gets the the Vulnererabilies for the Application.",
+                "description": "Application ID is not the same as Assessment ID. An Application ID can span multiple assessments.",
+                "operationId": "getVulns",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "FACTION-API-KEY",
+                        "in": "header",
+                        "description": "Authentication Header",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "aid",
+                        "in": "path",
+                        "description": "Assessment ID",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int64"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Returns json array of vulnerbilities"
+                    },
+                    "401": {
+                        "description": "Not Authorized"
+                    },
+                    "400": {
+                        "description": "Application Does not exist."
+                    }
+                }
+            }
+        },
+        "/assessments/queue": {
+            "get": {
+                "tags": [
+                    "assessments"
+                ],
+                "summary": "Gets the the Assessment Queue for the user associated with the FACTION-API-KEY token header.",
+                "description": "Gets the the Assessment Queue for the user associated with the FACTION-API-KEY token header.",
+                "operationId": "getAssessments",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "FACTION-API-KEY",
+                        "in": "header",
+                        "description": "Authentication Header",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Assessor Queue Returned"
+                    },
+                    "401": {
+                        "description": "Not Authorized"
+                    }
+                }
+            }
+        },
+        "/assessments/addVuln/{aid}/{vid}": {
+            "post": {
+                "tags": [
+                    "assessments"
+                ],
+                "summary": "Add Exploit Details to an existing vulnerability.",
+                "description": "Vulnerability must already exist.",
+                "operationId": "addVuln",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "FACTION-API-KEY",
+                        "in": "header",
+                        "description": "Authentication Header",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "aid",
+                        "in": "path",
+                        "description": "Assessment ID",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    {
+                        "name": "vid",
+                        "in": "path",
+                        "description": "Vulnerability ID",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    {
+                        "name": "details",
+                        "in": "formData",
+                        "description": "Exploit Detail Information",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Post Successful."
+                    },
+                    "401": {
+                        "description": "Not Authorized"
+                    },
+                    "400": {
+                        "description": "Bad Request."
+                    }
+                }
+            }
+        },
+        "/assessments/history/{appid}": {
+            "get": {
+                "tags": [
+                    "assessments"
+                ],
+                "summary": "Gets the the Vulnererabilies for the Application.",
+                "description": "Application ID is not the same as Assessment ID. An Application ID can span multiple assessments.",
+                "operationId": "getHistory",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "FACTION-API-KEY",
+                        "in": "header",
+                        "description": "Authentication Header",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "appid",
+                        "in": "path",
+                        "description": "Application ID Header",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Returns json array of vulnerbilities"
+                    },
+                    "401": {
+                        "description": "Not Authorized"
+                    },
+                    "400": {
+                        "description": "Assessment Does not exist."
+                    }
+                }
+            }
+        },
+        "/assessments/vuln/{vid}": {
+            "get": {
+                "tags": [
+                    "assessments"
+                ],
+                "summary": "Gets details for a specific vulnerability.",
+                "description": "Pulls add details and exploits steps for a vulnerability id.",
+                "operationId": "getVuln",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "FACTION-API-KEY",
+                        "in": "header",
+                        "description": "Authentication Header",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "vid",
+                        "in": "path",
+                        "description": "Vulnerability ID",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int64"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Returns Vulnerability and Exploit Step Information"
+                    },
+                    "401": {
+                        "description": "Not Authorized"
+                    },
+                    "400": {
+                        "description": "Bad Request."
+                    }
+                }
+            }
+        },
+        "/assessments/notes/{aid}": {
+            "post": {
+                "tags": [
+                    "assessments"
+                ],
+                "summary": "Update the Assessment Notes.",
+                "description": "Application ID is not the same as Assessment ID. An Application ID can span multiple assessments.",
+                "operationId": "updateNotes",
+                "consumes": [
+                    "application/x-www-form-urlencoded"
+                ],
+                "parameters": [
+                    {
+                        "name": "FACTION-API-KEY",
+                        "in": "header",
+                        "description": "Authentication Header",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "aid",
+                        "in": "path",
+                        "description": "Assessment ID",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int32"
+                    }
+                ],
+                "responses": {
+                    "401": {
+                        "description": "Not Authorized"
+                    },
+                    "400": {
+                        "description": "Assessment Does not exist."
+                    },
+                    "200": {
+                        "description": "Request Successfull"
+                    }
+                }
+            }
+        },
+        "/assessments/addDefaultVuln/{aid}/{default_vuln_id}": {
+            "post": {
+                "tags": [
+                    "assessments"
+                ],
+                "summary": "Add a new vulnerability to the assessment based on the internal default vulnerabilities.",
+                "description": "Auto populates the Description and Recommendations",
+                "operationId": "addNewVuln",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "FACTION-API-KEY",
+                        "in": "header",
+                        "description": "Authentication Header",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "aid",
+                        "in": "path",
+                        "description": "Assessment ID",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    {
+                        "name": "name",
+                        "in": "formData",
+                        "description": "Vulnerability Name",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "details",
+                        "in": "formData",
+                        "description": "Exploit Details Information",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "severity",
+                        "in": "formData",
+                        "description": "Severity ID 0-9",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    {
+                        "name": "default_vuln_id",
+                        "in": "path",
+                        "description": "Default Vulnerability ID",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int64"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Post Successful."
+                    },
+                    "401": {
+                        "description": "Not Authorized"
+                    },
+                    "400": {
+                        "description": "Bad Request."
+                    }
+                }
+            }
+        },
+        "/assessments/addVuln/{aid}": {
+            "post": {
+                "tags": [
+                    "assessments"
+                ],
+                "summary": "Add a new vulnerability to the assessment. All Base64 encoded inputs supoort HTML and Markdown syntax",
+                "description": "Suports HTML and MarkDown Syntax",
+                "operationId": "addNewVuln_1",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "FACTION-API-KEY",
+                        "in": "header",
+                        "description": "Authentication Header",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "aid",
+                        "in": "path",
+                        "description": "Assessment ID",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    {
+                        "name": "name",
+                        "in": "formData",
+                        "description": "Vulnerability Name",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "description",
+                        "in": "formData",
+                        "description": "Vulnerability Description (Base64 Encoded)",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "recommendation",
+                        "in": "formData",
+                        "description": "Vulnerability Recommendation (Base64 Encoded)",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "details",
+                        "in": "formData",
+                        "description": "Exploit Details Information (Base64 Encoded)",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "default_vuln_id",
+                        "in": "formData",
+                        "description": "Default Vulnerability ID",
+                        "required": false,
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    {
+                        "name": "severity",
+                        "in": "formData",
+                        "description": "Severity ID 0-9",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int64"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Returns the ID of the newly created vulnerability."
+                    },
+                    "401": {
+                        "description": "Not Authorized"
+                    },
+                    "400": {
+                        "description": "Bad Request."
+                    }
+                }
+            }
+        },
+        "/auditlog/log": {
+            "post": {
+                "tags": [
+                    "auditlog"
+                ],
+                "summary": "Get the audit log for a user given time frame.",
+                "description": "",
+                "operationId": "getLog",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "FACTION-API-KEY",
+                        "in": "header",
+                        "description": "Authentication Header",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "start",
+                        "in": "formData",
+                        "description": "Start Date",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "end",
+                        "in": "formData",
+                        "description": "End Date",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Audit Log Returned"
+                    },
+                    "401": {
+                        "description": "Not Authorized"
+                    }
+                }
+            }
+        },
+        "/auditlog/assessmentlog/{aid}": {
+            "post": {
+                "tags": [
+                    "auditlog"
+                ],
+                "summary": "Get the audit log for a assessments",
+                "description": "",
+                "operationId": "getAssessmentLog",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "FACTION-API-KEY",
+                        "in": "header",
+                        "description": "Authentication Header",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "aid",
+                        "in": "path",
+                        "description": "Assessment ID",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    {
+                        "name": "start",
+                        "in": "formData",
+                        "description": "Start Date",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "end",
+                        "in": "formData",
+                        "description": "End Date",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Audit Log Returned"
+                    },
+                    "401": {
+                        "description": "Not Authorized"
+                    }
+                }
+            }
+        },
+        "/auditlog/assessmentlog": {
+            "post": {
+                "tags": [
+                    "auditlog"
+                ],
+                "summary": "Get the audit log for a assessments",
+                "description": "",
+                "operationId": "getAssessmentLog_1",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "FACTION-API-KEY",
+                        "in": "header",
+                        "description": "Authentication Header",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "start",
+                        "in": "formData",
+                        "description": "Start Date",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "end",
+                        "in": "formData",
+                        "description": "End Date",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Audit Log Returned"
+                    },
+                    "401": {
+                        "description": "Not Authorized"
+                    }
+                }
+            }
+        },
+        "/auditlog/userlog": {
+            "post": {
+                "tags": [
+                    "auditlog"
+                ],
+                "summary": "Get the audit log for a user for given time frame.",
+                "description": "",
+                "operationId": "getUserLog",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "FACTION-API-KEY",
+                        "in": "header",
+                        "description": "Authentication Header",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "username",
+                        "in": "formData",
+                        "description": "username",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "start",
+                        "in": "formData",
+                        "description": "Start Date",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "end",
+                        "in": "formData",
+                        "description": "End Date",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Audit Log Returned"
+                    },
+                    "401": {
+                        "description": "Not Authorized"
+                    }
+                }
+            }
+        },
+        "/status": {
+            "get": {
+                "tags": [
+                    "status"
+                ],
+                "summary": "Gets the Status of Faction.",
+                "description": "",
+                "operationId": "createUser",
+                "parameters": [],
+                "responses": {
+                    "404": {
+                        "description": "Service is not online"
+                    },
+                    "200": {
+                        "description": "Service is online"
+                    }
+                }
+            }
+        },
+        "/users/addUser": {
+            "post": {
+                "tags": [
+                    "users"
+                ],
+                "summary": "Add a user to Faction.",
+                "description": "This call will give you the ability to create a user in Faction. If the user already exists then an error will be returned. You can choose to send the user an email confirmation link or create  an account with an empty password. The later is mostly used with SSO type integrations.",
+                "operationId": "createUser_1",
+                "consumes": [
+                    "application/x-www-form-urlencoded"
+                ],
+                "parameters": [
+                    {
+                        "name": "FACTION-API-KEY",
+                        "in": "header",
+                        "description": "Authentication Header",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "username",
+                        "in": "formData",
+                        "description": "Username",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "email",
+                        "in": "formData",
+                        "description": "Email Address",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "fname",
+                        "in": "formData",
+                        "description": "First Name",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "lname",
+                        "in": "formData",
+                        "description": "Last Name",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "team",
+                        "in": "formData",
+                        "description": "Team Name",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "authMethod",
+                        "in": "formData",
+                        "description": "Authentication Method",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "verify",
+                        "in": "formData",
+                        "description": "Send Verification Email",
+                        "required": false,
+                        "type": "boolean"
+                    },
+                    {
+                        "name": "isAssessor",
+                        "in": "formData",
+                        "description": "Assessor Role",
+                        "required": false,
+                        "type": "boolean"
+                    },
+                    {
+                        "name": "isAdmin",
+                        "in": "formData",
+                        "description": "Admin Role",
+                        "required": false,
+                        "type": "boolean"
+                    },
+                    {
+                        "name": "isRemediation",
+                        "in": "formData",
+                        "description": "Remediation Role",
+                        "required": false,
+                        "type": "boolean"
+                    },
+                    {
+                        "name": "isEngage",
+                        "in": "formData",
+                        "description": "Engagement/Scheduler Role",
+                        "required": false,
+                        "type": "boolean"
+                    },
+                    {
+                        "name": "isManager",
+                        "in": "formData",
+                        "description": "Manager Role",
+                        "required": false,
+                        "type": "boolean"
+                    }
+                ],
+                "responses": {
+                    "401": {
+                        "description": "Not Authorized"
+                    },
+                    "400": {
+                        "description": "Error Occured. User most likely already exists."
+                    },
+                    "200": {
+                        "description": "Request Successfull"
+                    }
+                }
+            }
+        },
+        "/users/disableUser": {
+            "post": {
+                "tags": [
+                    "users"
+                ],
+                "summary": "Disable A Faction User.",
+                "description": "This operation will set any user into the inactive state. They will not be able to log back in to the system untill the account is reset. ",
+                "operationId": "disableUser",
+                "consumes": [
+                    "application/x-www-form-urlencoded"
+                ],
+                "parameters": [
+                    {
+                        "name": "FACTION-API-KEY",
+                        "in": "header",
+                        "description": "Authentication Header",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "username",
+                        "in": "formData",
+                        "description": "UserName to deactivate",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "401": {
+                        "description": "Not Authorized"
+                    },
+                    "400": {
+                        "description": "Error Occured. User most likely already exists."
+                    },
+                    "200": {
+                        "description": "Request Successfull"
+                    }
+                }
+            }
+        },
+        "/users/unlockUser": {
+            "post": {
+                "tags": [
+                    "users"
+                ],
+                "summary": "Unlock A Faction User.",
+                "description": "This operation will set any user into back into the acitive state.",
+                "operationId": "unlockUser",
+                "consumes": [
+                    "application/x-www-form-urlencoded"
+                ],
+                "parameters": [
+                    {
+                        "name": "FACTION-API-KEY",
+                        "in": "header",
+                        "description": "Authentication Header",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "username",
+                        "in": "formData",
+                        "description": "UserName to activate",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "uioli",
+                        "in": "formData",
+                        "description": "Reset Use it or loose it",
+                        "required": false,
+                        "type": "boolean"
+                    }
+                ],
+                "responses": {
+                    "401": {
+                        "description": "Not Authorized"
+                    },
+                    "400": {
+                        "description": "Error Occured. User most likely already exists."
+                    },
+                    "200": {
+                        "description": "Request Successfull"
+                    }
+                }
+            }
+        },
+        "/verifications/passfail": {
+            "post": {
+                "tags": [
+                    "verifications"
+                ],
+                "summary": "Pass or Fail a verification/retest.",
+                "description": ".",
+                "operationId": "retest",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "FACTION-API-KEY",
+                        "in": "header",
+                        "description": "Authentication Header",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "verificationID",
+                        "in": "formData",
+                        "description": "Verification Id",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    {
+                        "name": "notes",
+                        "in": "formData",
+                        "description": "Notes",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "passed",
+                        "in": "formData",
+                        "description": "Did the Test Pass (boolean)",
+                        "required": true,
+                        "type": "boolean"
+                    },
+                    {
+                        "name": "inProd",
+                        "in": "formData",
+                        "description": "Close finding as passed in production. Otherwise is set to closed in development",
+                        "required": false,
+                        "type": "boolean"
+                    },
+                    {
+                        "name": "completedDate",
+                        "in": "formData",
+                        "description": "Date of Completion. Blank will set current date.",
+                        "required": false,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "401": {
+                        "description": "Not Authorized"
+                    },
+                    "400": {
+                        "description": "Bad Request."
+                    },
+                    "200": {
+                        "description": "Post Successful."
+                    }
+                }
+            }
+        },
+        "/verifications/retest": {
+            "post": {
+                "tags": [
+                    "verifications"
+                ],
+                "summary": "Schedule a Retest.",
+                "description": "You can assign assessors based user id. Vulnerabilities can be assigned based on the Vulnerability ID or the Tracking ID.",
+                "operationId": "retest_1",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "FACTION-API-KEY",
+                        "in": "header",
+                        "description": "Authentication Header",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "assessorId",
+                        "in": "formData",
+                        "description": "Assign an assesor username.",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "remediationId",
+                        "in": "formData",
+                        "description": "Assign an remediation username.",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "vulnId",
+                        "in": "formData",
+                        "description": "Vulnerability ID to Retested.",
+                        "required": false,
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    {
+                        "name": "trackingId",
+                        "in": "formData",
+                        "description": "Vulnerability Tracking ID to Retested.",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "start",
+                        "in": "formData",
+                        "description": "Date to Start the verification",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "end",
+                        "in": "formData",
+                        "description": "Date to when the verification should complete",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "notes",
+                        "in": "formData",
+                        "description": "Scope, credentials, additional info for the assessor to re-test",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "401": {
+                        "description": "Not Authorized"
+                    },
+                    "400": {
+                        "description": "Bad Request."
+                    },
+                    "200": {
+                        "description": "Post Successful. Returns the Verification ID."
+                    }
+                }
+            }
+        },
+        "/verifications/queue": {
+            "get": {
+                "tags": [
+                    "verifications"
+                ],
+                "summary": "Gets the the Verification Queue for the user associated with the FACTION-API-KEY token header.",
+                "description": "Must have assessor permission. This returns only verificaitons assigned to the user. Will not show passed/failed verifications.",
+                "operationId": "getVerifications",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "FACTION-API-KEY",
+                        "in": "header",
+                        "required": false,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Assessor Queue Returned"
+                    },
+                    "401": {
+                        "description": "Not Authorized"
+                    }
+                }
+            }
+        },
+        "/verifications/all": {
+            "post": {
+                "tags": [
+                    "verifications"
+                ],
+                "summary": "Gets all verifications/retests in the system.",
+                "description": "Must have remeidation permission. This will return all open verifications, including passed/failed items. If a date range is entered then it will only return passed/failed items for that date range.The API will also return all non-completed verifications reguardless of daterange.",
+                "operationId": "getAllVerifications",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "FACTION-API-KEY",
+                        "in": "header",
+                        "description": "Authentication Header",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "start",
+                        "in": "formData",
+                        "description": "Assessor Completed Date Range Start",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "end",
+                        "in": "formData",
+                        "description": "Assessor Completed Date Range End",
+                        "required": false,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "All Retest Queues Returned"
+                    },
+                    "401": {
+                        "description": "Not Authorized"
+                    }
+                }
+            }
+        },
+        "/verifications/userQueue": {
+            "post": {
+                "tags": [
+                    "verifications"
+                ],
+                "summary": "Gets all verifications/retests for a certian user.",
+                "description": "Must have remediation permission. Returns all Open verifications, even verifications that are passed/failed. Date range searched completed Verifications but the API will return all non-completed verifications reguardless of daterange.",
+                "operationId": "getUserVerifications",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "FACTION-API-KEY",
+                        "in": "header",
+                        "description": "Authentication Header",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "username",
+                        "in": "formData",
+                        "description": "Username",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "start",
+                        "in": "formData",
+                        "description": "Assessor Completed Date Range Start",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "end",
+                        "in": "formData",
+                        "description": "Assessor Completed Date Range End",
+                        "required": false,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "All Retest Queues Returned"
+                    },
+                    "401": {
+                        "description": "Not Authorized"
+                    }
+                }
+            }
+        },
+        "/vulnerabilities/setstatus": {
+            "post": {
+                "tags": [
+                    "vulnerabilities"
+                ],
+                "summary": "Set the status (open/closed) of a vulnerability in production or development.",
+                "description": "Set status to open or closed and set remediation dates for the vulnerability. ",
+                "operationId": "setStatus",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "FACTION-API-KEY",
+                        "in": "header",
+                        "description": "Authentication Header",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "vulnId",
+                        "in": "formData",
+                        "description": "Vulnerability ID",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    {
+                        "name": "trackingId",
+                        "in": "formData",
+                        "description": "Tracking ID",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "isClosedDev",
+                        "in": "formData",
+                        "description": "Set Status to Fixed in the development environment",
+                        "required": false,
+                        "type": "boolean"
+                    },
+                    {
+                        "name": "isClosedProd",
+                        "in": "formData",
+                        "description": "Set Status to Fixed in the production environment",
+                        "required": false,
+                        "type": "boolean"
+                    },
+                    {
+                        "name": "devClosedDate",
+                        "in": "formData",
+                        "description": "Set Date of remediation for development",
+                        "required": false,
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    {
+                        "name": "prodClosedDate",
+                        "in": "formData",
+                        "description": "Set Date of remediation for production",
+                        "required": false,
+                        "type": "string",
+                        "format": "date-time"
+                    }
+                ],
+                "responses": {
+                    "401": {
+                        "description": "Not Authorized"
+                    },
+                    "400": {
+                        "description": "Unknown Error"
+                    },
+                    "200": {
+                        "description": "Vulnerability Successfully Updated."
+                    }
+                }
+            }
+        },
+        "/vulnerabilities/settracking": {
+            "post": {
+                "tags": [
+                    "vulnerabilities"
+                ],
+                "summary": "Assign a tracking number to a vulnerability.",
+                "description": "",
+                "operationId": "setTracking",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "FACTION-API-KEY",
+                        "in": "header",
+                        "description": "Authentication Header",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "vulnId",
+                        "in": "formData",
+                        "description": "Vulnerability ID",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    {
+                        "name": "trackingId",
+                        "in": "formData",
+                        "description": "Tracking ID",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "401": {
+                        "description": "Not Authorized"
+                    },
+                    "400": {
+                        "description": "Unknown Error"
+                    },
+                    "200": {
+                        "description": "Vulnerability Successfully Assigned a Tracking ID."
+                    }
+                }
+            }
+        },
+        "/vulnerabilities/gettracking/{track}": {
+            "get": {
+                "tags": [
+                    "vulnerabilities"
+                ],
+                "summary": "Get Vulnerability Info based on it's assigned tracking id. ",
+                "description": "",
+                "operationId": "getVuln_1",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "FACTION-API-KEY",
+                        "in": "header",
+                        "description": "Authentication Header",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "track",
+                        "in": "path",
+                        "description": "Vulnerability Tracking ID",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Matching Vulnerability Returned"
+                    },
+                    "401": {
+                        "description": "Not Authorized"
+                    },
+                    "400": {
+                        "description": "Unknown Error"
+                    }
+                }
+            }
+        },
+        "/vulnerabilities/getvuln/{id}": {
+            "get": {
+                "tags": [
+                    "vulnerabilities"
+                ],
+                "summary": "Get a vulnerability based on its vuln id. ",
+                "description": "",
+                "operationId": "getVuln_2",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "FACTION-API-KEY",
+                        "in": "header",
+                        "description": "Authentication Header",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Vulnerability ID",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int64"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Matching Vulnerability Returned"
+                    },
+                    "401": {
+                        "description": "Not Authorized"
+                    },
+                    "400": {
+                        "description": "Unknown Error"
+                    }
+                }
+            }
+        },
+        "/vulnerabilities/csv/default": {
+            "get": {
+                "tags": [
+                    "vulnerabilities"
+                ],
+                "summary": "Gets All Default Vulnerabilities Stored in the System in a CSV format.",
+                "description": "",
+                "operationId": "getalldefaulcsv",
+                "produces": [
+                    "text/csv"
+                ],
+                "parameters": [
+                    {
+                        "name": "FACTION-API-KEY",
+                        "in": "header",
+                        "description": "Authentication Header",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "401": {
+                        "description": "Not Authorized"
+                    },
+                    "400": {
+                        "description": "Unknown Error"
+                    },
+                    "200": {
+                        "description": "All Default Vulnerabilites Returned"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "vulnerabilities"
+                ],
+                "summary": "Upload Default Vulnerabilties to Faction in CSV format",
+                "description": "Below is an example CSV. Note that some parameters are optional.\n If the ID is empty then a new vulnerability will be created. If the ID is populated then it will overwrite the vulnerability with the same id.\n\n If the categoryId is missing then categoryName is required. If a category with the same name exists then the existing category will be used. If the categoryName does not match an existing category then a new category will be created. \n\nIf the categoryId is populated then categoryName field is ignored.",
+                "operationId": "uploadDefaultCSVVulns",
+                "consumes": [
+                    "text/plain"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "FACTION-API-KEY",
+                        "in": "header",
+                        "description": "Authentication Header",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "description": "CSV of Default Vulnerabilities",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "default": "id(optional),vulnName,categoryId(optional*),categoryName(optional*), description, recommendation, severityId, impactId, likelihoodId, active\nid(optional),vulnName,categoryId(optional*), categoryName(optional*), description, recommendation, severityId, impactId, likelihoodId, active, cvssScore, cvssString"
+                        }
+                    }
+                ],
+                "responses": {
+                    "401": {
+                        "description": "Not Authorized"
+                    },
+                    "400": {
+                        "description": "Unknown Error"
+                    },
+                    "200": {
+                        "description": "All Default Vulnerabilites Returned"
+                    }
+                }
+            }
+        },
+        "/vulnerabilities/default": {
+            "get": {
+                "tags": [
+                    "vulnerabilities"
+                ],
+                "summary": "Gets All Default Vulnerabilities Stored in the System in a JSON format.",
+                "description": "",
+                "operationId": "getalldefault",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "FACTION-API-KEY",
+                        "in": "header",
+                        "description": "Authentication Header",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "All Default Vulnerabilites Returned"
+                    },
+                    "401": {
+                        "description": "Not Authorized"
+                    },
+                    "400": {
+                        "description": "Unknown Error"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "vulnerabilities"
+                ],
+                "summary": "Upload Default Vulnerabilties to Faction in JSON format",
+                "description": "Below is an example JSON. Note that some parameters are optional.\n If the ID is empty then a new vulnerability will be created. If the ID is populated then it will overwrite the vulnerability with the same id.\n\n If the categoryId is missing then categoryName is required. If a category with the same name exists then the existing category will be used. If the categoryName does not match an existing category then a new category will be created. \n\nIf the categoryId is populated then categoryName field is ignored.",
+                "operationId": "uploadDefaultJSONVulns",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "FACTION-API-KEY",
+                        "in": "header",
+                        "description": "Authentication Header",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "description": "JSON List of Default Vulnerabilities",
+                        "required": true,
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/GenericVulnerability"
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "401": {
+                        "description": "Not Authorized"
+                    },
+                    "400": {
+                        "description": "Unknown Error"
+                    },
+                    "200": {
+                        "description": "All Default Vulnerabilites Returned"
+                    }
+                }
+            }
+        },
+        "/vulnerabilities/default/{name}": {
+            "get": {
+                "tags": [
+                    "vulnerabilities"
+                ],
+                "summary": "Search for default vulnerbilities based on vulnerability name. ",
+                "description": "Performs partial matching on the name parameter.",
+                "operationId": "getalldefault_1",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "FACTION-API-KEY",
+                        "in": "header",
+                        "description": "Authentication Header",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "name",
+                        "in": "path",
+                        "description": "Vulnerability name to search",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "All Matching Vulnerabilites Returned"
+                    },
+                    "401": {
+                        "description": "Not Authorized"
+                    },
+                    "400": {
+                        "description": "Unknown Error"
+                    }
+                }
+            }
+        },
+        "/vulnerabilities/getrisklevels": {
+            "get": {
+                "tags": [
+                    "vulnerabilities"
+                ],
+                "summary": "Get Customized Risk Rankings ",
+                "description": "",
+                "operationId": "getRiskLevels",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "FACTION-API-KEY",
+                        "in": "header",
+                        "description": "Authentication Header",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "All Risk Levels Returned"
+                    },
+                    "401": {
+                        "description": "Not Authorized"
+                    },
+                    "400": {
+                        "description": "Unknown Error"
+                    }
+                }
+            }
+        },
+        "/vulnerabilities/all": {
+            "post": {
+                "tags": [
+                    "vulnerabilities"
+                ],
+                "summary": "Get All Vulnerabilities for the specified timeframe.",
+                "description": "",
+                "operationId": "getall",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "FACTION-API-KEY",
+                        "in": "header",
+                        "description": "Authentication Header",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "start",
+                        "in": "formData",
+                        "description": "Start Date of Search",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "end",
+                        "in": "formData",
+                        "description": "End Date of Search",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "401": {
+                        "description": "Not Authorized"
+                    },
+                    "400": {
+                        "description": "Unknown Error"
+                    },
+                    "200": {
+                        "description": "List of matching vulnerabilities."
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "Category": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "name": {
+                    "type": "string"
+                }
+            }
+        },
+        "CustomField": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "type": {
+                    "$ref": "#/definitions/CustomType"
+                },
+                "value": {
+                    "type": "string"
+                }
+            }
+        },
+        "CustomType": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "key": {
+                    "type": "string"
+                },
+                "variable": {
+                    "type": "string"
+                },
+                "type": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "readonly": {
+                    "type": "boolean"
+                },
+                "defaultValue": {
+                    "type": "string"
+                },
+                "fieldType": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "deleted": {
+                    "type": "boolean"
+                },
+                "typeStr": {
+                    "type": "string"
+                },
+                "fieldTypeStr": {
+                    "type": "string"
+                }
+            }
+        },
+        "DefaultVulnerability": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "recommendation": {
+                    "type": "string"
+                },
+                "category": {
+                    "$ref": "#/definitions/Category"
+                },
+                "likelyhood": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "impact": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "overall": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "cvss31Score": {
+                    "type": "string"
+                },
+                "cvss40Score": {
+                    "type": "string"
+                },
+                "cvss31String": {
+                    "type": "string"
+                },
+                "cvss40String": {
+                    "type": "string"
+                },
+                "active": {
+                    "type": "boolean"
+                },
+                "customFields": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/CustomField"
+                    }
+                },
+                "overallStr": {
+                    "type": "string"
+                },
+                "impactStr": {
+                    "type": "string"
+                },
+                "likelyhoodStr": {
+                    "type": "string"
+                }
+            }
+        },
+        "Permissions": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "admin": {
+                    "type": "boolean"
+                },
+                "assessor": {
+                    "type": "boolean"
+                },
+                "engagement": {
+                    "type": "boolean"
+                },
+                "manager": {
+                    "type": "boolean"
+                },
+                "executive": {
+                    "type": "boolean"
+                },
+                "remediation": {
+                    "type": "boolean"
+                },
+                "accessLevel": {
+                    "type": "integer",
+                    "format": "int32"
+                }
+            }
+        },
+        "RiskLevel": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "riskId": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "risk": {
+                    "type": "string"
+                },
+                "daysTillDue": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "daysTillWarning": {
+                    "type": "integer",
+                    "format": "int32"
+                }
+            }
+        },
+        "Teams": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "teamName": {
+                    "type": "string"
+                }
+            }
+        },
+        "User": {
+            "type": "object",
+            "properties": {
+                "fname": {
+                    "type": "string"
+                },
+                "lname": {
+                    "type": "string"
+                },
+                "email": {
+                    "type": "string"
+                },
+                "username": {
+                    "type": "string"
+                },
+                "passhash": {
+                    "type": "string"
+                },
+                "inActive": {
+                    "type": "boolean"
+                },
+                "avatarGuid": {
+                    "type": "string"
+                },
+                "team": {
+                    "$ref": "#/definitions/Teams"
+                },
+                "permissions": {
+                    "$ref": "#/definitions/Permissions"
+                },
+                "lastLogin": {
+                    "type": "string",
+                    "format": "date-time"
+                },
+                "loginTime": {
+                    "type": "string",
+                    "format": "date-time"
+                },
+                "failedAuth": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "authMethod": {
+                    "type": "string"
+                },
+                "ldapUserDn": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "assessmentCount": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "verificationCount": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "ooocount": {
+                    "type": "integer",
+                    "format": "int32"
+                }
+            }
+        },
+        "Vulnerability": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "desc_notes": {
+                    "type": "string"
+                },
+                "recommendation": {
+                    "type": "string"
+                },
+                "rec_notes": {
+                    "type": "string"
+                },
+                "details": {
+                    "type": "string"
+                },
+                "detail_notes": {
+                    "type": "string"
+                },
+                "assessmentId": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "assessorId": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "category": {
+                    "$ref": "#/definitions/Category"
+                },
+                "likelyhood": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "impact": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "overall": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "closed": {
+                    "type": "string",
+                    "format": "date-time"
+                },
+                "opened": {
+                    "type": "string",
+                    "format": "date-time"
+                },
+                "created": {
+                    "type": "string",
+                    "format": "date-time"
+                },
+                "devClosed": {
+                    "type": "string",
+                    "format": "date-time"
+                },
+                "tracking": {
+                    "type": "string"
+                },
+                "defaultVuln": {
+                    "$ref": "#/definitions/DefaultVulnerability"
+                },
+                "cvssScore": {
+                    "type": "string"
+                },
+                "cvssString": {
+                    "type": "string"
+                },
+                "section": {
+                    "type": "string"
+                },
+                "desc_lock": {
+                    "type": "boolean"
+                },
+                "desc_locked_by": {
+                    "$ref": "#/definitions/User"
+                },
+                "desc_lock_time": {
+                    "type": "string",
+                    "format": "date-time"
+                },
+                "rec_lock": {
+                    "type": "boolean"
+                },
+                "rec_locked_by": {
+                    "$ref": "#/definitions/User"
+                },
+                "rec_lock_time": {
+                    "type": "string",
+                    "format": "date-time"
+                },
+                "detail_lock": {
+                    "type": "boolean"
+                },
+                "detail_locked_by": {
+                    "$ref": "#/definitions/User"
+                },
+                "detail_lock_time": {
+                    "type": "string",
+                    "format": "date-time"
+                },
+                "levels": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/RiskLevel"
+                    }
+                },
+                "customFields": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/CustomField"
+                    }
+                },
+                "overallStr": {
+                    "type": "string"
+                },
+                "impactStr": {
+                    "type": "string"
+                },
+                "likelyhoodStr": {
+                    "type": "string"
+                },
+                "sectionPretty": {
+                    "type": "string"
+                }
+            }
+        },
+        "Assessment": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "version": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "summary": {
+                    "type": "string"
+                },
+                "riskAnalysis": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "engagement": {
+                    "$ref": "#/definitions/User"
+                },
+                "assessor": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/User"
+                    }
+                },
+                "remediation": {
+                    "$ref": "#/definitions/User"
+                },
+                "appId": {
+                    "type": "string"
+                },
+                "start": {
+                    "type": "string",
+                    "format": "date-time"
+                },
+                "end": {
+                    "type": "string",
+                    "format": "date-time"
+                },
+                "completed": {
+                    "type": "string",
+                    "format": "date-time"
+                },
+                "notebook": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/Note"
+                    }
+                },
+                "type": {
+                    "$ref": "#/definitions/AssessmentType"
+                },
+                "finalReport": {
+                    "$ref": "#/definitions/FinalReport"
+                },
+                "retestReport": {
+                    "$ref": "#/definitions/FinalReport"
+                },
+                "campaign": {
+                    "$ref": "#/definitions/Campaign"
+                },
+                "answers": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/CheckListAnswers"
+                    }
+                },
+                "vulns": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/Vulnerability"
+                    }
+                },
+                "pr_sum_notes": {
+                    "type": "string"
+                },
+                "pr_risk_notes": {
+                    "type": "string"
+                },
+                "guid": {
+                    "type": "string"
+                },
+                "peerreview": {
+                    "type": "boolean"
+                },
+                "status": {
+                    "type": "string"
+                },
+                "workflow": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "peerReview": {
+                    "$ref": "#/definitions/PeerReview"
+                },
+                "notesLock": {
+                    "type": "boolean"
+                },
+                "customFields": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/CustomField"
+                    }
+                },
+                "distributionList": {
+                    "type": "string"
+                },
+                "notes": {
+                    "type": "string"
+                },
+                "accessNotes": {
+                    "type": "string"
+                },
+                "notesLockBy": {
+                    "$ref": "#/definitions/User"
+                },
+                "notesLockAt": {
+                    "type": "string",
+                    "format": "date-time"
+                },
+                "summaryLock": {
+                    "type": "boolean"
+                },
+                "summaryLockBy": {
+                    "$ref": "#/definitions/User"
+                },
+                "summaryLockAt": {
+                    "type": "string",
+                    "format": "date-time"
+                },
+                "riskLock": {
+                    "type": "boolean"
+                },
+                "riskLockBy": {
+                    "$ref": "#/definitions/User"
+                },
+                "riskLockAt": {
+                    "type": "string",
+                    "format": "date-time"
+                },
+                "finalized": {
+                    "type": "boolean"
+                },
+                "acceptedEdits": {
+                    "type": "boolean"
+                },
+                "prComplete": {
+                    "type": "boolean"
+                },
+                "inPr": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "AssessmentType": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "type": {
+                    "type": "string"
+                },
+                "cvss31": {
+                    "type": "boolean"
+                },
+                "cvss40": {
+                    "type": "boolean"
+                },
+                "nativeRiskRanking": {
+                    "type": "boolean"
+                },
+                "ratingSystemName": {
+                    "type": "string"
+                }
+            }
+        },
+        "Campaign": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "name": {
+                    "type": "string"
+                }
+            }
+        },
+        "CheckListAnswers": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "notes": {
+                    "type": "string"
+                },
+                "answer": {
+                    "type": "string",
+                    "enum": [
+                        "Pass",
+                        "Fail",
+                        "NA",
+                        "Incomplete"
+                    ]
+                },
+                "question": {
+                    "type": "string"
+                },
+                "assessor": {
+                    "$ref": "#/definitions/User"
+                },
+                "assessment": {
+                    "$ref": "#/definitions/Assessment"
+                },
+                "checklist": {
+                    "type": "string"
+                },
+                "checkId": {
+                    "type": "integer",
+                    "format": "int64"
+                }
+            }
+        },
+        "Comment": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "commenter": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/User"
+                    }
+                },
+                "commenters": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/User"
+                    }
+                },
+                "dateOfComment": {
+                    "type": "string",
+                    "format": "date-time"
+                },
+                "comment": {
+                    "type": "string"
+                },
+                "summary1": {
+                    "type": "string"
+                },
+                "summary2": {
+                    "type": "string"
+                },
+                "summary1_notes": {
+                    "type": "string"
+                },
+                "summary2_notes": {
+                    "type": "string"
+                },
+                "type": {
+                    "$ref": "#/definitions/AssessmentType"
+                },
+                "acceptedEdits": {
+                    "type": "boolean"
+                },
+                "vulnerabilities": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        "FinalReport": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "filename": {
+                    "type": "string"
+                },
+                "base64EncodedPdf": {
+                    "type": "string"
+                },
+                "gentime": {
+                    "type": "string",
+                    "format": "date-time"
+                },
+                "retest": {
+                    "type": "boolean"
+                },
+                "fileType": {
+                    "type": "string"
+                }
+            }
+        },
+        "Note": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "note": {
+                    "type": "string"
+                },
+                "createdBy": {
+                    "$ref": "#/definitions/User"
+                },
+                "updatedBy": {
+                    "$ref": "#/definitions/User"
+                },
+                "created": {
+                    "type": "string",
+                    "format": "date-time"
+                },
+                "updated": {
+                    "type": "string",
+                    "format": "date-time"
+                },
+                "noteLocked": {
+                    "type": "boolean"
+                },
+                "noteLockedBy": {
+                    "$ref": "#/definitions/User"
+                },
+                "noteLockedAt": {
+                    "type": "string",
+                    "format": "date-time"
+                },
+                "encodedNote": {
+                    "type": "string"
+                }
+            }
+        },
+        "PeerReview": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "comments": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/Comment"
+                    }
+                },
+                "assessment": {
+                    "$ref": "#/definitions/Assessment"
+                },
+                "created": {
+                    "type": "string",
+                    "format": "date-time"
+                },
+                "completed": {
+                    "type": "string",
+                    "format": "date-time"
+                },
+                "acceptedEdits": {
+                    "type": "string",
+                    "format": "date-time"
+                }
+            }
+        },
+        "AuditLog": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "user": {
+                    "$ref": "#/definitions/User"
+                },
+                "type": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "timestamp": {
+                    "type": "string",
+                    "format": "date-time"
+                },
+                "compid": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "alertname": {
+                    "type": "string"
+                },
+                "username": {
+                    "type": "string"
+                },
+                "url": {
+                    "type": "string"
+                },
+                "compname": {
+                    "type": "string"
+                },
+                "ip": {
+                    "type": "string"
+                }
+            }
+        },
+        "Verification": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "assessment": {
+                    "$ref": "#/definitions/Assessment"
+                },
+                "start": {
+                    "type": "string",
+                    "format": "date-time"
+                },
+                "end": {
+                    "type": "string",
+                    "format": "date-time"
+                },
+                "completed": {
+                    "type": "string",
+                    "format": "date-time"
+                },
+                "verificationItems": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/VerificationItem"
+                    }
+                },
+                "assessor": {
+                    "$ref": "#/definitions/User"
+                },
+                "assignedRemediation": {
+                    "$ref": "#/definitions/User"
+                },
+                "remediationCompleted": {
+                    "type": "string",
+                    "format": "date-time"
+                },
+                "workflowStatus": {
+                    "type": "string"
+                },
+                "customFields": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/CustomType"
+                    }
+                },
+                "notes": {
+                    "type": "string"
+                }
+            }
+        },
+        "VerificationItem": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "vulnerability": {
+                    "$ref": "#/definitions/Vulnerability"
+                },
+                "pass": {
+                    "type": "boolean"
+                },
+                "notes": {
+                    "type": "string"
+                }
+            }
+        },
+        "GenericVulnerability": {
+            "type": "object",
+            "properties": {
+                "Id": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "Name": {
+                    "type": "string"
+                },
+                "CategoryId": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "CategoryName": {
+                    "type": "string"
+                },
+                "Description": {
+                    "type": "string"
+                },
+                "Recommendation": {
+                    "type": "string"
+                },
+                "SeverityId": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "LikelihoodId": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "ImpactId": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "Active": {
+                    "type": "boolean"
+                },
+                "Cvss31Score": {
+                    "type": "string"
+                },
+                "Cvss31String": {
+                    "type": "string"
+                },
+                "Cvss40Score": {
+                    "type": "string"
+                },
+                "Cvss40String": {
+                    "type": "string"
+                }
+            }
+        }
+    }
+}
