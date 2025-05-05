@@ -1,0 +1,3780 @@
+{
+    "openapi": "3.0.1",
+    "paths": {
+        "/catalog": {
+            "get": {
+                "operationId": "listTopLevelCatalog",
+                "parameters": [
+                    {
+                        "name": "include",
+                        "in": "query",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "default": {
+                        "description": "default response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ResponseListCatalogItem"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "operationId": "createCatalogItem",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CatalogEntity"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "default": {
+                        "description": "default response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/CatalogEntity"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/catalog/{id}": {
+            "get": {
+                "operationId": "getCatalogItem",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "include",
+                        "in": "query",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    {
+                        "name": "exclude",
+                        "in": "query",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    {
+                        "name": "pageToken",
+                        "in": "query",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "maxChildren",
+                        "in": "query",
+                        "schema": {
+                            "type": "integer",
+                            "format": "int32"
+                        }
+                    }
+                ],
+                "responses": {
+                    "default": {
+                        "description": "default response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/CatalogEntity"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "put": {
+                "operationId": "updateCatalogItem",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CatalogEntity"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "default": {
+                        "description": "default response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/CatalogEntity"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "operationId": "promoteToDataset",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Dataset"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "default": {
+                        "description": "default response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Dataset"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "operationId": "deleteCatalogItem",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "tag",
+                        "in": "query",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "default": {
+                        "description": "default response",
+                        "content": {
+                            "application/json": {}
+                        }
+                    }
+                }
+            }
+        },
+        "/catalog/by-path/{segment}": {
+            "get": {
+                "operationId": "getCatalogItemByPath",
+                "parameters": [
+                    {
+                        "name": "segment",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "properties": {
+                                    "path": {
+                                        "type": "string"
+                                    },
+                                    "matrixParameters": {
+                                        "type": "object",
+                                        "additionalProperties": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "string"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    {
+                        "name": "include",
+                        "in": "query",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    {
+                        "name": "exclude",
+                        "in": "query",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    {
+                        "name": "versionType",
+                        "in": "query",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "versionValue",
+                        "in": "query",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "pageToken",
+                        "in": "query",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "maxChildren",
+                        "in": "query",
+                        "schema": {
+                            "type": "integer",
+                            "format": "int32"
+                        }
+                    }
+                ],
+                "responses": {
+                    "default": {
+                        "description": "default response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/CatalogEntity"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/catalog/by-ids": {
+            "post": {
+                "operationId": "getListByIds",
+                "parameters": [
+                    {
+                        "name": "maxChildren",
+                        "in": "query",
+                        "schema": {
+                            "type": "integer",
+                            "format": "int32"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "array",
+                                "items": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "default": {
+                        "description": "default response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ResponseListCatalogEntity"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/catalog/by-paths": {
+            "post": {
+                "operationId": "getListByPaths",
+                "parameters": [
+                    {
+                        "name": "versionType",
+                        "in": "query",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "versionValue",
+                        "in": "query",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "maxChildren",
+                        "in": "query",
+                        "schema": {
+                            "type": "integer",
+                            "format": "int32"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "array",
+                                "items": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "default": {
+                        "description": "default response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ResponseListCatalogEntity"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/catalog/{id}/refresh": {
+            "post": {
+                "operationId": "refreshCatalogItem",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "default": {
+                        "description": "default response",
+                        "content": {
+                            "application/json": {}
+                        }
+                    }
+                }
+            }
+        },
+        "/catalog/search": {
+            "get": {
+                "operationId": "search",
+                "parameters": [
+                    {
+                        "name": "query",
+                        "in": "query",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "default": {
+                        "description": "default response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ResponseListCatalogItem"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/cluster/stats": {
+            "get": {
+                "operationId": "getStats",
+                "parameters": [
+                    {
+                        "name": "showCompactStats",
+                        "in": "query",
+                        "schema": {
+                            "type": "boolean",
+                            "default": false
+                        }
+                    }
+                ],
+                "responses": {
+                    "default": {
+                        "description": "default response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ClusterStats"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/catalog/{id}/collaboration/tag": {
+            "get": {
+                "operationId": "getTagsForEntity",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "default": {
+                        "description": "default response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Tags"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "operationId": "setTagsForEntity",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Tags"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "default": {
+                        "description": "default response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Tags"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/catalog/{id}/collaboration/wiki": {
+            "get": {
+                "operationId": "getWikiForEntity",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "default": {
+                        "description": "default response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Wiki"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "operationId": "setWikiForEntity",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Wiki"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "default": {
+                        "description": "default response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Wiki"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/cluster/jobstats": {
+            "get": {
+                "operationId": "getStats_1",
+                "parameters": [
+                    {
+                        "name": "start",
+                        "in": "query",
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64",
+                            "default": 0
+                        }
+                    },
+                    {
+                        "name": "end",
+                        "in": "query",
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64",
+                            "default": 0
+                        }
+                    },
+                    {
+                        "name": "onlyDateWiseTotals",
+                        "in": "query",
+                        "schema": {
+                            "type": "string",
+                            "default": "false"
+                        }
+                    }
+                ],
+                "responses": {
+                    "default": {
+                        "description": "default response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/DailyJobStats"
+                                }
+                            }
+                        }
+                    }
+                },
+                "deprecated": true
+            }
+        },
+        "/dataset/{id}/reflection/recommendation": {
+            "post": {
+                "operationId": "getReflectionRecommendationsForDataset",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "default": {
+                        "description": "default response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ResponseListReflection"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/dataset/{id}/reflection/recommendation/{type}": {
+            "post": {
+                "operationId": "getReflectionRecommendationsForDataset_1",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "type",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "default": {
+                        "description": "default response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ResponseListReflection"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/dataset/{id}/reflection": {
+            "get": {
+                "operationId": "listReflectionsForDataset",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "default": {
+                        "description": "default response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ResponseListReflection"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/source": {
+            "get": {
+                "operationId": "getSources",
+                "responses": {
+                    "default": {
+                        "description": "default response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ResponseListSource"
+                                }
+                            }
+                        }
+                    }
+                },
+                "deprecated": true
+            },
+            "post": {
+                "operationId": "addSource",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/SourceDeprecated"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "default": {
+                        "description": "default response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/SourceDeprecated"
+                                }
+                            }
+                        }
+                    }
+                },
+                "deprecated": true
+            }
+        },
+        "/source/{id}": {
+            "get": {
+                "operationId": "getSource",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "default": {
+                        "description": "default response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/SourceDeprecated"
+                                }
+                            }
+                        }
+                    }
+                },
+                "deprecated": true
+            },
+            "put": {
+                "operationId": "updateSource",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/SourceDeprecated"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "default": {
+                        "description": "default response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/SourceDeprecated"
+                                }
+                            }
+                        }
+                    }
+                },
+                "deprecated": true
+            },
+            "delete": {
+                "operationId": "deleteSource",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "default": {
+                        "description": "default response",
+                        "content": {
+                            "application/json": {}
+                        }
+                    }
+                },
+                "deprecated": true
+            }
+        },
+        "/source/type/{name}": {
+            "get": {
+                "operationId": "getSourceByType",
+                "parameters": [
+                    {
+                        "name": "name",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "default": {
+                        "description": "default response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/SourceTypeTemplate"
+                                }
+                            }
+                        }
+                    }
+                },
+                "deprecated": true
+            }
+        },
+        "/source/type": {
+            "get": {
+                "operationId": "getSourceTypes",
+                "responses": {
+                    "default": {
+                        "description": "default response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ResponseListSourceTypeTemplate"
+                                }
+                            }
+                        }
+                    }
+                },
+                "deprecated": true
+            }
+        },
+        "/info": {
+            "get": {
+                "operationId": "getNodeInfo",
+                "responses": {
+                    "default": {
+                        "description": "default response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/VersionInfo"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/stats/jobsandusers": {
+            "get": {
+                "operationId": "getJobAndUserStats",
+                "parameters": [
+                    {
+                        "name": "numDaysBack",
+                        "in": "query",
+                        "schema": {
+                            "type": "integer",
+                            "format": "int32",
+                            "default": 7
+                        }
+                    },
+                    {
+                        "name": "detailedStats",
+                        "in": "query",
+                        "schema": {
+                            "type": "boolean",
+                            "default": false
+                        }
+                    }
+                ],
+                "responses": {
+                    "default": {
+                        "description": "default response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/JobAndUserStatsResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/job/{id}/cancel": {
+            "post": {
+                "operationId": "cancelJob",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "default": {
+                        "description": "default response",
+                        "content": {
+                            "application/json": {}
+                        }
+                    }
+                }
+            }
+        },
+        "/job/{id}/reflection/{reflectionId}/cancel": {
+            "post": {
+                "operationId": "cancelReflectionJob",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "reflectionId",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "default": {
+                        "description": "default response",
+                        "content": {
+                            "application/json": {}
+                        }
+                    }
+                }
+            }
+        },
+        "/job/{id}": {
+            "get": {
+                "operationId": "getJobStatus",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "default": {
+                        "description": "default response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/JobStatus"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/job/{id}/results": {
+            "get": {
+                "operationId": "getQueryResults",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "offset",
+                        "in": "query",
+                        "schema": {
+                            "type": "integer",
+                            "format": "int32",
+                            "default": 0
+                        }
+                    },
+                    {
+                        "name": "limit",
+                        "in": "query",
+                        "schema": {
+                            "type": "integer",
+                            "format": "int32",
+                            "default": 100
+                        }
+                    }
+                ],
+                "responses": {
+                    "default": {
+                        "description": "default response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/JobResourceData"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/job/{id}/reflection/{reflectionId}": {
+            "get": {
+                "operationId": "getReflectionJobStatus",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "reflectionId",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "default": {
+                        "description": "default response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/JobStatus"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/reflection": {
+            "post": {
+                "operationId": "createReflection",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Reflection"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "default": {
+                        "description": "default response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Reflection"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/reflection/{id}": {
+            "get": {
+                "operationId": "getReflection",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "default": {
+                        "description": "default response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Reflection"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "put": {
+                "operationId": "editReflection",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Reflection"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "default": {
+                        "description": "default response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Reflection"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "operationId": "deleteReflection",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "default": {
+                        "description": "default response",
+                        "content": {
+                            "application/json": {}
+                        }
+                    }
+                }
+            }
+        },
+        "/sql": {
+            "post": {
+                "operationId": "runQuery",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CreateFromSQL"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "default": {
+                        "description": "default response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/QueryDetails"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/scripts:batchDelete": {
+            "post": {
+                "operationId": "batchDeleteScripts",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/BatchDeleteScriptsRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "default": {
+                        "description": "default response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/BatchDeleteScriptsResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/scripts": {
+            "get": {
+                "operationId": "getScripts",
+                "parameters": [
+                    {
+                        "name": "offset",
+                        "in": "query",
+                        "schema": {
+                            "type": "integer",
+                            "format": "int32"
+                        }
+                    },
+                    {
+                        "name": "maxResults",
+                        "in": "query",
+                        "schema": {
+                            "type": "integer",
+                            "format": "int32"
+                        }
+                    },
+                    {
+                        "name": "search",
+                        "in": "query",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "orderBy",
+                        "in": "query",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "createdBy",
+                        "in": "query",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "default": {
+                        "description": "default response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/PaginatedResponseScriptEntity"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "operationId": "createScript",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ScriptEntity"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "default": {
+                        "description": "default response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ScriptEntity"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/scripts/{id}": {
+            "get": {
+                "operationId": "getScript",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "default": {
+                        "description": "default response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ScriptEntity"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "operationId": "deleteScript",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "default": {
+                        "description": "default response",
+                        "content": {
+                            "application/json": {}
+                        }
+                    }
+                }
+            },
+            "patch": {
+                "operationId": "updateScript",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ScriptEntity"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "default": {
+                        "description": "default response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ScriptEntity"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/users/preferences/{preferenceType}/{entityId}": {
+            "put": {
+                "operationId": "addEntityToPreference",
+                "parameters": [
+                    {
+                        "name": "preferenceType",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "entityId",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    }
+                ],
+                "responses": {
+                    "default": {
+                        "description": "default response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/PreferenceData"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "operationId": "removeEntityFromPreference",
+                "parameters": [
+                    {
+                        "name": "preferenceType",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "entityId",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    }
+                ],
+                "responses": {
+                    "default": {
+                        "description": "default response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/PreferenceData"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/users/preferences/{preferenceType}": {
+            "get": {
+                "operationId": "getPreferenceByType",
+                "parameters": [
+                    {
+                        "name": "preferenceType",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "showCatalogInfo",
+                        "in": "query",
+                        "schema": {
+                            "type": "boolean",
+                            "default": false
+                        }
+                    }
+                ],
+                "responses": {
+                    "default": {
+                        "description": "default response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/PreferenceData"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/user": {
+            "post": {
+                "operationId": "createUser",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/User"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "default": {
+                        "description": "default response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/User"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/user/{id}": {
+            "get": {
+                "operationId": "getUser",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "default": {
+                        "description": "default response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/User"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "put": {
+                "operationId": "updateUser",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/User"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "default": {
+                        "description": "default response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/User"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/user/by-name/{name}": {
+            "get": {
+                "operationId": "getUserByName",
+                "parameters": [
+                    {
+                        "name": "name",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "default": {
+                        "description": "default response",
+                        "content": {
+                            "application/json": {}
+                        }
+                    }
+                }
+            }
+        },
+        "/stats/user": {
+            "get": {
+                "operationId": "getActiveUserStats",
+                "parameters": [
+                    {
+                        "name": "start",
+                        "in": "query",
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64",
+                            "default": 0
+                        }
+                    },
+                    {
+                        "name": "end",
+                        "in": "query",
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64",
+                            "default": 0
+                        }
+                    },
+                    {
+                        "name": "onlyUniqueUsersByDate",
+                        "in": "query",
+                        "schema": {
+                            "type": "string",
+                            "default": "false"
+                        }
+                    }
+                ],
+                "responses": {
+                    "default": {
+                        "description": "default response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/UserStats"
+                                }
+                            }
+                        }
+                    }
+                },
+                "deprecated": true
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "AvroFileConfig": {
+                "type": "object",
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/FileFormat"
+                    }
+                ]
+            },
+            "CatalogEntity": {
+                "required": [
+                    "entityType"
+                ],
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "string"
+                    },
+                    "nextPageToken": {
+                        "type": "string"
+                    },
+                    "entityType": {
+                        "type": "string"
+                    }
+                },
+                "discriminator": {
+                    "propertyName": "entityType"
+                }
+            },
+            "CatalogItem": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "string"
+                    },
+                    "path": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    },
+                    "tag": {
+                        "type": "string"
+                    },
+                    "type": {
+                        "type": "string",
+                        "enum": [
+                            "DATASET",
+                            "CONTAINER",
+                            "FILE"
+                        ]
+                    },
+                    "datasetType": {
+                        "type": "string",
+                        "enum": [
+                            "VIRTUAL",
+                            "PROMOTED",
+                            "DIRECT"
+                        ]
+                    },
+                    "containerType": {
+                        "type": "string",
+                        "enum": [
+                            "SPACE",
+                            "SOURCE",
+                            "FOLDER",
+                            "HOME",
+                            "FUNCTION"
+                        ]
+                    },
+                    "tags": {
+                        "$ref": "#/components/schemas/CollaborationTag"
+                    },
+                    "stats": {
+                        "$ref": "#/components/schemas/CatalogItemStats"
+                    },
+                    "createdAt": {
+                        "type": "integer",
+                        "format": "int64"
+                    }
+                }
+            },
+            "CatalogItemStats": {
+                "type": "object",
+                "properties": {
+                    "datasetCount": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "datasetCountBounded": {
+                        "type": "boolean"
+                    }
+                }
+            },
+            "CollaborationTag": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "string"
+                    },
+                    "entityId": {
+                        "type": "string"
+                    },
+                    "version": {
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "lastModified": {
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "tag": {
+                        "type": "string"
+                    },
+                    "tagsList": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    }
+                }
+            },
+            "ConnectionConfObjectObject": {
+                "required": [
+                    "type"
+                ],
+                "type": "object",
+                "properties": {
+                    "type": {
+                        "type": "string"
+                    }
+                },
+                "discriminator": {
+                    "propertyName": "type"
+                }
+            },
+            "Dataset": {
+                "type": "object",
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/CatalogEntity"
+                    },
+                    {
+                        "type": "object",
+                        "properties": {
+                            "type": {
+                                "type": "string",
+                                "enum": [
+                                    "VIRTUAL_DATASET",
+                                    "PHYSICAL_DATASET"
+                                ]
+                            },
+                            "path": {
+                                "type": "array",
+                                "items": {
+                                    "type": "string"
+                                }
+                            },
+                            "createdAt": {
+                                "type": "integer",
+                                "format": "int64"
+                            },
+                            "tag": {
+                                "type": "string"
+                            },
+                            "accelerationRefreshPolicy": {
+                                "$ref": "#/components/schemas/RefreshSettings"
+                            },
+                            "sql": {
+                                "type": "string"
+                            },
+                            "sqlContext": {
+                                "type": "array",
+                                "items": {
+                                    "type": "string"
+                                }
+                            },
+                            "format": {
+                                "$ref": "#/components/schemas/FileFormat"
+                            },
+                            "approximateStatisticsAllowed": {
+                                "type": "boolean"
+                            },
+                            "isMetadataExpired": {
+                                "type": "boolean"
+                            },
+                            "lastMetadataRefreshAt": {
+                                "type": "integer",
+                                "format": "int64"
+                            }
+                        }
+                    }
+                ]
+            },
+            "DeltalakeFileConfig": {
+                "type": "object",
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/FileFormat"
+                    },
+                    {
+                        "type": "object",
+                        "properties": {
+                            "parquetDataFormat": {
+                                "$ref": "#/components/schemas/ParquetFileConfig"
+                            }
+                        }
+                    }
+                ]
+            },
+            "ExcelFileConfig": {
+                "type": "object",
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/FileFormat"
+                    },
+                    {
+                        "type": "object",
+                        "properties": {
+                            "sheetName": {
+                                "type": "string"
+                            },
+                            "extractHeader": {
+                                "type": "boolean"
+                            },
+                            "hasMergedCells": {
+                                "type": "boolean"
+                            }
+                        }
+                    }
+                ]
+            },
+            "File": {
+                "type": "object",
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/CatalogEntity"
+                    },
+                    {
+                        "type": "object",
+                        "properties": {
+                            "path": {
+                                "type": "array",
+                                "items": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                ]
+            },
+            "FileFormat": {
+                "required": [
+                    "type"
+                ],
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "type": "string"
+                    },
+                    "owner": {
+                        "type": "string"
+                    },
+                    "fullPath": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    },
+                    "ctime": {
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "version": {
+                        "type": "string"
+                    },
+                    "isFolder": {
+                        "type": "boolean"
+                    },
+                    "location": {
+                        "type": "string"
+                    },
+                    "ignoreOtherFileFormats": {
+                        "type": "boolean"
+                    },
+                    "type": {
+                        "type": "string"
+                    }
+                },
+                "discriminator": {
+                    "propertyName": "type"
+                }
+            },
+            "Folder": {
+                "type": "object",
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/CatalogEntity"
+                    },
+                    {
+                        "type": "object",
+                        "properties": {
+                            "path": {
+                                "type": "array",
+                                "items": {
+                                    "type": "string"
+                                }
+                            },
+                            "tag": {
+                                "type": "string"
+                            },
+                            "children": {
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/CatalogItem"
+                                }
+                            }
+                        }
+                    }
+                ]
+            },
+            "Function": {
+                "type": "object",
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/CatalogEntity"
+                    },
+                    {
+                        "type": "object",
+                        "properties": {
+                            "path": {
+                                "type": "array",
+                                "items": {
+                                    "type": "string"
+                                }
+                            },
+                            "tag": {
+                                "type": "string"
+                            },
+                            "createdAt": {
+                                "type": "integer",
+                                "format": "int64"
+                            },
+                            "lastModified": {
+                                "type": "integer",
+                                "format": "int64"
+                            },
+                            "isScalar": {
+                                "type": "boolean"
+                            },
+                            "functionArgList": {
+                                "type": "string"
+                            },
+                            "functionBody": {
+                                "type": "string"
+                            },
+                            "returnType": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                ]
+            },
+            "Home": {
+                "type": "object",
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/CatalogEntity"
+                    },
+                    {
+                        "type": "object",
+                        "properties": {
+                            "name": {
+                                "type": "string"
+                            },
+                            "tag": {
+                                "type": "string"
+                            },
+                            "children": {
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/CatalogItem"
+                                }
+                            }
+                        }
+                    }
+                ]
+            },
+            "HttpLogFileConfig": {
+                "type": "object",
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/FileFormat"
+                    },
+                    {
+                        "type": "object",
+                        "properties": {
+                            "logParser": {
+                                "type": "string",
+                                "enum": [
+                                    "COMMON",
+                                    "EXTENDED",
+                                    "CUSTOM"
+                                ]
+                            },
+                            "customParser": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                ]
+            },
+            "IcebergFileConfig": {
+                "type": "object",
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/FileFormat"
+                    },
+                    {
+                        "type": "object",
+                        "properties": {
+                            "metaStoreType": {
+                                "type": "string",
+                                "enum": [
+                                    "HDFS"
+                                ]
+                            },
+                            "parquetDataFormat": {
+                                "$ref": "#/components/schemas/ParquetFileConfig"
+                            },
+                            "dataFormatTypeList": {
+                                "type": "array",
+                                "items": {
+                                    "type": "string",
+                                    "enum": [
+                                        "UNKNOWN",
+                                        "TEXT",
+                                        "JSON",
+                                        "CSV",
+                                        "TSV",
+                                        "PSV",
+                                        "AVRO",
+                                        "PARQUET",
+                                        "HTTP_LOG",
+                                        "EXCEL",
+                                        "XLS",
+                                        "ARROW",
+                                        "ICEBERG",
+                                        "DELTA",
+                                        "ORC"
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                ]
+            },
+            "JsonFileConfig": {
+                "type": "object",
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/FileFormat"
+                    }
+                ]
+            },
+            "Message": {
+                "type": "object",
+                "properties": {
+                    "level": {
+                        "type": "string",
+                        "enum": [
+                            "INFO",
+                            "WARN",
+                            "ERROR"
+                        ]
+                    },
+                    "message": {
+                        "type": "string"
+                    }
+                }
+            },
+            "MetadataPolicy": {
+                "required": [
+                    "datasetUpdateMode"
+                ],
+                "type": "object",
+                "properties": {
+                    "authTTLMs": {
+                        "minimum": 60000,
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "namesRefreshMs": {
+                        "minimum": 60000,
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "datasetRefreshAfterMs": {
+                        "minimum": 60000,
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "datasetExpireAfterMs": {
+                        "minimum": 60000,
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "datasetUpdateMode": {
+                        "type": "string"
+                    },
+                    "deleteUnavailableDatasets": {
+                        "type": "boolean"
+                    },
+                    "autoPromoteDatasets": {
+                        "type": "boolean"
+                    }
+                }
+            },
+            "ParquetFileConfig": {
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "type": "string"
+                    },
+                    "owner": {
+                        "type": "string"
+                    },
+                    "fullPath": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    },
+                    "ctime": {
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "version": {
+                        "type": "string"
+                    },
+                    "isFolder": {
+                        "type": "boolean"
+                    },
+                    "location": {
+                        "type": "string"
+                    },
+                    "ignoreOtherFileFormats": {
+                        "type": "boolean"
+                    },
+                    "autoCorrectCorruptDates": {
+                        "type": "boolean"
+                    }
+                }
+            },
+            "RefreshSettings": {
+                "type": "object",
+                "properties": {
+                    "activePolicyType": {
+                        "type": "string",
+                        "enum": [
+                            "PERIOD",
+                            "SCHEDULE",
+                            "NEVER",
+                            "REFRESH_ON_DATA_CHANGES"
+                        ]
+                    },
+                    "refreshField": {
+                        "type": "string"
+                    },
+                    "refreshPeriodMs": {
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "refreshSchedule": {
+                        "type": "string"
+                    },
+                    "gracePeriodMs": {
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "method": {
+                        "type": "string",
+                        "enum": [
+                            "FULL",
+                            "INCREMENTAL",
+                            "AUTO"
+                        ]
+                    },
+                    "neverExpire": {
+                        "type": "boolean"
+                    },
+                    "neverRefresh": {
+                        "type": "boolean"
+                    },
+                    "sourceRefreshOnDataChanges": {
+                        "type": "boolean"
+                    }
+                }
+            },
+            "Source": {
+                "type": "object",
+                "properties": {
+                    "config": {
+                        "$ref": "#/components/schemas/ConnectionConfObjectObject"
+                    },
+                    "state": {
+                        "$ref": "#/components/schemas/SourceState"
+                    },
+                    "id": {
+                        "type": "string"
+                    },
+                    "tag": {
+                        "type": "string"
+                    },
+                    "type": {
+                        "type": "string"
+                    },
+                    "name": {
+                        "pattern": "^[^.\"@]+$",
+                        "type": "string"
+                    },
+                    "description": {
+                        "type": "string"
+                    },
+                    "createdAt": {
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "metadataPolicy": {
+                        "$ref": "#/components/schemas/MetadataPolicy"
+                    },
+                    "accelerationGracePeriodMs": {
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "accelerationRefreshPeriodMs": {
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "accelerationRefreshSchedule": {
+                        "type": "string"
+                    },
+                    "accelerationActivePolicyType": {
+                        "type": "string",
+                        "enum": [
+                            "PERIOD",
+                            "SCHEDULE",
+                            "NEVER",
+                            "REFRESH_ON_DATA_CHANGES"
+                        ]
+                    },
+                    "accelerationNeverExpire": {
+                        "type": "boolean"
+                    },
+                    "accelerationNeverRefresh": {
+                        "type": "boolean"
+                    },
+                    "children": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/CatalogItem"
+                        }
+                    },
+                    "nextPageToken": {
+                        "type": "string"
+                    },
+                    "allowCrossSourceSelection": {
+                        "type": "boolean"
+                    },
+                    "disableMetadataValidityCheck": {
+                        "type": "boolean"
+                    }
+                }
+            },
+            "SourceState": {
+                "type": "object",
+                "properties": {
+                    "status": {
+                        "type": "string",
+                        "enum": [
+                            "good",
+                            "bad",
+                            "warn"
+                        ]
+                    },
+                    "suggestedUserAction": {
+                        "type": "string"
+                    },
+                    "messages": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Message"
+                        }
+                    }
+                }
+            },
+            "Space": {
+                "type": "object",
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/CatalogEntity"
+                    },
+                    {
+                        "type": "object",
+                        "properties": {
+                            "name": {
+                                "pattern": "^[^.\"@]+$",
+                                "type": "string"
+                            },
+                            "tag": {
+                                "type": "string"
+                            },
+                            "createdAt": {
+                                "type": "integer",
+                                "format": "int64"
+                            },
+                            "children": {
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/CatalogItem"
+                                }
+                            }
+                        }
+                    }
+                ]
+            },
+            "TextFileConfig": {
+                "type": "object",
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/FileFormat"
+                    },
+                    {
+                        "type": "object",
+                        "properties": {
+                            "fieldDelimiter": {
+                                "type": "string"
+                            },
+                            "skipFirstLine": {
+                                "type": "boolean"
+                            },
+                            "extractHeader": {
+                                "type": "boolean"
+                            },
+                            "quote": {
+                                "type": "string"
+                            },
+                            "comment": {
+                                "type": "string"
+                            },
+                            "escape": {
+                                "type": "string"
+                            },
+                            "lineDelimiter": {
+                                "type": "string"
+                            },
+                            "autoGenerateColumnNames": {
+                                "type": "boolean"
+                            },
+                            "trimHeader": {
+                                "type": "boolean"
+                            },
+                            "skipLines": {
+                                "type": "integer",
+                                "format": "int32"
+                            }
+                        }
+                    }
+                ]
+            },
+            "UnknownFileConfig": {
+                "type": "object",
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/FileFormat"
+                    }
+                ]
+            },
+            "XlsFileConfig": {
+                "type": "object",
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/FileFormat"
+                    },
+                    {
+                        "type": "object",
+                        "properties": {
+                            "sheetName": {
+                                "type": "string"
+                            },
+                            "extractHeader": {
+                                "type": "boolean"
+                            },
+                            "hasMergedCells": {
+                                "type": "boolean"
+                            }
+                        }
+                    }
+                ]
+            },
+            "GenericErrorMessage": {
+                "type": "object",
+                "properties": {
+                    "errorMessage": {
+                        "type": "string"
+                    },
+                    "moreInfo": {
+                        "type": "string"
+                    },
+                    "stackTrace": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    }
+                }
+            },
+            "ResponseListCatalogEntity": {
+                "type": "object",
+                "properties": {
+                    "data": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/CatalogEntity"
+                        }
+                    },
+                    "included": {
+                        "type": "array",
+                        "items": {
+                            "type": "object"
+                        }
+                    },
+                    "errors": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/GenericErrorMessage"
+                        }
+                    }
+                }
+            },
+            "ResponseListCatalogItem": {
+                "type": "object",
+                "properties": {
+                    "data": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/CatalogItem"
+                        }
+                    },
+                    "included": {
+                        "type": "array",
+                        "items": {
+                            "type": "object"
+                        }
+                    },
+                    "errors": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/GenericErrorMessage"
+                        }
+                    }
+                }
+            },
+            "ClusterNodes": {
+                "type": "object",
+                "properties": {
+                    "coordinator": {
+                        "$ref": "#/components/schemas/NodeStats"
+                    },
+                    "executor": {
+                        "$ref": "#/components/schemas/NodeStats"
+                    }
+                }
+            },
+            "ClusterStats": {
+                "type": "object",
+                "properties": {
+                    "coordinators": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/EndpointStats"
+                        }
+                    },
+                    "executors": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/EndpointStats"
+                        }
+                    },
+                    "nodes": {
+                        "$ref": "#/components/schemas/ClusterNodes"
+                    },
+                    "sources": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/SourceStats"
+                        }
+                    },
+                    "jobStats": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/JobTypeStats"
+                        }
+                    },
+                    "reflectionStats": {
+                        "$ref": "#/components/schemas/ReflectionStats"
+                    },
+                    "edition": {
+                        "type": "string"
+                    },
+                    "clusterNodes": {
+                        "$ref": "#/components/schemas/ClusterNodes"
+                    }
+                }
+            },
+            "EndpointStats": {
+                "type": "object",
+                "properties": {
+                    "address": {
+                        "type": "string"
+                    },
+                    "availableCores": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "maxDirectMemoryBytes": {
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "startedAt": {
+                        "type": "integer",
+                        "format": "int64"
+                    }
+                }
+            },
+            "JobTypeStats": {
+                "type": "object",
+                "properties": {
+                    "type": {
+                        "type": "string",
+                        "enum": [
+                            "UI",
+                            "EXTERNAL",
+                            "ACCELERATION",
+                            "DOWNLOAD",
+                            "INTERNAL",
+                            "DAILY_JOBS",
+                            "USER_JOBS"
+                        ]
+                    },
+                    "count": {
+                        "type": "integer",
+                        "format": "int32"
+                    }
+                }
+            },
+            "NodeStats": {
+                "type": "object",
+                "properties": {
+                    "count": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "mem": {
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "cpu": {
+                        "type": "integer",
+                        "format": "int32"
+                    }
+                }
+            },
+            "ReflectionStats": {
+                "type": "object",
+                "properties": {
+                    "activeReflections": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "errorReflections": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "totalReflectionSizeBytes": {
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "latestReflectionsSizeBytes": {
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "incrementalReflectionCount": {
+                        "type": "integer",
+                        "format": "int32"
+                    }
+                }
+            },
+            "SourceStats": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "string"
+                    },
+                    "type": {
+                        "type": "string"
+                    },
+                    "pdsCount": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "vdsCount": {
+                        "type": "integer",
+                        "format": "int32"
+                    }
+                }
+            },
+            "Tags": {
+                "type": "object",
+                "properties": {
+                    "tags": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    },
+                    "version": {
+                        "type": "string"
+                    }
+                }
+            },
+            "Wiki": {
+                "type": "object",
+                "properties": {
+                    "text": {
+                        "type": "string"
+                    },
+                    "version": {
+                        "type": "integer",
+                        "format": "int64"
+                    }
+                }
+            },
+            "DailyJobStats": {
+                "type": "object",
+                "properties": {
+                    "jobStats": {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "object"
+                            }
+                        }
+                    },
+                    "edition": {
+                        "type": "string"
+                    }
+                }
+            },
+            "BucketTransform": {
+                "type": "object",
+                "properties": {
+                    "bucketCount": {
+                        "type": "integer",
+                        "format": "int32"
+                    }
+                }
+            },
+            "Reflection": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "string"
+                    },
+                    "type": {
+                        "type": "string",
+                        "enum": [
+                            "RAW",
+                            "AGGREGATION",
+                            "EXTERNAL"
+                        ]
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "tag": {
+                        "type": "string"
+                    },
+                    "createdAt": {
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "updatedAt": {
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "datasetId": {
+                        "type": "string"
+                    },
+                    "currentSizeBytes": {
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "totalSizeBytes": {
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "enabled": {
+                        "type": "boolean"
+                    },
+                    "arrowCachingEnabled": {
+                        "type": "boolean"
+                    },
+                    "status": {
+                        "$ref": "#/components/schemas/ReflectionStatusUI"
+                    },
+                    "dimensionFields": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/ReflectionDimensionField"
+                        }
+                    },
+                    "measureFields": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/ReflectionMeasureField"
+                        }
+                    },
+                    "displayFields": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/ReflectionField"
+                        }
+                    },
+                    "distributionFields": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/ReflectionField"
+                        }
+                    },
+                    "partitionFields": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/ReflectionPartitionField"
+                        }
+                    },
+                    "sortFields": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/ReflectionField"
+                        }
+                    },
+                    "partitionDistributionStrategy": {
+                        "type": "string",
+                        "enum": [
+                            "CONSOLIDATED",
+                            "STRIPED"
+                        ]
+                    }
+                }
+            },
+            "ReflectionDimensionField": {
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "type": "string"
+                    },
+                    "granularity": {
+                        "type": "string",
+                        "enum": [
+                            "DATE",
+                            "NORMAL"
+                        ]
+                    }
+                }
+            },
+            "ReflectionField": {
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "type": "string"
+                    }
+                }
+            },
+            "ReflectionMeasureField": {
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "type": "string"
+                    },
+                    "measureTypeList": {
+                        "type": "array",
+                        "items": {
+                            "type": "string",
+                            "enum": [
+                                "UNKNOWN",
+                                "MIN",
+                                "MAX",
+                                "SUM",
+                                "COUNT",
+                                "APPROX_COUNT_DISTINCT"
+                            ]
+                        }
+                    }
+                }
+            },
+            "ReflectionPartitionField": {
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "type": "string"
+                    },
+                    "transform": {
+                        "$ref": "#/components/schemas/Transform"
+                    }
+                }
+            },
+            "ReflectionStatusUI": {
+                "type": "object",
+                "properties": {
+                    "config": {
+                        "type": "string",
+                        "enum": [
+                            "OK",
+                            "INVALID"
+                        ]
+                    },
+                    "refresh": {
+                        "type": "string",
+                        "enum": [
+                            "MANUAL",
+                            "SCHEDULED",
+                            "RUNNING",
+                            "GIVEN_UP",
+                            "PENDING",
+                            "ON_DATA_CHANGES"
+                        ]
+                    },
+                    "availability": {
+                        "type": "string",
+                        "enum": [
+                            "NONE",
+                            "AVAILABLE"
+                        ]
+                    },
+                    "combinedStatus": {
+                        "type": "string",
+                        "enum": [
+                            "NONE",
+                            "CAN_ACCELERATE",
+                            "CAN_ACCELERATE_WITH_FAILURES",
+                            "REFRESHING",
+                            "FAILED",
+                            "DISABLED",
+                            "INVALID",
+                            "CANNOT_ACCELERATE_SCHEDULED",
+                            "CANNOT_ACCELERATE_MANUAL",
+                            "CANNOT_ACCELERATE_INITIALIZING"
+                        ]
+                    },
+                    "failureCount": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "lastFailureMessage": {
+                        "type": "string"
+                    },
+                    "lastDataFetch": {
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "expiresAt": {
+                        "type": "integer",
+                        "format": "int64"
+                    }
+                }
+            },
+            "ResponseListReflection": {
+                "type": "object",
+                "properties": {
+                    "data": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Reflection"
+                        }
+                    },
+                    "included": {
+                        "type": "array",
+                        "items": {
+                            "type": "object"
+                        }
+                    },
+                    "errors": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/GenericErrorMessage"
+                        }
+                    }
+                }
+            },
+            "Transform": {
+                "type": "object",
+                "properties": {
+                    "type": {
+                        "type": "string",
+                        "enum": [
+                            "IDENTITY",
+                            "YEAR",
+                            "MONTH",
+                            "DAY",
+                            "HOUR",
+                            "BUCKET",
+                            "TRUNCATE"
+                        ]
+                    },
+                    "bucketTransform": {
+                        "$ref": "#/components/schemas/BucketTransform"
+                    },
+                    "truncateTransform": {
+                        "$ref": "#/components/schemas/TruncateTransform"
+                    }
+                }
+            },
+            "TruncateTransform": {
+                "type": "object",
+                "properties": {
+                    "truncateLength": {
+                        "type": "integer",
+                        "format": "int32"
+                    }
+                }
+            },
+            "SourceDeprecated": {
+                "type": "object",
+                "properties": {
+                    "config": {
+                        "$ref": "#/components/schemas/ConnectionConfObjectObject"
+                    },
+                    "state": {
+                        "$ref": "#/components/schemas/SourceState"
+                    },
+                    "id": {
+                        "type": "string"
+                    },
+                    "tag": {
+                        "type": "string"
+                    },
+                    "type": {
+                        "type": "string"
+                    },
+                    "name": {
+                        "pattern": "^[^.\"@]+$",
+                        "type": "string"
+                    },
+                    "description": {
+                        "type": "string"
+                    },
+                    "createdAt": {
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "metadataPolicy": {
+                        "$ref": "#/components/schemas/MetadataPolicy"
+                    },
+                    "accelerationGracePeriodMs": {
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "accelerationRefreshPeriodMs": {
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "accelerationRefreshSchedule": {
+                        "type": "string"
+                    },
+                    "accelerationActivePolicyType": {
+                        "type": "string",
+                        "enum": [
+                            "PERIOD",
+                            "SCHEDULE",
+                            "NEVER",
+                            "REFRESH_ON_DATA_CHANGES"
+                        ]
+                    },
+                    "accelerationNeverExpire": {
+                        "type": "boolean"
+                    },
+                    "accelerationNeverRefresh": {
+                        "type": "boolean"
+                    },
+                    "children": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/CatalogItem"
+                        }
+                    },
+                    "nextPageToken": {
+                        "type": "string"
+                    },
+                    "allowCrossSourceSelection": {
+                        "type": "boolean"
+                    },
+                    "disableMetadataValidityCheck": {
+                        "type": "boolean"
+                    },
+                    "_type": {
+                        "type": "string"
+                    }
+                },
+                "discriminator": {
+                    "propertyName": "_type"
+                }
+            },
+            "EnumValueTemplate": {
+                "type": "object",
+                "properties": {
+                    "value": {
+                        "type": "string"
+                    },
+                    "label": {
+                        "type": "string"
+                    }
+                }
+            },
+            "SourcePropertyTemplate": {
+                "type": "object",
+                "properties": {
+                    "propertyName": {
+                        "type": "string"
+                    },
+                    "label": {
+                        "type": "string"
+                    },
+                    "type": {
+                        "type": "string"
+                    },
+                    "secret": {
+                        "type": "boolean"
+                    },
+                    "defaultValue": {
+                        "type": "object"
+                    },
+                    "values": {
+                        "type": "array",
+                        "writeOnly": true,
+                        "items": {
+                            "$ref": "#/components/schemas/EnumValueTemplate"
+                        }
+                    },
+                    "options": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/EnumValueTemplate"
+                        }
+                    }
+                }
+            },
+            "SourceTypeTemplate": {
+                "type": "object",
+                "properties": {
+                    "sourceType": {
+                        "type": "string"
+                    },
+                    "label": {
+                        "type": "string"
+                    },
+                    "icon": {
+                        "type": "string"
+                    },
+                    "arpSource": {
+                        "type": "boolean",
+                        "writeOnly": true
+                    },
+                    "elements": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/SourcePropertyTemplate"
+                        }
+                    },
+                    "previewEngineRequired": {
+                        "type": "boolean"
+                    },
+                    "externalQueryAllowed": {
+                        "type": "boolean"
+                    },
+                    "uiConfig": {
+                        "type": "string"
+                    }
+                }
+            },
+            "ResponseListSourceTypeTemplate": {
+                "type": "object",
+                "properties": {
+                    "data": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/SourceTypeTemplate"
+                        }
+                    },
+                    "included": {
+                        "type": "array",
+                        "items": {
+                            "type": "object"
+                        }
+                    },
+                    "errors": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/GenericErrorMessage"
+                        }
+                    }
+                }
+            },
+            "ResponseListSource": {
+                "type": "object",
+                "properties": {
+                    "data": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Source"
+                        }
+                    },
+                    "included": {
+                        "type": "array",
+                        "items": {
+                            "type": "object"
+                        }
+                    },
+                    "errors": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/GenericErrorMessage"
+                        }
+                    }
+                }
+            },
+            "CommitInfo": {
+                "type": "object",
+                "properties": {
+                    "hash": {
+                        "type": "string"
+                    },
+                    "builder": {
+                        "type": "string"
+                    },
+                    "time": {
+                        "type": "integer",
+                        "format": "int64"
+                    }
+                }
+            },
+            "VersionInfo": {
+                "type": "object",
+                "properties": {
+                    "version": {
+                        "type": "string"
+                    },
+                    "buildTime": {
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "commit": {
+                        "$ref": "#/components/schemas/CommitInfo"
+                    },
+                    "clusterType": {
+                        "type": "string"
+                    }
+                }
+            },
+            "JobAndUserStatsResponse": {
+                "type": "object",
+                "properties": {
+                    "edition": {
+                        "type": "string"
+                    },
+                    "stats": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/SummarizedStat"
+                        }
+                    },
+                    "jobStats": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/JobStat"
+                        }
+                    },
+                    "userStatsByDate": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/UserStat"
+                        }
+                    },
+                    "userStatsByWeek": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/WeeklyUserStat"
+                        }
+                    },
+                    "userStatsByMonth": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/MonthlyUserStat"
+                        }
+                    }
+                }
+            },
+            "JobStat": {
+                "type": "object",
+                "properties": {
+                    "date": {
+                        "type": "string"
+                    },
+                    "total": {
+                        "type": "integer",
+                        "format": "int64"
+                    }
+                }
+            },
+            "MonthlyUserStat": {
+                "type": "object",
+                "properties": {
+                    "total": {
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "month": {
+                        "type": "string"
+                    }
+                }
+            },
+            "SummarizedStat": {
+                "type": "object",
+                "properties": {
+                    "date": {
+                        "type": "string"
+                    },
+                    "jobCount": {
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "uniqueUsersCount": {
+                        "type": "integer",
+                        "format": "int64"
+                    }
+                }
+            },
+            "UserStat": {
+                "type": "object",
+                "properties": {
+                    "date": {
+                        "type": "string"
+                    },
+                    "total": {
+                        "type": "integer",
+                        "format": "int64"
+                    }
+                }
+            },
+            "WeeklyUserStat": {
+                "type": "object",
+                "properties": {
+                    "total": {
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "week": {
+                        "type": "string"
+                    }
+                }
+            },
+            "JobAccelerationRelationship": {
+                "type": "object",
+                "properties": {
+                    "datasetId": {
+                        "type": "string"
+                    },
+                    "reflectionId": {
+                        "type": "string"
+                    },
+                    "relationship": {
+                        "type": "string"
+                    }
+                }
+            },
+            "JobAccelerationStatus": {
+                "type": "object",
+                "properties": {
+                    "relationships": {
+                        "type": "array",
+                        "writeOnly": true,
+                        "items": {
+                            "$ref": "#/components/schemas/JobAccelerationRelationship"
+                        }
+                    },
+                    "reflectionRelationships": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/JobAccelerationRelationship"
+                        }
+                    }
+                }
+            },
+            "JobStatus": {
+                "type": "object",
+                "properties": {
+                    "jobState": {
+                        "type": "string",
+                        "enum": [
+                            "NOT_SUBMITTED",
+                            "STARTING",
+                            "RUNNING",
+                            "COMPLETED",
+                            "CANCELED",
+                            "FAILED",
+                            "CANCELLATION_REQUESTED",
+                            "ENQUEUED",
+                            "PLANNING",
+                            "PENDING",
+                            "METADATA_RETRIEVAL",
+                            "QUEUED",
+                            "ENGINE_START",
+                            "EXECUTION_PLANNING",
+                            "INVALID_STATE"
+                        ]
+                    },
+                    "rowCount": {
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "errorMessage": {
+                        "type": "string"
+                    },
+                    "startedAt": {
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "endedAt": {
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "acceleration": {
+                        "$ref": "#/components/schemas/JobAccelerationStatus"
+                    },
+                    "queryType": {
+                        "type": "string"
+                    },
+                    "queueName": {
+                        "type": "string"
+                    },
+                    "queueId": {
+                        "type": "string"
+                    },
+                    "resourceSchedulingStartedAt": {
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "resourceSchedulingEndedAt": {
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "cancellationReason": {
+                        "type": "string"
+                    }
+                }
+            },
+            "Column": {
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "type": "string"
+                    },
+                    "type": {
+                        "type": "string",
+                        "enum": [
+                            "TEXT",
+                            "BINARY",
+                            "BOOLEAN",
+                            "FLOAT",
+                            "INTEGER",
+                            "DECIMAL",
+                            "MIXED",
+                            "DATE",
+                            "TIME",
+                            "DATETIME",
+                            "LIST",
+                            "MAP",
+                            "GEO",
+                            "OTHER",
+                            "STRUCT"
+                        ]
+                    },
+                    "index": {
+                        "type": "integer",
+                        "format": "int32"
+                    }
+                }
+            },
+            "JobDataFragment": {
+                "type": "object",
+                "properties": {
+                    "columns": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Column"
+                        }
+                    },
+                    "returnedRowCount": {
+                        "type": "integer",
+                        "format": "int32"
+                    }
+                }
+            },
+            "JobResourceData": {
+                "type": "object",
+                "properties": {
+                    "rowCount": {
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "jobDataFragment": {
+                        "$ref": "#/components/schemas/JobDataFragment"
+                    }
+                }
+            },
+            "QueryDetails": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "string"
+                    }
+                }
+            },
+            "CreateFromSQL": {
+                "type": "object",
+                "properties": {
+                    "sql": {
+                        "type": "string"
+                    },
+                    "context": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    },
+                    "references": {
+                        "type": "object",
+                        "additionalProperties": {
+                            "$ref": "#/components/schemas/VersionContextReq"
+                        }
+                    },
+                    "engineName": {
+                        "type": "string"
+                    }
+                }
+            },
+            "VersionContextReq": {
+                "type": "object",
+                "properties": {
+                    "type": {
+                        "type": "string",
+                        "enum": [
+                            "BRANCH",
+                            "TAG",
+                            "COMMIT"
+                        ]
+                    },
+                    "value": {
+                        "type": "string"
+                    }
+                }
+            },
+            "BatchDeleteScriptsResponse": {
+                "type": "object",
+                "properties": {
+                    "unauthorizedIds": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    },
+                    "notFoundIds": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    },
+                    "otherErrorIds": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    }
+                }
+            },
+            "BatchDeleteScriptsRequest": {
+                "required": [
+                    "ids"
+                ],
+                "type": "object",
+                "properties": {
+                    "ids": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    }
+                }
+            },
+            "ScriptEntity": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "string"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "content": {
+                        "type": "string"
+                    },
+                    "context": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    },
+                    "createdAt": {
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "createdBy": {
+                        "type": "string"
+                    },
+                    "modifiedAt": {
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "modifiedBy": {
+                        "type": "string"
+                    }
+                }
+            },
+            "PaginatedResponseScriptEntity": {
+                "type": "object",
+                "properties": {
+                    "total": {
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "data": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/ScriptEntity"
+                        }
+                    }
+                }
+            },
+            "Entity": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "string"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "fullPath": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    },
+                    "type": {
+                        "type": "string"
+                    },
+                    "starredAt": {
+                        "type": "integer",
+                        "format": "int64"
+                    }
+                }
+            },
+            "PreferenceData": {
+                "type": "object",
+                "properties": {
+                    "entities": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Entity"
+                        }
+                    },
+                    "type": {
+                        "type": "string",
+                        "enum": [
+                            "STARRED",
+                            "UNRECOGNIZED"
+                        ]
+                    }
+                }
+            },
+            "User": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "string"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "firstName": {
+                        "type": "string"
+                    },
+                    "lastName": {
+                        "type": "string"
+                    },
+                    "email": {
+                        "type": "string"
+                    },
+                    "tag": {
+                        "type": "string"
+                    },
+                    "password": {
+                        "type": "string",
+                        "writeOnly": true
+                    },
+                    "extra": {
+                        "type": "string"
+                    },
+                    "active": {
+                        "type": "boolean"
+                    }
+                }
+            },
+            "UserStats": {
+                "type": "object",
+                "properties": {
+                    "edition": {
+                        "type": "string"
+                    },
+                    "userStatsByDate": {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "object"
+                            }
+                        }
+                    },
+                    "userStatsByWeek": {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "object"
+                            }
+                        }
+                    },
+                    "userStatsByMonth": {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "object"
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
